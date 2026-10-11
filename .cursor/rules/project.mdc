@@ -1,0 +1,36 @@
+
+---
+description: KuaiRand take-home research and development guidelines
+alwaysApply: true
+---
+
+# Project Rules
+
+## Objective
+- This is a Research Engineer take-home emphasizing learning speed, engineering quality, and clear communication.
+- `docs/assignment.md` is the authoritative specification. Consult it for planning, relevant implementation, and final verification.
+- Prioritize data/evaluation correctness and reproducibility over model performance; well-explained negative results are acceptable.
+
+## Collaboration
+- Act as a research collaborator: discuss major design choices, alternatives, and tradeoffs before implementation.
+- Distinguish proposals from agreed decisions; do not finalize designs prematurely.
+- Aim for a correct, complete, and reasonably competitive end-to-end solution, not a toy or deliberately weak model. Establish a reliable first version, then explore and validate improvements when time permits.
+- Explicitly surface assumptions and uncertainties. Ask for clarification before making decisions that materially affect requirements, data handling, model design, or evaluation; do not silently proceed with consequential assumptions.
+
+## Research & Engineering
+- Enforce temporal correctness: chronological splits, strictly past-only histories (max 100), and no future-leaking features.
+- Compute popularity from training data only.
+- Handle duplicate positives, false negatives, and action balancing carefully.
+- Ensure fair full-catalog evaluation and controlled cold-start/ablation experiments.
+- Write focused tests for correctness-critical logic (leakage, masking, metrics, retrieval), and run them before relying on results.
+- Keep experiments reproducible with configs, seeds, and documented commands.
+- Preserve raw data; never commit secrets or large artifacts.
+- Add concise, meaningful comments to non-obvious or correctness-critical code, explaining important logic and why it is needed. Avoid redundant comments on self-explanatory code.
+
+
+## Context Management
+- `PLAN.md`: evolving design decisions, rationale, and open questions.
+- `PROGRESS.md`: verified progress, issues, and next steps.
+- Review relevant context at new sessions or major task boundaries.
+- Update documentation when meaningful decisions or progress occur.
+- Preserve all required submission artifacts, including coding-agent logs.

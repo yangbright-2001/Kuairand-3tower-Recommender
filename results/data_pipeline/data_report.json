@@ -1,0 +1,257 @@
+{
+ "meta": {
+  "git_sha": "cd26f310639e6f9828bf5ee8f87d9fea721b48f1-dirty",
+  "t_val_local": "2022-04-17 00:00:00.000",
+  "t_test_local": "2022-04-26 00:00:00.000"
+ },
+ "cleaning": {
+  "key": [
+   "user_id",
+   "video_id",
+   "time_ms"
+  ],
+  "value_cols_compared": [
+   "date",
+   "hourmin",
+   "is_click",
+   "is_like",
+   "is_follow",
+   "is_comment",
+   "is_forward",
+   "is_hate",
+   "long_view",
+   "play_time_ms",
+   "duration_ms",
+   "profile_stay_time",
+   "comment_stay_time",
+   "is_profile_enter",
+   "is_rand",
+   "tab"
+  ],
+  "before": {
+   "rows": 1436609,
+   "distinct_events": 1413136,
+   "users": 27077,
+   "videos": 7551,
+   "long_view_positive_rows": 476724,
+   "long_view_positive_events": 474554,
+   "is_like_positive_rows": 26546,
+   "is_like_positive_events": 26361
+  },
+  "after_exact_dedup": {
+   "rows": 1414622,
+   "distinct_events": 1413136,
+   "users": 27077,
+   "videos": 7551,
+   "long_view_positive_rows": 474708,
+   "long_view_positive_events": 474554,
+   "is_like_positive_rows": 26374,
+   "is_like_positive_events": 26361
+  },
+  "exclusions": {
+   "exact_duplicate_redundant_rows_removed": 21987,
+   "conflict_groups_total": 1486,
+   "conflict_fields_groups": {
+    "date": 110,
+    "hourmin": 1461,
+    "is_click": 2,
+    "is_follow": 1,
+    "is_comment": 1,
+    "long_view": 2,
+    "play_time_ms": 18,
+    "comment_stay_time": 8,
+    "is_profile_enter": 3
+   },
+   "label_conflict_events_dropped": 2,
+   "label_conflict_events_by_label": {
+    "long_view": 2,
+    "is_like": 0
+   },
+   "label_conflict_rows_dropped": 4,
+   "label_conflict_rows_dropped_positive": {
+    "long_view": 2,
+    "is_like": 0
+   },
+   "label_conflict_events_also_play_time_conflict": 2,
+   "conflict_groups_collapsed_to_representative": 1484,
+   "conflict_rows_removed_by_representative": 1484
+  },
+  "after": {
+   "rows": 1413134,
+   "distinct_events": 1413134,
+   "users": 27077,
+   "videos": 7551,
+   "long_view_positive_rows": 474552,
+   "long_view_positive_events": 474552,
+   "is_like_positive_rows": 26361,
+   "is_like_positive_events": 26361
+  },
+  "row_conservation_ok": true,
+  "event_conservation_ok": true,
+  "duration_ms_zero_events_marked_missing": 28859
+ },
+ "split": [
+  {
+   "split": "train",
+   "events": 997078,
+   "share": 0.7055792302782327,
+   "users": 25734,
+   "videos": 7529,
+   "first_event": "2022-04-09 11:46:03.278",
+   "last_event": "2022-04-16 23:59:57.121",
+   "long_view_positive_events": 339386,
+   "long_view_rate": 0.34038059209008725,
+   "long_view_positive_users": 24216,
+   "is_like_positive_events": 18771,
+   "is_like_rate": 0.01882600960005135,
+   "is_like_positive_users": 5390
+  },
+  {
+   "split": "val",
+   "events": 208393,
+   "share": 0.1474686760066632,
+   "users": 24423,
+   "videos": 6474,
+   "first_event": "2022-04-17 00:00:00.375",
+   "last_event": "2022-04-25 23:59:42.731",
+   "long_view_positive_events": 69354,
+   "long_view_rate": 0.33280388496734536,
+   "long_view_positive_users": 19287,
+   "is_like_positive_events": 3980,
+   "is_like_rate": 0.019098530180956173,
+   "is_like_positive_users": 2173
+  },
+  {
+   "split": "test",
+   "events": 207663,
+   "share": 0.14695209371510415,
+   "users": 24887,
+   "videos": 6250,
+   "first_event": "2022-04-26 00:00:05.797",
+   "last_event": "2022-05-08 23:52:10.564",
+   "long_view_positive_events": 65812,
+   "long_view_rate": 0.31691731314678107,
+   "long_view_positive_users": 19291,
+   "is_like_positive_events": 3610,
+   "is_like_rate": 0.017383934547801006,
+   "is_like_positive_users": 2021
+  }
+ ],
+ "events_on_cut_points": 0,
+ "catalog_and_vocab": {
+  "video_catalog": 7583,
+  "music_catalog_nonzero": 7201,
+  "videos_with_music_sentinel": 204,
+  "music_ids_shared_by_gt1_video": 112,
+  "user_metadata_rows": 27285,
+  "vocab_sizes_incl_specials": {
+   "user": 25736,
+   "video": 7531,
+   "author": 6479,
+   "music": 7154
+  },
+  "vocab_in_vocab_ids": {
+   "user": 25734,
+   "video": 7529,
+   "author": 6477,
+   "music": 7151
+  },
+  "meta_vocab_sizes": {
+   "video_type": 5,
+   "upload_type": 16,
+   "upload_dt": 5,
+   "music_type": 8,
+   "tag": 48
+  },
+  "catalog_rows_with_train_events": {
+   "video": 7529,
+   "music": 7151
+  },
+  "catalog_rows_with_train_positive": {
+   "video_long_view": 6653,
+   "video_is_like": 3344,
+   "music_long_view": 6331,
+   "music_is_like": 3151
+  }
+ },
+ "train_unseen": {
+  "val": {
+   "users": 24423,
+   "users_oov": 772,
+   "videos": 6474,
+   "videos_oov": 13,
+   "authors_oov": 9,
+   "music_oov_nonzero": 12,
+   "long_view_pos_events": 69354,
+   "long_view_pos_events_video_oov": 10,
+   "long_view_pos_events_music_sentinel": 1913,
+   "long_view_pos_events_music_oov": 10,
+   "long_view_pos_users": 19287,
+   "long_view_pos_users_oov": 504,
+   "is_like_pos_events": 3980,
+   "is_like_pos_events_video_oov": 1,
+   "is_like_pos_events_music_sentinel": 78,
+   "is_like_pos_events_music_oov": 1,
+   "is_like_pos_users": 2173,
+   "is_like_pos_users_oov": 60
+  },
+  "test": {
+   "users": 24887,
+   "users_oov": 1215,
+   "videos": 6250,
+   "videos_oov": 17,
+   "authors_oov": 10,
+   "music_oov_nonzero": 16,
+   "long_view_pos_events": 65812,
+   "long_view_pos_events_video_oov": 4,
+   "long_view_pos_events_music_sentinel": 1670,
+   "long_view_pos_events_music_oov": 4,
+   "long_view_pos_users": 19291,
+   "long_view_pos_users_oov": 937,
+   "is_like_pos_events": 3610,
+   "is_like_pos_events_video_oov": 0,
+   "is_like_pos_events_music_sentinel": 67,
+   "is_like_pos_events_music_oov": 0,
+   "is_like_pos_users": 2021,
+   "is_like_pos_users_oov": 133
+  }
+ },
+ "frozen_history": {
+  "val_at_T_val": {
+   "users": 24423,
+   "bucket_counts_capped": {
+    "0": 772,
+    "1-5": 2252,
+    "6-20": 6606,
+    ">20": 14793
+   },
+   "share_full_ge_cap": 0.07734512549645825,
+   "median_full": 28.0,
+   "users_not_in_train_vocab": 772
+  },
+  "test_at_T_test": {
+   "users": 24887,
+   "bucket_counts_capped": {
+    "0": 571,
+    "1-5": 1764,
+    "6-20": 5790,
+    ">20": 16762
+   },
+   "share_full_ge_cap": 0.10849037650178808,
+   "median_full": 34.0,
+   "users_not_in_train_vocab": 1215
+  }
+ },
+ "checks": {
+  "cleaning_row_conservation": true,
+  "cleaning_event_conservation": true,
+  "split_partition": true,
+  "no_event_on_cut": true,
+  "no_timestamp_spans_splits": true,
+  "all_log_videos_in_catalog": true,
+  "music_row_neg_iff_sentinel": true,
+  "label_conflict_events_saved": true,
+  "music_catalog_rows_consistent": true,
+  "train_events_all_in_vocab": true
+ }
+}

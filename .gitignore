@@ -1,0 +1,46 @@
+# OS / editor
+.DS_Store
+**/.DS_Store
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Environments (uv.lock IS committed)
+.venv/
+venv/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Data: raw is preserved locally but never committed; processed is regenerated
+data/raw/
+data/processed/
+data/interim/
+
+# Large artifacts (checkpoints, embeddings, run dirs) -> Google Drive
+artifacts/
+runs/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.npz
+*.parquet
+*.faiss
+
+# Logs
+*.log
+wandb/

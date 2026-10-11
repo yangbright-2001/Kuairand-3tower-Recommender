@@ -1,0 +1,14 @@
+# M2 data pipeline config. Values follow PLAN.md §3b (P1, approved 2026-10-11).
+# Run: uv run python -m kuairand_rec.data.pipeline --config configs/data.yaml
+seed: 0                      # M2 itself is deterministic; recorded for provenance
+timezone: Asia/Shanghai
+t_val: "2022-04-17 00:00:00"   # P1-3, local time in `timezone`
+t_test: "2022-04-26 00:00:00"
+history_max_len: 100         # model-input cap only; the seen-item mask is uncapped (P1-2)
+actions: [long_view, is_like]
+# P1-4: events whose rows disagree on any of these are dropped entirely.
+label_conflict_cols: [long_view, is_like]
+# H1 history tokens: video id + these per-event feedback fields (all from the same past event).
+feedback_cols: [is_click, long_view, is_like, is_follow, is_comment, is_forward, is_hate, is_profile_enter, play_time_ms]
+output_dir: data/processed
+report_dir: results/data_pipeline

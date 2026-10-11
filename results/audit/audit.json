@@ -1,0 +1,1871 @@
+{
+  "meta": {
+    "inputs": [
+      "log_standard_4_08_to_4_21_pure.csv",
+      "log_standard_4_22_to_5_08_pure.csv",
+      "user_features_pure.csv",
+      "video_features_basic_pure.csv"
+    ],
+    "timezone": "Asia/Shanghai",
+    "reference_split": "row_quantile_raw",
+    "note": "No filtering applied; all counts on raw rows unless stated.",
+    "all_checks_passed": true,
+    "failed_checks": [],
+    "runtime_s": 117.7
+  },
+  "b0_integrity": {
+    "rows_per_file": {
+      "0": 1141112,
+      "1": 295497
+    },
+    "rows_total": 1436609,
+    "user_features": {
+      "rows": 27285,
+      "user_id_unique": true
+    },
+    "video_features": {
+      "rows": 7583,
+      "video_id_unique": true
+    },
+    "log_rows_user_missing_in_features": 0,
+    "log_rows_video_missing_in_features": 0,
+    "feature_users_absent_from_logs": 208,
+    "feature_videos_absent_from_logs": 32,
+    "null_cells_in_logs": 0,
+    "time_range_cst": {
+      "file0": [
+        "2022-04-09 11:46:03",
+        "2022-04-21 23:52:08"
+      ],
+      "file1": [
+        "2022-04-21 22:52:47",
+        "2022-05-08 23:52:10"
+      ]
+    },
+    "file_overlap_window_rows": {
+      "file0": 1204,
+      "file1": 47,
+      "window_cst": [
+        "2022-04-21 22:52:47",
+        "2022-04-21 23:52:08"
+      ]
+    },
+    "date_field_matches_time_ms_cst_share": 0.9916985066917999,
+    "hourmin_minus_time_ms_hour_cst": {
+      "0": 1182357,
+      "1": 253989,
+      "2": 257,
+      "3": 6
+    }
+  },
+  "b2_duplicates_and_ties": {
+    "key": [
+      "user_id",
+      "video_id",
+      "time_ms"
+    ],
+    "value_cols_compared": [
+      "date",
+      "hourmin",
+      "is_click",
+      "is_like",
+      "is_follow",
+      "is_comment",
+      "is_forward",
+      "is_hate",
+      "long_view",
+      "play_time_ms",
+      "duration_ms",
+      "profile_stay_time",
+      "comment_stay_time",
+      "is_profile_enter",
+      "is_rand",
+      "tab"
+    ],
+    "key_duplicates": {
+      "n_rows": 1436609,
+      "n_key_groups": 1413136,
+      "n_multi_row_groups": 23392,
+      "n_exact_dup_groups": 21906,
+      "n_rows_in_exact_dup_groups": 43884,
+      "n_conflict_groups": 1486,
+      "n_rows_in_conflict_groups": 2981,
+      "n_redundant_exact_rows": 21987,
+      "conflict_fields": {
+        "date": 110,
+        "hourmin": 1461,
+        "is_click": 2,
+        "is_follow": 1,
+        "is_comment": 1,
+        "long_view": 2,
+        "play_time_ms": 18,
+        "comment_stay_time": 8,
+        "is_profile_enter": 3
+      },
+      "cross_file_exact_copies": 0,
+      "rows_by_class": {
+        "conflict_group": {
+          "rows": 2981,
+          "long_view": 0.1043,
+          "is_like": 0.0087
+        },
+        "exact_dup_group": {
+          "rows": 43884,
+          "long_view": 0.0918,
+          "is_like": 0.0078
+        },
+        "single": {
+          "rows": 1389744,
+          "long_view": 0.3399,
+          "is_like": 0.0188
+        }
+      },
+      "rows_by_tab_and_class": {
+        "0": {
+          "conflict_group": 8,
+          "exact_dup_group": 431,
+          "single": 177648
+        },
+        "1": {
+          "conflict_group": 2,
+          "exact_dup_group": 2,
+          "single": 1058385
+        },
+        "2": {
+          "conflict_group": 0,
+          "exact_dup_group": 0,
+          "single": 48364
+        },
+        "3": {
+          "conflict_group": 0,
+          "exact_dup_group": 10,
+          "single": 4004
+        },
+        "4": {
+          "conflict_group": 0,
+          "exact_dup_group": 0,
+          "single": 93165
+        },
+        "5": {
+          "conflict_group": 260,
+          "exact_dup_group": 3798,
+          "single": 111
+        },
+        "6": {
+          "conflict_group": 2711,
+          "exact_dup_group": 39643,
+          "single": 431
+        },
+        "7": {
+          "conflict_group": 0,
+          "exact_dup_group": 0,
+          "single": 504
+        },
+        "8": {
+          "conflict_group": 0,
+          "exact_dup_group": 0,
+          "single": 3909
+        },
+        "9": {
+          "conflict_group": 0,
+          "exact_dup_group": 0,
+          "single": 444
+        },
+        "10": {
+          "conflict_group": 0,
+          "exact_dup_group": 0,
+          "single": 152
+        },
+        "11": {
+          "conflict_group": 0,
+          "exact_dup_group": 0,
+          "single": 725
+        },
+        "12": {
+          "conflict_group": 0,
+          "exact_dup_group": 0,
+          "single": 1472
+        },
+        "13": {
+          "conflict_group": 0,
+          "exact_dup_group": 0,
+          "single": 399
+        },
+        "14": {
+          "conflict_group": 0,
+          "exact_dup_group": 0,
+          "single": 31
+        }
+      }
+    },
+    "same_user_same_timestamp": {
+      "n_user_time_groups": 1339922,
+      "n_groups_multi_item": 68683,
+      "n_rows_in_multi_item_groups": 143591,
+      "distinct_items_per_multi_group": {
+        "2": 64410,
+        "3": 4032,
+        "4": 225,
+        "5": 15,
+        "6": 1
+      },
+      "n_groups_multi_row": 90386,
+      "n_rows_in_multi_row_groups": 187073,
+      "rows_in_multi_item_groups_by_tab": {
+        "1": 102521,
+        "0": 23318,
+        "4": 8357,
+        "2": 4939,
+        "6": 2971,
+        "8": 455,
+        "3": 407,
+        "5": 404,
+        "12": 59,
+        "11": 44,
+        "9": 42,
+        "13": 38,
+        "7": 34,
+        "14": 2
+      },
+      "rows_in_multi_item_groups_share": 0.09995134375463331
+    },
+    "repeat_interactions": {
+      "all_rows": {
+        "n_pairs": 1375000,
+        "n_pairs_repeated": 34655,
+        "n_events_in_repeated_pairs": 72791,
+        "distinct_times_per_repeated_pair": {
+          "2": 32162,
+          "3": 1986,
+          "4": 313,
+          "5": 108,
+          "6": 35,
+          "7": 15,
+          "8": 9,
+          "9": 7,
+          "10": 1,
+          "11": 5,
+          "12": 5,
+          "13": 4,
+          "15": 2,
+          "19": 2,
+          "22": 1
+        },
+        "gap_hours_quantiles": {
+          "0.1": 0.0951701388888889,
+          "0.25": 0.28258659722222224,
+          "0.5": 8.225894722222222,
+          "0.75": 57.727033472222224,
+          "0.9": 236.95996694444443
+        }
+      },
+      "long_view_positive_rows": {
+        "n_pairs": 474460,
+        "n_pairs_repeated": 88,
+        "n_events_in_repeated_pairs": 182,
+        "distinct_times_per_repeated_pair": {
+          "2": 84,
+          "3": 2,
+          "4": 2
+        },
+        "gap_hours_quantiles": {
+          "0.1": 20.055184444444446,
+          "0.25": 59.469044930555555,
+          "0.5": 154.09965861111112,
+          "0.75": 296.32004840277773,
+          "0.9": 489.85576375000005
+        }
+      },
+      "is_like_positive_rows": {
+        "n_pairs": 26221,
+        "n_pairs_repeated": 139,
+        "n_events_in_repeated_pairs": 279,
+        "distinct_times_per_repeated_pair": {
+          "2": 138,
+          "3": 1
+        },
+        "gap_hours_quantiles": {
+          "0.1": 0.008241305555555556,
+          "0.25": 0.08258854166666667,
+          "0.5": 0.10935305555555555,
+          "0.75": 0.17312465277777778,
+          "0.9": 0.22471791666666674
+        }
+      }
+    },
+    "global_time_ms_shared_by_multiple_rows": 91344
+  },
+  "b3_labels": {
+    "rates_all_rows": {
+      "is_click": 0.45965,
+      "long_view": 0.33184,
+      "is_like": 0.01848,
+      "is_follow": 0.00107,
+      "is_comment": 0.00255,
+      "is_forward": 0.00096,
+      "is_hate": 0.00049
+    },
+    "positives_rows": {
+      "long_view": 476724,
+      "is_like": 26546
+    },
+    "rates_by_file": {
+      "0": {
+        "long_view": 0.33662,
+        "is_like": 0.01868
+      },
+      "1": {
+        "long_view": 0.31338,
+        "is_like": 0.01771
+      }
+    },
+    "rates_by_tab": {
+      "0": {
+        "rows": 178087,
+        "long_view": 0.0412,
+        "is_like": 0.004,
+        "is_click": 0.0908,
+        "play0": 0.9181
+      },
+      "1": {
+        "rows": 1058389,
+        "long_view": 0.3788,
+        "is_like": 0.0217,
+        "is_click": 0.523,
+        "play0": 0.0103
+      },
+      "2": {
+        "rows": 48364,
+        "long_view": 0.3778,
+        "is_like": 0.0195,
+        "is_click": 0.4801,
+        "play0": 0.0119
+      },
+      "3": {
+        "rows": 4014,
+        "long_view": 0.004,
+        "is_like": 0.0007,
+        "is_click": 0.0224,
+        "play0": 0.9778
+      },
+      "4": {
+        "rows": 93165,
+        "long_view": 0.4833,
+        "is_like": 0.0165,
+        "is_click": 0.6155,
+        "play0": 0.0427
+      },
+      "5": {
+        "rows": 4169,
+        "long_view": 0.1657,
+        "is_like": 0.0103,
+        "is_click": 0.2778,
+        "play0": 0.0031
+      },
+      "6": {
+        "rows": 42785,
+        "long_view": 0.0878,
+        "is_like": 0.0079,
+        "is_click": 0.1757,
+        "play0": 0.0007
+      },
+      "7": {
+        "rows": 504,
+        "long_view": 0.2063,
+        "is_like": 0.0337,
+        "is_click": 0.4028,
+        "play0": 0.6647
+      },
+      "8": {
+        "rows": 3909,
+        "long_view": 0.0189,
+        "is_like": 0.001,
+        "is_click": 0.0409,
+        "play0": 0.9675
+      },
+      "9": {
+        "rows": 444,
+        "long_view": 0.1779,
+        "is_like": 0.0113,
+        "is_click": 0.9932,
+        "play0": 0.3356
+      },
+      "10": {
+        "rows": 152,
+        "long_view": 0.6316,
+        "is_like": 0.0197,
+        "is_click": 1.0,
+        "play0": 0.0724
+      },
+      "11": {
+        "rows": 725,
+        "long_view": 0.1297,
+        "is_like": 0.0097,
+        "is_click": 0.0,
+        "play0": 0.7048
+      },
+      "12": {
+        "rows": 1472,
+        "long_view": 0.1026,
+        "is_like": 0.0041,
+        "is_click": 0.1359,
+        "play0": 0.8451
+      },
+      "13": {
+        "rows": 399,
+        "long_view": 0.2531,
+        "is_like": 0.0025,
+        "is_click": 0.3484,
+        "play0": 0.0
+      },
+      "14": {
+        "rows": 31,
+        "long_view": 0.2258,
+        "is_like": 0.0,
+        "is_click": 0.0,
+        "play0": 0.0968
+      }
+    },
+    "like_x_long_view_rows": {
+      "0": {
+        "0": 951095,
+        "1": 458968
+      },
+      "1": {
+        "0": 8790,
+        "1": 17756
+      }
+    },
+    "share_like_rows_also_long_view": 0.668876666917803,
+    "official_long_view_rule_agreement": {
+      "official0_label1_profile": {
+        "rows": 3420,
+        "share_duration_le_18s": 1.0,
+        "shortfall_ms_quantiles": {
+          "0.5": 262.0,
+          "0.9": 668.0999999999999,
+          "0.99": 875.81,
+          "1.0": 954.0
+        },
+        "note": "HYPOTHESIS: a ~1 s tolerance on short videos in the label pipeline (not documented)."
+      },
+      "all_rows": 0.9789775784503647,
+      "duration_gt_0": 0.9975705654828501,
+      "duration_eq_0": 0.07248735886957124,
+      "mismatch_rows_duration_gt_0": {
+        "official1_label0": 0,
+        "official0_label1": 3420
+      }
+    },
+    "duration_ms_zero": {
+      "rows": 28874,
+      "videos": 237,
+      "videos_with_null_video_duration_in_metadata": 237,
+      "long_view_rate": 0.07248735886957124,
+      "is_like_rate": 0.03688439426473644
+    },
+    "play_time_zero_share": 0.13153683430912655,
+    "like_with_play_time_zero": {
+      "rows": 312,
+      "by_tab": {
+        "1": 163,
+        "0": 82,
+        "4": 49,
+        "2": 8,
+        "7": 5,
+        "8": 2,
+        "12": 2,
+        "6": 1
+      }
+    },
+    "per_user": {
+      "users": 27077,
+      "rows_per_user_quantiles": {
+        "0.1": 8.0,
+        "0.25": 18.0,
+        "0.5": 39.0,
+        "0.75": 72.0,
+        "0.9": 115.0,
+        "0.99": 234.0
+      },
+      "long_view_per_user_quantiles": {
+        "0.1": 2.0,
+        "0.25": 5.0,
+        "0.5": 13.0,
+        "0.75": 25.0,
+        "0.9": 40.0,
+        "0.99": 76.0
+      },
+      "like_per_user_quantiles": {
+        "0.1": 0.0,
+        "0.25": 0.0,
+        "0.5": 0.0,
+        "0.75": 0.0,
+        "0.9": 2.0,
+        "0.99": 18.0
+      },
+      "users_with_ge1_long_view": 26195,
+      "users_with_ge1_like": 6768
+    }
+  },
+  "b4_split_candidates": {
+    "row_quantile_raw": {
+      "cuts_ms": [
+        1650118020080,
+        1650893887183
+      ],
+      "cuts_cst": [
+        "2022-04-16 22:07:00",
+        "2022-04-25 21:38:07"
+      ],
+      "rows_at_exact_cut_ts": [
+        1,
+        1
+      ],
+      "rows_within_1s_of_cut": [
+        3,
+        1
+      ],
+      "splits": [
+        {
+          "split": "train",
+          "rows": 1005626,
+          "row_share": 0.6999997911749126,
+          "distinct_events": 991078,
+          "users": 25712,
+          "videos": 7529,
+          "long_view_pos_rows": 338511,
+          "is_like_pos_rows": 18729,
+          "long_view_rate": 0.3366171916796105,
+          "is_like_rate": 0.01862422013750639,
+          "start_cst": "2022-04-09 11:46:03",
+          "end_cst": "2022-04-16 22:06:59",
+          "span_days": 7.431206435185185
+        },
+        {
+          "split": "val",
+          "rows": 215491,
+          "row_share": 0.14999975637073135,
+          "distinct_events": 212216,
+          "users": 24429,
+          "videos": 6483,
+          "long_view_pos_rows": 71267,
+          "is_like_pos_rows": 4131,
+          "long_view_rate": 0.33071914836350474,
+          "is_like_rate": 0.01917017416040577,
+          "start_cst": "2022-04-16 22:07:00",
+          "end_cst": "2022-04-25 21:38:03",
+          "span_days": 8.979905949074075,
+          "users_seen_in_train_share": 0.9677023210119121,
+          "users_with_long_view_pos": 19369,
+          "users_with_is_like_pos": 2215
+        },
+        {
+          "split": "test",
+          "rows": 215492,
+          "row_share": 0.15000045245435606,
+          "distinct_events": 209842,
+          "users": 24931,
+          "videos": 6259,
+          "long_view_pos_rows": 66946,
+          "is_like_pos_rows": 3686,
+          "long_view_rate": 0.31066582518144525,
+          "is_like_rate": 0.017105043342676294,
+          "start_cst": "2022-04-25 21:38:07",
+          "end_cst": "2022-05-08 23:52:10",
+          "span_days": 13.0930946875,
+          "users_seen_in_train_share": 0.9503830572379768,
+          "users_with_long_view_pos": 19376,
+          "users_with_is_like_pos": 2041
+        }
+      ]
+    },
+    "row_quantile_distinct_events": {
+      "cuts_ms": [
+        1650116241758,
+        1650884593118
+      ],
+      "cuts_cst": [
+        "2022-04-16 21:37:21",
+        "2022-04-25 19:03:13"
+      ],
+      "rows_at_exact_cut_ts": [
+        1,
+        1
+      ],
+      "rows_within_1s_of_cut": [
+        2,
+        2
+      ],
+      "splits": [
+        {
+          "split": "train",
+          "rows": 1003734,
+          "row_share": 0.6986828009569758,
+          "distinct_events": 989195,
+          "users": 25702,
+          "videos": 7528,
+          "long_view_pos_rows": 337886,
+          "is_like_pos_rows": 18702,
+          "long_view_rate": 0.33662902721238896,
+          "is_like_rate": 0.018632426519376646,
+          "start_cst": "2022-04-09 11:46:03",
+          "end_cst": "2022-04-16 21:37:18",
+          "span_days": 7.410596168981481
+        },
+        {
+          "split": "val",
+          "rows": 215222,
+          "row_share": 0.14981250987568642,
+          "distinct_events": 211970,
+          "users": 24425,
+          "videos": 6487,
+          "long_view_pos_rows": 71211,
+          "is_like_pos_rows": 4115,
+          "long_view_rate": 0.3308723085929877,
+          "is_like_rate": 0.01911979258625977,
+          "start_cst": "2022-04-16 21:37:21",
+          "end_cst": "2022-04-25 19:02:59",
+          "span_days": 8.892798900462964,
+          "users_seen_in_train_share": 0.9674513817809621,
+          "users_with_long_view_pos": 19346,
+          "users_with_is_like_pos": 2213
+        },
+        {
+          "split": "test",
+          "rows": 217653,
+          "row_share": 0.1515046891673378,
+          "distinct_events": 211971,
+          "users": 24976,
+          "videos": 6272,
+          "long_view_pos_rows": 67627,
+          "is_like_pos_rows": 3729,
+          "long_view_rate": 0.310710167100844,
+          "is_like_rate": 0.017132775564775125,
+          "start_cst": "2022-04-25 19:03:13",
+          "end_cst": "2022-05-08 23:52:10",
+          "span_days": 13.20066488425926,
+          "users_seen_in_train_share": 0.9499919923126201,
+          "users_with_long_view_pos": 19458,
+          "users_with_is_like_pos": 2058
+        }
+      ]
+    },
+    "local_midnight_nearest": {
+      "cuts_ms": [
+        1650124800000,
+        1650902400000
+      ],
+      "cuts_cst": [
+        "2022-04-17 00:00:00",
+        "2022-04-26 00:00:00"
+      ],
+      "rows_at_exact_cut_ts": [
+        0,
+        0
+      ],
+      "rows_within_1s_of_cut": [
+        1,
+        0
+      ],
+      "splits": [
+        {
+          "split": "train",
+          "rows": 1011667,
+          "row_share": 0.7042048323517394,
+          "distinct_events": 997079,
+          "users": 25734,
+          "videos": 7529,
+          "long_view_pos_rows": 340746,
+          "is_like_pos_rows": 18873,
+          "long_view_rate": 0.3368163634871949,
+          "is_like_rate": 0.018655348054251054,
+          "start_cst": "2022-04-09 11:46:03",
+          "end_cst": "2022-04-16 23:59:57",
+          "span_days": 7.509650960648148
+        },
+        {
+          "split": "val",
+          "rows": 211652,
+          "row_share": 0.14732749133549908,
+          "distinct_events": 208393,
+          "users": 24423,
+          "videos": 6474,
+          "long_view_pos_rows": 69710,
+          "is_like_pos_rows": 4021,
+          "long_view_rate": 0.3293614045697655,
+          "is_like_rate": 0.018998166802109123,
+          "start_cst": "2022-04-17 00:00:00",
+          "end_cst": "2022-04-25 23:59:42",
+          "span_days": 8.999795787037037,
+          "users_seen_in_train_share": 0.9683904516234697,
+          "users_with_long_view_pos": 19287,
+          "users_with_is_like_pos": 2173
+        },
+        {
+          "split": "test",
+          "rows": 213290,
+          "row_share": 0.1484676763127615,
+          "distinct_events": 207664,
+          "users": 24887,
+          "videos": 6250,
+          "long_view_pos_rows": 66268,
+          "is_like_pos_rows": 3652,
+          "long_view_rate": 0.31069435979183274,
+          "is_like_rate": 0.017122227952552863,
+          "start_cst": "2022-04-26 00:00:05",
+          "end_cst": "2022-05-08 23:52:10",
+          "span_days": 12.994499618055556,
+          "users_seen_in_train_share": 0.9511793305741953,
+          "users_with_long_view_pos": 19291,
+          "users_with_is_like_pos": 2021
+        }
+      ]
+    }
+  },
+  "b1_entities_music_author": {
+    "entities": {
+      "all_standard_logs": {
+        "rows": 1436609,
+        "users": 27077,
+        "videos": 7551,
+        "authors": 6489,
+        "music_ids_incl_0": 7172,
+        "music_ids_nonzero": 7171
+      },
+      "file0": {
+        "rows": 1141112,
+        "users": 26210,
+        "videos": 7538,
+        "authors": 6482,
+        "music_ids_incl_0": 7160,
+        "music_ids_nonzero": 7159
+      },
+      "file1": {
+        "rows": 295497,
+        "users": 25877,
+        "videos": 6618,
+        "authors": 5830,
+        "music_ids_incl_0": 6305,
+        "music_ids_nonzero": 6304
+      },
+      "ref_train": {
+        "rows": 1005626,
+        "users": 25712,
+        "videos": 7529,
+        "authors": 6477,
+        "music_ids_incl_0": 7152,
+        "music_ids_nonzero": 7151
+      },
+      "ref_val": {
+        "rows": 215491,
+        "users": 24429,
+        "videos": 6483,
+        "authors": 5706,
+        "music_ids_incl_0": 6175,
+        "music_ids_nonzero": 6174
+      },
+      "ref_test": {
+        "rows": 215492,
+        "users": 24931,
+        "videos": 6259,
+        "authors": 5557,
+        "music_ids_incl_0": 5970,
+        "music_ids_nonzero": 5969
+      },
+      "metadata": {
+        "videos": 7583,
+        "authors": 6510,
+        "music_ids_incl_0": 7202,
+        "music_ids_nonzero": 7201
+      }
+    },
+    "music": {
+      "videos_per_music_hist_nonzero": {
+        "1": 7089,
+        "2": 82,
+        "3": 17,
+        "4": 8,
+        "5": 1,
+        "6": 1,
+        "8": 1,
+        "9": 1,
+        "15": 1
+      },
+      "videos_per_music_quantiles_nonzero": {
+        "0.5": 1.0,
+        "0.9": 1.0,
+        "0.99": 2.0,
+        "1.0": 15.0
+      },
+      "music_ids_nonzero_shared": 112,
+      "videos_on_shared_nonzero_music": 290,
+      "top_music_by_videos_incl_0": {
+        "0": 204,
+        "9107419068": 15,
+        "8759931155": 9,
+        "8862696427": 8,
+        "5128196645": 6,
+        "5128097221": 5,
+        "4094640033": 4,
+        "7727323109": 4,
+        "8109649903": 4,
+        "8146716262": 4
+      },
+      "videos_by_music_category": {
+        "unique_nonzero": 7089,
+        "shared_nonzero": 290,
+        "music_id=0": 204
+      },
+      "positive_rows_share_by_music_category": {
+        "long_view_all": {
+          "unique_nonzero": 0.9366,
+          "music_id=0": 0.0371,
+          "shared_nonzero": 0.0263
+        },
+        "long_view_ref_train": {
+          "unique_nonzero": 0.932,
+          "music_id=0": 0.0415,
+          "shared_nonzero": 0.0265
+        },
+        "long_view_ref_test": {
+          "unique_nonzero": 0.95,
+          "music_id=0": 0.0253,
+          "shared_nonzero": 0.0248
+        },
+        "is_like_all": {
+          "unique_nonzero": 0.9166,
+          "shared_nonzero": 0.0557,
+          "music_id=0": 0.0277
+        },
+        "is_like_ref_train": {
+          "unique_nonzero": 0.9132,
+          "shared_nonzero": 0.0556,
+          "music_id=0": 0.0312
+        },
+        "is_like_ref_test": {
+          "unique_nonzero": 0.927,
+          "shared_nonzero": 0.0545,
+          "music_id=0": 0.0184
+        }
+      },
+      "mean_per_user_distinct_music_over_distinct_videos_in_positives_nonzero": {
+        "long_view": 0.9996283087443624,
+        "is_like": 0.9995725562406027
+      },
+      "music_id_0": {
+        "videos": 204,
+        "music_type_values": {
+          "nan": 203,
+          "9.0": 1
+        },
+        "music_type_null_total_in_metadata": 203,
+        "video_type": {
+          "NORMAL": 127,
+          "AD": 76,
+          "UNKNOWN": 1
+        },
+        "upload_type_top5": {
+          "UNKNOWN": 78,
+          "Web": 60,
+          "LongImport": 24,
+          "ShortImport": 22,
+          "ShareFromOtherApp": 18
+        },
+        "distinct_authors": 168,
+        "log_rows": 51084,
+        "evidence_note": "203/204 music_id=0 videos have null music_type, and these are all 203 null music_type values in the metadata. HYPOTHESIS: music_id=0 means missing/no background music. The official dictionary does not define it."
+      },
+      "music_type_values_all": {
+        "9.0": 6665,
+        "4.0": 657,
+        "nan": 203,
+        "8.0": 41,
+        "7.0": 14,
+        "11.0": 3
+      }
+    },
+    "author": {
+      "videos_per_author_hist": {
+        "1": 5661,
+        "2": 718,
+        "3": 90,
+        "4": 24,
+        "5": 7,
+        "6": 5,
+        "7": 3,
+        "8": 1,
+        "26": 1
+      },
+      "authors_with_gt1_video": 849,
+      "videos_on_multi_video_authors": 1922,
+      "max_videos_per_author": 26,
+      "positive_rows_share_on_multi_video_authors": {
+        "long_view": 0.22266133024559284,
+        "is_like": 0.2149853085210578
+      }
+    }
+  },
+  "b5_b6_repeats_catalog": {
+    "reconsumption": {
+      "long_view": {
+        "test_pos_rows": 66946,
+        "test_pos_distinct_user_video_pairs": 66482,
+        "share_test_pos_rows_pair_seen_in_train_any": 0.010291877035222418,
+        "share_test_pos_rows_pair_seen_in_train_val_any": 0.013159860185821408,
+        "share_test_pos_rows_pair_was_train_pos_same_action": 0.00035849789382487376,
+        "train_pos_pairs": 337132,
+        "train_pos_pairs_repeated_distinct_times": 27
+      },
+      "is_like": {
+        "test_pos_rows": 3686,
+        "test_pos_distinct_user_video_pairs": 3635,
+        "share_test_pos_rows_pair_seen_in_train_any": 0.01410743353228432,
+        "share_test_pos_rows_pair_seen_in_train_val_any": 0.016820401519262073,
+        "share_test_pos_rows_pair_was_train_pos_same_action": 0.0,
+        "train_pos_pairs": 18512,
+        "train_pos_pairs_repeated_distinct_times": 115
+      }
+    },
+    "catalog_ooc": {
+      "long_view": {
+        "video": {
+          "metadata": {
+            "catalog_size": 7583,
+            "test_pos_rows_ooc_share": 0.0,
+            "val_pos_rows_ooc_share": 0.0
+          },
+          "train_seen": {
+            "catalog_size": 7529,
+            "test_pos_rows_ooc_share": 5.97496489708123e-05,
+            "val_pos_rows_ooc_share": 0.00015434913774958956
+          },
+          "train_positive": {
+            "catalog_size": 6648,
+            "test_pos_rows_ooc_share": 0.003092044334239536,
+            "val_pos_rows_ooc_share": 0.0030869827549917916
+          }
+        },
+        "music": {
+          "metadata_incl_0": {
+            "catalog_size": 7202,
+            "test_pos_rows_ooc_share": 0.0,
+            "test_pos_rows_nonzero_music_ooc_share": 0.0
+          },
+          "train_seen_incl_0": {
+            "catalog_size": 7152,
+            "test_pos_rows_ooc_share": 5.97496489708123e-05,
+            "test_pos_rows_nonzero_music_ooc_share": 6.129892420388022e-05
+          },
+          "train_positive_incl_0": {
+            "catalog_size": 6327,
+            "test_pos_rows_ooc_share": 0.0029725450362979118,
+            "test_pos_rows_nonzero_music_ooc_share": 0.003049621479143041
+          },
+          "metadata_nonzero": {
+            "catalog_size": 7201,
+            "test_pos_rows_ooc_share": 0.0252741015146536,
+            "test_pos_rows_nonzero_music_ooc_share": 0.0
+          },
+          "train_seen_nonzero": {
+            "catalog_size": 7151,
+            "test_pos_rows_ooc_share": 0.025333851163624414,
+            "test_pos_rows_nonzero_music_ooc_share": 6.129892420388022e-05
+          },
+          "train_positive_nonzero": {
+            "catalog_size": 6326,
+            "test_pos_rows_ooc_share": 0.028246646550951514,
+            "test_pos_rows_nonzero_music_ooc_share": 0.003049621479143041
+          }
+        },
+        "test_pos_rows_with_music_id_0": 1692
+      },
+      "is_like": {
+        "video": {
+          "metadata": {
+            "catalog_size": 7583,
+            "test_pos_rows_ooc_share": 0.0,
+            "val_pos_rows_ooc_share": 0.0
+          },
+          "train_seen": {
+            "catalog_size": 7529,
+            "test_pos_rows_ooc_share": 0.0,
+            "val_pos_rows_ooc_share": 0.0002420721374969741
+          },
+          "train_positive": {
+            "catalog_size": 3336,
+            "test_pos_rows_ooc_share": 0.09332609875203472,
+            "val_pos_rows_ooc_share": 0.09295570079883805
+          }
+        },
+        "music": {
+          "metadata_incl_0": {
+            "catalog_size": 7202,
+            "test_pos_rows_ooc_share": 0.0,
+            "test_pos_rows_nonzero_music_ooc_share": 0.0
+          },
+          "train_seen_incl_0": {
+            "catalog_size": 7152,
+            "test_pos_rows_ooc_share": 0.0,
+            "test_pos_rows_nonzero_music_ooc_share": 0.0
+          },
+          "train_positive_incl_0": {
+            "catalog_size": 3145,
+            "test_pos_rows_ooc_share": 0.08898534997287032,
+            "test_pos_rows_nonzero_music_ooc_share": 0.09065782200110559
+          },
+          "metadata_nonzero": {
+            "catalog_size": 7201,
+            "test_pos_rows_ooc_share": 0.018448182311448725,
+            "test_pos_rows_nonzero_music_ooc_share": 0.0
+          },
+          "train_seen_nonzero": {
+            "catalog_size": 7151,
+            "test_pos_rows_ooc_share": 0.018448182311448725,
+            "test_pos_rows_nonzero_music_ooc_share": 0.0
+          },
+          "train_positive_nonzero": {
+            "catalog_size": 3144,
+            "test_pos_rows_ooc_share": 0.10743353228431904,
+            "test_pos_rows_nonzero_music_ooc_share": 0.09065782200110559
+          }
+        },
+        "test_pos_rows_with_music_id_0": 68
+      }
+    },
+    "music_repeats": {
+      "long_view": {
+        "train_pos_user_music_pairs": 323045,
+        "pairs_with_gt1_pos_rows": 1417,
+        "pairs_with_gt1_distinct_videos": 145,
+        "test_music_pos_rows_nonzero": 65254,
+        "share_test_music_pos_user_music_was_train_pos": 0.0007968860146504429,
+        "share_test_music_pos_via_same_video_train_pos": 0.00035246881417231126,
+        "share_test_music_pos_only_via_other_video": 0.0004444172004781316
+      },
+      "is_like": {
+        "train_pos_user_music_pairs": 17921,
+        "pairs_with_gt1_pos_rows": 223,
+        "pairs_with_gt1_distinct_videos": 17,
+        "test_music_pos_rows_nonzero": 3618,
+        "share_test_music_pos_user_music_was_train_pos": 0.001105583195135434,
+        "share_test_music_pos_via_same_video_train_pos": 0.0,
+        "share_test_music_pos_only_via_other_video": 0.001105583195135434
+      }
+    },
+    "catalog_definitions": {
+      "metadata": "all ids in video_features_basic_pure.csv (music: all music_id values of metadata videos)",
+      "train_seen": "ids with >=1 reference-train interaction (any label)",
+      "train_positive": "ids with >=1 reference-train positive for the action",
+      "music_variants": "incl_0 keeps music_id=0 as an id; nonzero excludes it from every level",
+      "metadata_music_ids_absent_from_logs": 30
+    }
+  },
+  "b7_history_length": {
+    "definitions": {
+      "frozen_at_test_start": "per test user with >=1 positive of the action; history = events with t < T_test_start",
+      "frozen_at_train_end": "same users; history = events with t < T_val_start (excludes val events)",
+      "rolling_per_event": "per test positive row; history = same-user events with t < event time (strict)",
+      "note": "Counts are uncapped. Buckets: 0 / 1-5 / 6-20 / >20. share_ge_100 is the share hitting the cap."
+    },
+    "long_view": {
+      "all_rows": {
+        "frozen_at_test_start": {
+          "n": 19376,
+          "bucket_counts": {
+            "0": 441,
+            "1-5": 1169,
+            "6-20": 4013,
+            ">20": 13753
+          },
+          "bucket_shares": {
+            "0": 0.0228,
+            "1-5": 0.0603,
+            "6-20": 0.2071,
+            ">20": 0.7098
+          },
+          "quantiles": {
+            "0.1": 7.0,
+            "0.25": 17.0,
+            "0.5": 38.0,
+            "0.75": 69.0,
+            "0.9": 110.0
+          },
+          "share_ge_100": 0.12463872832369942
+        },
+        "rolling_per_event": {
+          "n": 66946,
+          "bucket_counts": {
+            "0": 229,
+            "1-5": 2083,
+            "6-20": 9526,
+            ">20": 55108
+          },
+          "bucket_shares": {
+            "0": 0.0034,
+            "1-5": 0.0311,
+            "6-20": 0.1423,
+            ">20": 0.8232
+          },
+          "quantiles": {
+            "0.1": 13.0,
+            "0.25": 27.0,
+            "0.5": 52.0,
+            "0.75": 87.0,
+            "0.9": 130.0
+          },
+          "share_ge_100": 0.19302124100020912
+        }
+      },
+      "all_events_dedup": {
+        "frozen_at_test_start": {
+          "n": 19376,
+          "bucket_counts": {
+            "0": 441,
+            "1-5": 1182,
+            "6-20": 4087,
+            ">20": 13666
+          },
+          "bucket_shares": {
+            "0": 0.0228,
+            "1-5": 0.061,
+            "6-20": 0.2109,
+            ">20": 0.7053
+          },
+          "quantiles": {
+            "0.1": 7.0,
+            "0.25": 17.0,
+            "0.5": 38.0,
+            "0.75": 68.0,
+            "0.9": 108.0
+          },
+          "share_ge_100": 0.12061312964492155
+        },
+        "rolling_per_event": {
+          "n": 66946,
+          "bucket_counts": {
+            "0": 229,
+            "1-5": 2120,
+            "6-20": 9734,
+            ">20": 54863
+          },
+          "bucket_shares": {
+            "0": 0.0034,
+            "1-5": 0.0317,
+            "6-20": 0.1454,
+            ">20": 0.8195
+          },
+          "quantiles": {
+            "0.1": 13.0,
+            "0.25": 27.0,
+            "0.5": 51.0,
+            "0.75": 86.0,
+            "0.9": 128.0
+          },
+          "share_ge_100": 0.18765871000507872
+        },
+        "frozen_at_train_end": {
+          "n": 19376,
+          "bucket_counts": {
+            "0": 954,
+            "1-5": 1676,
+            "6-20": 4717,
+            ">20": 12029
+          },
+          "bucket_shares": {
+            "0": 0.0492,
+            "1-5": 0.0865,
+            "6-20": 0.2434,
+            ">20": 0.6208
+          },
+          "quantiles": {
+            "0.1": 4.0,
+            "0.25": 12.0,
+            "0.5": 29.0,
+            "0.75": 56.0,
+            "0.9": 91.0
+          },
+          "share_ge_100": 0.08273121387283237
+        }
+      },
+      "long_view_pos_events": {
+        "frozen_at_test_start": {
+          "n": 19376,
+          "bucket_counts": {
+            "0": 918,
+            "1-5": 3566,
+            "6-20": 8414,
+            ">20": 6478
+          },
+          "bucket_shares": {
+            "0": 0.0474,
+            "1-5": 0.184,
+            "6-20": 0.4342,
+            ">20": 0.3343
+          },
+          "quantiles": {
+            "0.1": 2.0,
+            "0.25": 6.0,
+            "0.5": 14.0,
+            "0.75": 25.0,
+            "0.9": 40.0
+          },
+          "share_ge_100": 0.001445086705202312
+        },
+        "rolling_per_event": {
+          "n": 66946,
+          "bucket_counts": {
+            "0": 931,
+            "1-5": 7142,
+            "6-20": 24703,
+            ">20": 34170
+          },
+          "bucket_shares": {
+            "0": 0.0139,
+            "1-5": 0.1067,
+            "6-20": 0.369,
+            ">20": 0.5104
+          },
+          "quantiles": {
+            "0.1": 5.0,
+            "0.25": 11.0,
+            "0.5": 21.0,
+            "0.75": 35.0,
+            "0.9": 52.0
+          },
+          "share_ge_100": 0.004645535207480656
+        }
+      },
+      "tie_impact_rolling": {
+        "test_pos_rows": 66946,
+        "rows_with_other_same_ts_rows": 1990,
+        "rows_with_other_same_ts_distinct_events": 1095,
+        "other_same_ts_distinct_events_total": 1104
+      }
+    },
+    "is_like": {
+      "all_rows": {
+        "frozen_at_test_start": {
+          "n": 2041,
+          "bucket_counts": {
+            "0": 68,
+            "1-5": 113,
+            "6-20": 362,
+            ">20": 1498
+          },
+          "bucket_shares": {
+            "0": 0.0333,
+            "1-5": 0.0554,
+            "6-20": 0.1774,
+            ">20": 0.734
+          },
+          "quantiles": {
+            "0.1": 7.0,
+            "0.25": 19.0,
+            "0.5": 42.0,
+            "0.75": 75.0,
+            "0.9": 117.0
+          },
+          "share_ge_100": 0.14453699167074963
+        },
+        "rolling_per_event": {
+          "n": 3686,
+          "bucket_counts": {
+            "0": 19,
+            "1-5": 144,
+            "6-20": 593,
+            ">20": 2930
+          },
+          "bucket_shares": {
+            "0": 0.0052,
+            "1-5": 0.0391,
+            "6-20": 0.1609,
+            ">20": 0.7949
+          },
+          "quantiles": {
+            "0.1": 11.0,
+            "0.25": 25.0,
+            "0.5": 48.0,
+            "0.75": 84.0,
+            "0.9": 125.0
+          },
+          "share_ge_100": 0.17688551275094955
+        }
+      },
+      "all_events_dedup": {
+        "frozen_at_test_start": {
+          "n": 2041,
+          "bucket_counts": {
+            "0": 68,
+            "1-5": 115,
+            "6-20": 367,
+            ">20": 1491
+          },
+          "bucket_shares": {
+            "0": 0.0333,
+            "1-5": 0.0563,
+            "6-20": 0.1798,
+            ">20": 0.7305
+          },
+          "quantiles": {
+            "0.1": 6.0,
+            "0.25": 19.0,
+            "0.5": 41.0,
+            "0.75": 73.0,
+            "0.9": 114.0
+          },
+          "share_ge_100": 0.13767760901518863
+        },
+        "rolling_per_event": {
+          "n": 3686,
+          "bucket_counts": {
+            "0": 19,
+            "1-5": 145,
+            "6-20": 606,
+            ">20": 2916
+          },
+          "bucket_shares": {
+            "0": 0.0052,
+            "1-5": 0.0393,
+            "6-20": 0.1644,
+            ">20": 0.7911
+          },
+          "quantiles": {
+            "0.1": 11.0,
+            "0.25": 24.0,
+            "0.5": 48.0,
+            "0.75": 82.0,
+            "0.9": 124.0
+          },
+          "share_ge_100": 0.16928920238741182
+        },
+        "frozen_at_train_end": {
+          "n": 2041,
+          "bucket_counts": {
+            "0": 138,
+            "1-5": 158,
+            "6-20": 422,
+            ">20": 1323
+          },
+          "bucket_shares": {
+            "0": 0.0676,
+            "1-5": 0.0774,
+            "6-20": 0.2068,
+            ">20": 0.6482
+          },
+          "quantiles": {
+            "0.1": 3.0,
+            "0.25": 12.0,
+            "0.5": 32.0,
+            "0.75": 59.0,
+            "0.9": 95.0
+          },
+          "share_ge_100": 0.09162175404213621
+        }
+      },
+      "long_view_pos_events": {
+        "frozen_at_test_start": {
+          "n": 2041,
+          "bucket_counts": {
+            "0": 114,
+            "1-5": 289,
+            "6-20": 807,
+            ">20": 831
+          },
+          "bucket_shares": {
+            "0": 0.0559,
+            "1-5": 0.1416,
+            "6-20": 0.3954,
+            ">20": 0.4072
+          },
+          "quantiles": {
+            "0.1": 2.0,
+            "0.25": 7.0,
+            "0.5": 17.0,
+            "0.75": 29.0,
+            "0.9": 45.0
+          },
+          "share_ge_100": 0.002449779519843214
+        },
+        "rolling_per_event": {
+          "n": 3686,
+          "bucket_counts": {
+            "0": 75,
+            "1-5": 447,
+            "6-20": 1309,
+            ">20": 1855
+          },
+          "bucket_shares": {
+            "0": 0.0203,
+            "1-5": 0.1213,
+            "6-20": 0.3551,
+            ">20": 0.5033
+          },
+          "quantiles": {
+            "0.1": 4.0,
+            "0.25": 10.0,
+            "0.5": 21.0,
+            "0.75": 34.0,
+            "0.9": 49.0
+          },
+          "share_ge_100": 0.004340748779164406
+        }
+      },
+      "tie_impact_rolling": {
+        "test_pos_rows": 3686,
+        "rows_with_other_same_ts_rows": 147,
+        "rows_with_other_same_ts_distinct_events": 63,
+        "other_same_ts_distinct_events_total": 63
+      }
+    }
+  },
+  "b8_columns": {
+    "user_active_degree_values": {
+      "full_active": 17959,
+      "high_active": 6158,
+      "middle_active": 2133,
+      "2_14_day_new": 635,
+      "low_active": 300,
+      "single_low_active": 68,
+      "30day_retention": 15,
+      "day_new": 11,
+      "UNKNOWN": 6
+    },
+    "user_active_degree_values_outside_official_set": [
+      "2_14_day_new",
+      "30day_retention",
+      "day_new",
+      "low_active",
+      "single_low_active"
+    ],
+    "is_live_streamer_values": {
+      "-124": 21127,
+      "1": 6158
+    },
+    "range_vs_numeric": {
+      "follow_user_num": {
+        "0": {
+          "min": 0,
+          "max": 0,
+          "size": 188
+        },
+        "(0,10]": {
+          "min": 1,
+          "max": 10,
+          "size": 1739
+        },
+        "(10,50]": {
+          "min": 11,
+          "max": 50,
+          "size": 4904
+        },
+        "(50,100]": {
+          "min": 51,
+          "max": 100,
+          "size": 4004
+        },
+        "(100,150]": {
+          "min": 101,
+          "max": 150,
+          "size": 2633
+        },
+        "(150,250]": {
+          "min": 151,
+          "max": 250,
+          "size": 3490
+        },
+        "(250,500]": {
+          "min": 251,
+          "max": 500,
+          "size": 4377
+        },
+        "500+": {
+          "min": 501,
+          "max": 5003,
+          "size": 5950
+        }
+      },
+      "fans_user_num": {
+        "0": {
+          "min": 0,
+          "max": 0,
+          "size": 1157
+        },
+        "[1,10)": {
+          "min": 1,
+          "max": 9,
+          "size": 5326
+        },
+        "[10,100)": {
+          "min": 10,
+          "max": 99,
+          "size": 10467
+        },
+        "[100,1k)": {
+          "min": 100,
+          "max": 999,
+          "size": 8664
+        },
+        "[1k,5k)": {
+          "min": 1000,
+          "max": 4998,
+          "size": 1460
+        },
+        "[5k,1w)": {
+          "min": 5003,
+          "max": 9917,
+          "size": 112
+        },
+        "[1w,10w)": {
+          "min": 10279,
+          "max": 91359,
+          "size": 85
+        },
+        "[10w,100w)": {
+          "min": 116545,
+          "max": 754630,
+          "size": 12
+        },
+        "[100w,1000w)": {
+          "min": 1104329,
+          "max": 1986249,
+          "size": 2
+        }
+      },
+      "friend_user_num": {
+        "0": {
+          "min": 0,
+          "max": 0,
+          "size": 3375
+        },
+        "[1,5)": {
+          "min": 1,
+          "max": 4,
+          "size": 5270
+        },
+        "[5,30)": {
+          "min": 5,
+          "max": 29,
+          "size": 7595
+        },
+        "[30,60)": {
+          "min": 30,
+          "max": 59,
+          "size": 2852
+        },
+        "[60,120)": {
+          "min": 60,
+          "max": 119,
+          "size": 2749
+        },
+        "[120,250)": {
+          "min": 120,
+          "max": 249,
+          "size": 2272
+        },
+        "250+": {
+          "min": 250,
+          "max": 4995,
+          "size": 3172
+        }
+      },
+      "register_days": {
+        "8-14": {
+          "min": 14,
+          "max": 14,
+          "size": 1
+        },
+        "15-30": {
+          "min": 15,
+          "max": 30,
+          "size": 145
+        },
+        "31-60": {
+          "min": 31,
+          "max": 60,
+          "size": 381
+        },
+        "61-90": {
+          "min": 61,
+          "max": 90,
+          "size": 394
+        },
+        "91-180": {
+          "min": 91,
+          "max": 180,
+          "size": 1048
+        },
+        "181-365": {
+          "min": 181,
+          "max": 365,
+          "size": 1778
+        },
+        "366-730": {
+          "min": 366,
+          "max": 730,
+          "size": 3475
+        },
+        "730+": {
+          "min": 731,
+          "max": 3624,
+          "size": 20063
+        }
+      }
+    },
+    "onehot_nulls": {
+      "onehot_feat4": 874,
+      "onehot_feat12": 714,
+      "onehot_feat13": 714,
+      "onehot_feat14": 714,
+      "onehot_feat15": 714,
+      "onehot_feat16": 714,
+      "onehot_feat17": 714
+    },
+    "onehot_null_rows_overlap_feat12_17": 714,
+    "upload_dt_values": {
+      "2022-04-10": 3424,
+      "2022-04-09": 2832,
+      "2022-04-11": 1327
+    },
+    "videos_first_interaction_before_upload_dt": 0,
+    "log_duration_constant_per_video": true,
+    "log_duration_eq_metadata_share_per_video": 0.9686134286849424,
+    "videos_log_duration0_and_metadata_null": 237,
+    "tags_per_video": {
+      "1": 5696,
+      "2": 1759,
+      "3": 32
+    },
+    "distinct_tags": 46,
+    "tag_null_videos": 96,
+    "ad_videos": 76,
+    "ad_log_rows": 15947,
+    "tab_share_by_ref_split": {
+      "0": {
+        "test": 0.087,
+        "train": 0.1332,
+        "val": 0.1177
+      },
+      "1": {
+        "test": 0.7592,
+        "train": 0.7301,
+        "val": 0.7453
+      },
+      "2": {
+        "test": 0.0302,
+        "train": 0.0351,
+        "val": 0.0306
+      },
+      "3": {
+        "test": 0.0015,
+        "train": 0.0033,
+        "val": 0.0016
+      },
+      "4": {
+        "test": 0.0591,
+        "train": 0.0658,
+        "val": 0.066
+      },
+      "5": {
+        "test": 0.0029,
+        "train": 0.0031,
+        "val": 0.0018
+      },
+      "6": {
+        "test": 0.0499,
+        "train": 0.0257,
+        "val": 0.0287
+      },
+      "7": {
+        "test": 0.0006,
+        "train": 0.0003,
+        "val": 0.0006
+      },
+      "8": {
+        "test": 0.0048,
+        "train": 0.002,
+        "val": 0.004
+      },
+      "9": {
+        "test": 0.0006,
+        "train": 0.0002,
+        "val": 0.0007
+      },
+      "10": {
+        "test": 0.0003,
+        "train": 0.0001,
+        "val": 0.0002
+      },
+      "11": {
+        "test": 0.0011,
+        "train": 0.0003,
+        "val": 0.0009
+      },
+      "12": {
+        "test": 0.0024,
+        "train": 0.0006,
+        "val": 0.0015
+      },
+      "13": {
+        "test": 0.0003,
+        "train": 0.0002,
+        "val": 0.0004
+      },
+      "14": {
+        "test": 0.0001,
+        "train": 0.0,
+        "val": 0.0
+      }
+    },
+    "rows_per_tab": {
+      "1": 1058389,
+      "0": 178087,
+      "4": 93165,
+      "2": 48364,
+      "6": 42785,
+      "5": 4169,
+      "3": 4014,
+      "8": 3909,
+      "12": 1472,
+      "11": 725,
+      "7": 504,
+      "9": 444,
+      "13": 399,
+      "10": 152,
+      "14": 31
+    }
+  },
+  "b9_popularity_drift": {
+    "long_view": {
+      "video": {
+        "spearman_counts_union": 0.6528960048495591,
+        "ids_with_test_pos": 4437,
+        "test_pos_share_on_ids_without_train_pos": 0.003092044334239536,
+        "top10_overlap": 0.4,
+        "test_pos_share_on_train_top10": 0.03977832880231828,
+        "top50_overlap": 0.54,
+        "test_pos_share_on_train_top50": 0.13000029874824484,
+        "top100_overlap": 0.52,
+        "test_pos_share_on_train_top100": 0.20240193588862665
+      },
+      "music_nonzero": {
+        "spearman_counts_union": 0.6602183615099849,
+        "ids_with_test_pos": 4231,
+        "test_pos_share_on_ids_without_train_pos": 0.003049621479143041,
+        "top10_overlap": 0.4,
+        "test_pos_share_on_train_top10": 0.04080975878873326,
+        "top50_overlap": 0.54,
+        "test_pos_share_on_train_top50": 0.13605296227051214,
+        "top100_overlap": 0.56,
+        "test_pos_share_on_train_top100": 0.21217090140068043
+      }
+    },
+    "is_like": {
+      "video": {
+        "spearman_counts_union": 0.2665284943474333,
+        "ids_with_test_pos": 1434,
+        "test_pos_share_on_ids_without_train_pos": 0.09332609875203472,
+        "top10_overlap": 0.3,
+        "test_pos_share_on_train_top10": 0.03988062940857298,
+        "top50_overlap": 0.38,
+        "test_pos_share_on_train_top50": 0.1134020618556701,
+        "top100_overlap": 0.37,
+        "test_pos_share_on_train_top100": 0.18421052631578946
+      },
+      "music_nonzero": {
+        "spearman_counts_union": 0.2754759242693329,
+        "ids_with_test_pos": 1378,
+        "test_pos_share_on_ids_without_train_pos": 0.09065782200110559,
+        "top10_overlap": 0.3,
+        "test_pos_share_on_train_top10": 0.04201216141514649,
+        "top50_overlap": 0.4,
+        "test_pos_share_on_train_top50": 0.12133775566611388,
+        "top100_overlap": 0.4,
+        "test_pos_share_on_train_top100": 0.20259812050856826
+      }
+    }
+  },
+  "b10_cold_video_feasibility": {
+    "pool_definition": "videos with >=1 ref-train row and >=1 ref-test long_view positive",
+    "pool_videos": 4433,
+    "pool_share_author_has_other_train_video": 0.2294157455447778,
+    "pool_share_music_nonzero": 0.9727047146401985,
+    "pool_share_music_shared_with_other_train_video": 0.039251071509136023,
+    "pool_tag_null": 66,
+    "strata_by_train_rows": {
+      "Q1_low": {
+        "videos": 1109,
+        "train_rows_min": 1,
+        "train_rows_max": 29,
+        "train_rows_sum": 17929,
+        "test_lv_pos": 3146,
+        "test_like_pos": 191.0,
+        "author_has_other_train_video": 0.248,
+        "music_shared_with_other_train_video": 0.0388
+      },
+      "Q2": {
+        "videos": 1108,
+        "train_rows_min": 29,
+        "train_rows_max": 76,
+        "train_rows_sum": 53885,
+        "test_lv_pos": 5401,
+        "test_like_pos": 398.0,
+        "author_has_other_train_video": 0.2383,
+        "music_shared_with_other_train_video": 0.0325
+      },
+      "Q3": {
+        "videos": 1108,
+        "train_rows_min": 76,
+        "train_rows_max": 192,
+        "train_rows_sum": 135527,
+        "test_lv_pos": 12487,
+        "test_like_pos": 833.0,
+        "author_has_other_train_video": 0.2229,
+        "music_shared_with_other_train_video": 0.0433
+      },
+      "Q4_high": {
+        "videos": 1108,
+        "train_rows_min": 193,
+        "train_rows_max": 8505,
+        "train_rows_sum": 647084,
+        "test_lv_pos": 45908,
+        "test_like_pos": 2200.0,
+        "author_has_other_train_video": 0.2085,
+        "music_shared_with_other_train_video": 0.0424
+      }
+    },
+    "videos_with_test_lv_pos_but_no_train_rows": 4
+  },
+  "consistency_checks": {
+    "join_user_features_preserves_rows": true,
+    "join_video_features_preserves_rows": true,
+    "redundant_exact_rows_eq_pandas_duplicated": true,
+    "dup_classes_partition_rows": true,
+    "same_ts_rows_two_ways": true,
+    "distinct_events_consistent": true,
+    "per_user_positive_sums": true,
+    "split_rows_sum_row_quantile_raw": true,
+    "split_rows_sum_row_quantile_distinct_events": true,
+    "split_rows_sum_local_midnight_nearest": true,
+    "videos_per_music_sums_to_catalog": true,
+    "music_map_complete": true,
+    "catalogs_nested_video_long_view": true,
+    "catalogs_nested_music_incl_0_long_view": true,
+    "catalogs_nested_music_nonzero_long_view": true,
+    "catalogs_nested_video_is_like": true,
+    "catalogs_nested_music_incl_0_is_like": true,
+    "catalogs_nested_music_nonzero_is_like": true,
+    "all_test_videos_in_metadata": true,
+    "metadata_music_catalog_is_metadata_table": true,
+    "hist_bucket_sum_long_view_all_rows": true,
+    "hist_bucket_sum_long_view_all_events_dedup": true,
+    "hist_frozen_monotone_long_view": true,
+    "hist_bucket_sum_long_view_long_view_pos_events": true,
+    "hist_bucket_sum_is_like_all_rows": true,
+    "hist_bucket_sum_is_like_all_events_dedup": true,
+    "hist_frozen_monotone_is_like": true,
+    "hist_bucket_sum_is_like_long_view_pos_events": true,
+    "no_interaction_before_upload_dt": true,
+    "raw_rows_unchanged": true
+  }
+}

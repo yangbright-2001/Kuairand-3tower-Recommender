@@ -1,0 +1,193 @@
+{
+ "config": {
+  "processed_dir": "data/processed",
+  "output_dir": "results/baselines",
+  "seed": 0,
+  "ks": [
+   10,
+   20,
+   50
+  ],
+  "chunk": 2048,
+  "tasks": [
+   [
+    "video",
+    "long_view"
+   ],
+   [
+    "video",
+    "is_like"
+   ],
+   [
+    "music",
+    "long_view"
+   ],
+   [
+    "music",
+    "is_like"
+   ]
+  ],
+  "als": {
+   "iterations": 20,
+   "num_threads": 1,
+   "grid": {
+    "factors": [
+     64,
+     128
+    ],
+    "regularization": [
+     0.01,
+     0.1
+    ],
+    "alpha": [
+     10,
+     40
+    ]
+   },
+   "like_aux_w": 0.3,
+   "select_metric": "recall@20",
+   "tie_break_metric": "ndcg@20"
+  }
+ },
+ "git_sha": "cd26f310639e6f9828bf5ee8f87d9fea721b48f1-dirty",
+ "data_git_sha": "cd26f310639e6f9828bf5ee8f87d9fea721b48f1-dirty",
+ "t_val_ms": 1650124800000,
+ "t_test_ms": 1650902400000,
+ "als_selected": {
+  "video_long_view/als": {
+   "factors": 64,
+   "regularization": 0.1,
+   "alpha": 10,
+   "aux_w": 0.0,
+   "iterations": 20,
+   "seed": 0,
+   "num_threads": 1,
+   "fingerprint": "636ffef2839df5c45de8f611bdd6732d887bf15f8c504b28ffef19130bc1c201",
+   "confidence_hash": "3434b5c68587b247ed0c1b8fc647255a0899765a0cc6647c98f537155e2f5f0a",
+   "n_scorable_items": 6653
+  },
+  "video_is_like/als": {
+   "factors": 64,
+   "regularization": 0.1,
+   "alpha": 10,
+   "aux_w": 0.0,
+   "iterations": 20,
+   "seed": 0,
+   "num_threads": 1,
+   "fingerprint": "4b36e08324c1292f456e77fe14b41f98016ea4401cc6f5df5600e85719d5ec7a",
+   "confidence_hash": "dcb93315803903d6618bd71ef67d4817b915e640f7eaaf56ad0aca9e1ec3dd7e",
+   "n_scorable_items": 3344
+  },
+  "video_is_like/als_like_aux": {
+   "factors": 128,
+   "regularization": 0.01,
+   "alpha": 40,
+   "aux_w": 0.3,
+   "iterations": 20,
+   "seed": 0,
+   "num_threads": 1,
+   "fingerprint": "4b36e08324c1292f456e77fe14b41f98016ea4401cc6f5df5600e85719d5ec7a",
+   "confidence_hash": "330d35aea5c54d2bd4eb6ed78518291ee037406cc525f59060a83f068bb8abd4",
+   "n_scorable_items": 6720
+  },
+  "music_long_view/als": {
+   "factors": 64,
+   "regularization": 0.01,
+   "alpha": 10,
+   "aux_w": 0.0,
+   "iterations": 20,
+   "seed": 0,
+   "num_threads": 1,
+   "fingerprint": "30eb471b8c5feb581bafd88da40d855f9eea0e32b4abe82fe378eb88a58a0923",
+   "confidence_hash": "996cf5ef5acac1c58ded928daa9c445f19d4a4d3638d4bb74b821f4fdd5ae2df",
+   "n_scorable_items": 6331
+  },
+  "music_is_like/als": {
+   "factors": 64,
+   "regularization": 0.01,
+   "alpha": 10,
+   "aux_w": 0.0,
+   "iterations": 20,
+   "seed": 0,
+   "num_threads": 1,
+   "fingerprint": "78c415c47c05614442be1cb06c8aaa674f4e7f3d94cb6d1c95f47ad68ab74bcf",
+   "confidence_hash": "597e68107017f04d6ae47f2df8df13ee609ba80c5ad8a5151f9beb95cea8ec69",
+   "n_scorable_items": 3151
+  },
+  "music_is_like/als_like_aux": {
+   "factors": 64,
+   "regularization": 0.01,
+   "alpha": 40,
+   "aux_w": 0.3,
+   "iterations": 20,
+   "seed": 0,
+   "num_threads": 1,
+   "fingerprint": "78c415c47c05614442be1cb06c8aaa674f4e7f3d94cb6d1c95f47ad68ab74bcf",
+   "confidence_hash": "7a94d0661c3aa3c88042dff069b7114a1e10efdb9aae3c28c4a1a18ae8aa1fc8",
+   "n_scorable_items": 6392
+  }
+ },
+ "als_foldin_stats": {
+  "video_long_view/als": {
+   "val": {
+    "history_pairs": 339359,
+    "history_pairs_unscorable_dropped": 0
+   },
+   "test": {
+    "history_pairs": 408684,
+    "history_pairs_unscorable_dropped": 199
+   }
+  },
+  "video_is_like/als": {
+   "val": {
+    "history_pairs": 18655,
+    "history_pairs_unscorable_dropped": 0
+   },
+   "test": {
+    "history_pairs": 22620,
+    "history_pairs_unscorable_dropped": 366
+   }
+  },
+  "video_is_like/als_like_aux": {
+   "val": {
+    "history_pairs": 345220,
+    "history_pairs_unscorable_dropped": 0
+   },
+   "test": {
+    "history_pairs": 415926,
+    "history_pairs_unscorable_dropped": 193
+   }
+  },
+  "music_long_view/als": {
+   "val": {
+    "history_pairs": 325189,
+    "history_pairs_unscorable_dropped": 0
+   },
+   "test": {
+    "history_pairs": 392562,
+    "history_pairs_unscorable_dropped": 185
+   }
+  },
+  "music_is_like/als": {
+   "val": {
+    "history_pairs": 18059,
+    "history_pairs_unscorable_dropped": 0
+   },
+   "test": {
+    "history_pairs": 21938,
+    "history_pairs_unscorable_dropped": 347
+   }
+  },
+  "music_is_like/als_like_aux": {
+   "val": {
+    "history_pairs": 330870,
+    "history_pairs_unscorable_dropped": 0
+   },
+   "test": {
+    "history_pairs": 399591,
+    "history_pairs_unscorable_dropped": 181
+   }
+  }
+ },
+ "runtime_sec": 587.5
+}

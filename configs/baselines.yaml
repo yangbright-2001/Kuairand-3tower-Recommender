@@ -1,0 +1,22 @@
+# M3: shared full-catalog evaluation + Pop / implicit-ALS baselines (PLAN.md §3c).
+# Run: uv run python -m kuairand_rec.baselines.run --config configs/baselines.yaml
+processed_dir: data/processed
+output_dir: results/baselines
+seed: 0
+ks: [10, 20, 50]
+chunk: 2048
+tasks:                         # (target, action)
+  - [video, long_view]
+  - [video, is_like]
+  - [music, long_view]
+  - [music, is_like]
+als:
+  iterations: 20
+  num_threads: 1               # deterministic fits (verified bitwise in tests)
+  grid:                        # same base grid / budget for every task (Q5)
+    factors: [64, 128]
+    regularization: [0.01, 0.1]
+    alpha: [10, 40]
+  like_aux_w: 0.3              # als_like_aux variant (O2: fixed); als (pure) uses aux_w = 0
+  select_metric: recall@20     # on val, masked frame; tie-break ndcg@20
+  tie_break_metric: ndcg@20
