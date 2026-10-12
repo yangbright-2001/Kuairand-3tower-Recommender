@@ -44,3 +44,6 @@ checkpoints/
 # Logs
 *.log
 wandb/
+
+# Review bundles (shared out-of-band, never committed)
+*_review.zip

@@ -1,0 +1,33 @@
+# Three-tower U1 (U0 + user snapshot metadata, D1-6). Comparable protocol: identical to
+# threetower_u0.yaml except `exp` and `user_features` (+ u1_min_count). Same seed, config,
+# early-stopping rule and frames; no separate tuning. If U0's config changes, rerun U1.
+# P1-8 caveat: snapshot features may leak future information; U0 stays the main model.
+# Train:      uv run python -m kuairand_rec.models.train --config configs/threetower_u1.yaml
+exp: u1
+processed_dir: data/processed
+run_root: /local-scratch/liang/runs
+condition: normal
+user_features: u1
+u1_min_count: 5                       # D1-6: values on < 5 train users -> fixed-zero OOV row
+device: cuda
+require_clean_git: true
+history: {}
+model: {}
+train:
+  tau: 0.05
+  lr: 1.0e-3
+  warmup_steps: 300
+  weight_decay: 0.01
+  clip_grad_norm: 1.0
+  batch_size: 1024
+  max_epochs: 30
+  patience: 3
+  like_oversample: 1
+  seed: 0
+  max_steps: null
+  log_every: 50
+eval:
+  threads: 1
+  val_user_batch_size: 256
+  chunk: 2048
+  parity_users: 2048

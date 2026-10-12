@@ -9,7 +9,7 @@ Items marked **OPEN** are not decided. Do not treat them as conclusions.
 S0 Env/skeleton -> S1 Dataset Audit (A: schema, B: plan, C: implement)
   -> P1 Protocol review [user sign-off: APPROVED 2026-10-11, see 3b]
   -> S2 Data pipeline -> S3 Shared evaluator -> S4 Pop/ALS baselines
-  -> D1 Three-tower v1 design review [user sign-off, before first implementation]
+  -> D1 Three-tower v1 design review [user sign-off: APPROVED 2026-10-11 (Revision 2), see 3d]
   -> S5 Three-tower v1 -> S6 Export + retrieve() -> S7 Experiments -> S8 Report/packaging
   -> S9 Optional improvements (only after a complete report draft)
 ```
@@ -277,28 +277,228 @@ Full design: `.cursor/plans/m3_评估器与基线_fd18bcec.plan.md` (Revision 1)
   - No test tuning, and no refit on train+val.
   - A larger grid and multiple seeds are optional (time permitting).
 
+## 3d. D1 Three-tower v1 decisions (approved by the user 2026-10-11, Revision 2; P1 3b and M3 3c unchanged)
+
+Full design and revision history (R1, R2): `.cursor/plans/d1_三塔_v1_设计_1d3a531b.plan.md`. This section is the binding summary.
+
+### D1-1 Architecture
+- **Towers.** Three towers, each an MLP + LayerNorm (no BatchNorm) that outputs a 128-d base embedding.
+  - **Music tower:** music_id embedding + `music_type`.
+  - **Video tower:** video_id + author embedding + the **shared** `MusicTower` 128-d output + video metadata. Metadata is `video_type`, `upload_type`, `upload_dt`, `music_type`, mean-pooled tags (≤ 3), and z-scored `video_duration` / `server_width` / `server_height`, each with a missing flag.
+  - **User tower:** user_id + history encoder (+ user features in U1).
+- **Music input to the video tower.** Video losses back-propagate into the music tower. `music_id = 0` uses a learnable NO_MUSIC embedding, which is trained because 0-music videos occur in train.
+- **Heads.** Separate 64-d projections per target × action, each Linear(128→64) followed by L2 normalisation:
+  - user: 4 heads (video_lv, video_like, music_lv, music_like)
+  - video: 2 heads
+  - music: 2 heads
+  - Training logits are cos/τ. Scoring and export use cos, which gives the same ranking.
+- **Excluded inputs:** `tab`, the statistic file, popularity features.
+- **Ablation flags** (config only, run in M5): `video.use_music`, `video.use_author`, `user.use_history`.
+
+### D1-2 User history (P1-2 event set unchanged)
+- One function, `build_history_batch(hidx, users, t_pred, cfg)`, builds history in every setting. It calls `model_history(..., 100)`: strict t < t_pred, same-timestamp events excluded, cap 100.
+  - **Train:** t_pred = target event time, and `hidx` holds train events only.
+  - **Val:** t_pred = T_val.
+  - **Test / export:** t_pred = T_test, with `hidx` built from `history_view`.
+- **Token content:**
+  - `v_base` of the video from the shared video tower (Q3a). OOV and cold videos are represented by content.
+  - The feedback block: 8 binary fields + a play_ratio bucket.
+  - A `feedback_hidden` flag.
+  - A log-bucketed recency t_pred − t_event.
+  - A position embedding.
+- **Encoder (Q4a):** 2-layer Transformer (d = 128, 4 heads) + learnable-query attention pooling.
+  - Empty history is NaN-safe: one key is unmasked before the attention, and the output is multiplied by (len > 0).
+- **Feedback availability (Q8, fixed-delay rule).**
+  - **Rule:** if age = t_pred − t_event < D = 20 min, all feedback fields of that token are zeroed (play_ratio included) and `feedback_hidden = 1`. Video id, time and recency are kept.
+  - The rule reads only t_pred and t_event. It never reads `play_time_ms` or labels. Train, val and test use the same function.
+  - **D is a conservative assumption, not a proven upper bound on feedback completion.** Basis:
+    - The official docs define `time_ms` only as "timestamp of this interaction". `play_time_ms` is the final view time. Like, follow, comment and the other actions have no timestamp of their own.
+    - Pure logs are incomplete sequences: the median gap between neighbouring events is about 36 s beyond the play time. So neighbouring gaps cannot identify the semantics.
+    - 312 likes occur with `play_time_ms = 0`.
+    - The maximum play time is 965 s.
+  - **Impact:**
+    - Train: 2.6% of tokens hidden; 42% of targets have at least 1 hidden token.
+    - At T_val / T_test: only a few hundred tokens.
+  - **Residual risks, disclosed in the report:**
+    1. The meaning of `time_ms` is unknown.
+    2. Non-play actions taken more than D later cannot be excluded.
+    3. Labels may be the final state of the interaction (for example, after an unlike).
+  - This is an implementation refinement, not a P1-2 change. D is not tuned.
+
+### D1-3 Training and loss
+- **Samples.** Every train event that is positive for any action: 345,365 rows, of which 18,771 are likes.
+  - Each row carries 4 task masks. The music tasks require music ≠ 0.
+- **Loss (Q1).** Train-seen full softmax per task. Cross-entropy over cos/τ on the valid rows.
+  - **Candidates:** all items in the current condition's train vocab.
+    - video: 7,529 in the normal condition
+    - music: 7,151 non-zero
+  - **No logQ.** The softmax is exact.
+  - **Evaluation is unchanged:** val/test still score the full metadata catalog (M3 frames).
+  - **Duplicate positives:** candidate columns are unique, so rows with the same item share one label column. Videos with shared music share the music column.
+  - **False negatives (Q7a):** for row r (user u, task (t,a), label y_r), column c ≠ y_r is set to −inf if c ∈ Pos_train(u, t, a).
+    - Pos_train contains same-task train positives only. For music, it holds the non-zero music of those videos.
+    - It is used only to remove loss terms. It never becomes a feature or an eval input. It may include later train positives of the same user, which is documented.
+  - **Assignment fit:** the assignment asks for a contrastive retrieval objective that handles duplicate positives and false negatives in the batch. It does not mandate in-batch negative sampling.
+  - **In-batch variant:** optional only. Any correction must use the exact inclusion probability of the actual batch sampler and be Monte-Carlo-tested, or the variant is reported as uncorrected.
+- **Action balance (Q6).** Per-task mean, and L = Σ of the 4 task losses with equal weights. `like_oversample = 1` in v1.
+  - If k > 1 is used (targeted adjustment only):
+    - Each like row is duplicated k−1 times, and the copies have long_view masks off.
+    - An epoch = one permutation of the expanded list.
+    - Per-task valid-row counts are logged.
+- **Optimisation and stability:**
+  - τ = 0.05.
+  - AdamW, lr 1e-3, with 300 warmup steps.
+  - Weight decay 0.01 on Linear and Transformer weights; 0 on embeddings, biases and LayerNorm.
+  - clip_grad_norm = 1.0.
+  - Batch 1024 (to be confirmed by the benchmark).
+  - ≤ 30 epochs, patience 3 on val.
+  - ID dropout p = 0.1 per ID slot. Item-side dropout is drawn once per step and shared by the candidates and the history tokens.
+  - FP32, TF32 off (any change must be justified by the benchmark and recorded).
+  - Fail fast on a non-finite loss or grad norm, with a debug dump. Never skip silently.
+  - A task with no valid rows in a batch is skipped, not computed as 0/0. The label logit is asserted finite.
+- **Training history (Q2a):** rolling history(u, t_event). The mismatch with the frozen T_test plus a 13-day window is documented.
+
+### D1-4 OOV and train-unseen (implements P1-6b)
+- **Fixed-zero rows (Q5b).** PAD and OOV rows of every embedding table are fixed at zero by a constant buffer mask, so their gradient and Adam update are 0 and weight decay is 0. NO_MUSIC is learnable.
+- **Content path.** OOV items are scored from trained content parameters only, so `item_scorable` is all True and `gt_unscorable = 0`.
+- **Cold users** use the trained empty-history + zero-ID path and are reported separately (P1-1).
+
+### D1-5 Cold-video condition (run in M5; P1-9 unchanged)
+- The only entry point is `exclude_video_ids = H` → `fit_condition`. H is absent from training targets, all histories, the candidate columns, Pos_train and every vocab. The fixed evaluation frame is still built from the unfiltered log.
+- **One condition per artifact set (implementation constraint).** The vocabs, numeric scalers, metadata vocabs, feature mappings (video/music features, encoded event indices), checkpoint and scorer of a cold run all come from the same cold condition. Mixing any of them with the normal U0 artifacts is forbidden.
+  - The run directory records a `condition_id`: a hash of the condition name and the sorted H ids.
+  - The checkpoint, the export manifest and the scorer each verify that their `condition_id` matches before scoring.
+
+### D1-6 User metadata
+- **U0 (main):** ID + history.
+- **U1 (required: implemented, trained, evaluated):**
+  - Features: U0 + `onehot_feat0..17` (NaN as its own category), `is_live_streamer` (−124 as its own category), `is_video_author`, `register_days_range`.
+  - Each field gets a 16-d embedding. The vocab is fitted on users with train events. Values seen on fewer than 5 train users, and unseen values, map to a fixed zero row.
+  - **Comparable protocol:** U1 reuses U0's selected config, seed, early-stopping rule and frames, with no separate tuning. If U0's config changes, U1 is rerun.
+- **Risks to record:**
+  - P1-8 snapshot leakage.
+  - `onehot_feat3` (1,471 values) and `feat8` (454 values) may act as ID proxies for train-OOV users. Report the values kept after the threshold, and the U1 effect for OOV vs in-vocab users.
+- **U2:** optional.
+
+### D1-7 Evaluation, export, retrieve()
+- **Shared evaluator.** Reuse `build_frames`, and assert each frame_id equals the one in `results/baselines/frames_summary.json`. Output per-user parquet in the M3 format. Report the masked, nomask and cold-user frames.
+- **Export.** Item matrices [n_catalog, 64] per (target, action) cover every catalog row, including OOV items. Also exported:
+  - user matrices at T_val and T_test
+  - id lists
+  - the T_test seen-mask CSR
+  - `manifest.json`: git SHA, config hash, checkpoint sha256, t_pred, frame_ids, data fingerprint, condition_id
+- **Reported metrics come only from `ExportedScorer`** (numpy float32 U @ I.T).
+- **`DirectScorer`** reloads the checkpoint in a separate process and rebuilds features from raw ids. Both scorers use the same inference settings: eval mode, FP32, TF32 off, deterministic, the same catalog, the same M2 mask and the same `rank_topk`.
+- **`retrieve(user_id, target, action, k, mask_seen=True)`** shares the scoring and `apply_mask` + `rank_topk` code with `ExportedScorer`. An unknown user raises an error.
+- **Parity checks (strict).**
+  1. Direct vs export scores on ≥ 2,048 users over every catalog row, for all 4 tasks: max |Δ| ≤ 1e-5. Users must cover train-OOV, the 1-5 / 6-20 / >20 buckets and cold users. Report max and p99 |Δ|.
+  2. Direct vs export top-50 are identical. **No near-tie exemption.** Any difference fails and dumps the score gap and the boundary; the cause is diagnosed and the user is consulted.
+  3. `retrieve()` vs `ExportedScorer`: bitwise-equal scores, the same top-K, and a mask equal to the frame CSR. `mask_seen=False` includes seen items.
+  4. Direct vs export per-user metrics are identical on the val and test masked frames.
+
+### D1-8 Model selection (implementation constraint)
+- Tuning, early stopping, checkpoint selection and config selection use **validation only**: the val masked frame at T_val with train-only history.
+- Q9a: one model, selected on the mean val masked R@20 over the 4 tasks, with NDCG@20 as the tie-break.
+- Test is evaluated once per selected checkpoint, after selection is frozen. Test numbers never feed back into any choice: config, epoch, τ, oversampling, U0/U1 config.
+- The runner computes test metrics only after the best checkpoint is fixed and records the selection log in `run_meta.json`.
+
+### D1-9 Tests (hand-built fixtures, CPU < 60 s)
+- **Leakage:**
+  - L1: strict t < t_pred, same-timestamp exclusion and the cap, at all three t_pred.
+  - L2: hide when age < D, visible at age == D.
+  - L3: changing `play_time_ms` or labels of hidden tokens leaves the inputs bitwise unchanged.
+  - L4: changing any event with t ≥ t_pred leaves the inputs unchanged.
+  - L5: val events with age < D at T_test are hidden.
+- **Loss and masks:**
+  - F1: duplicate positives share a column.
+  - F2: same-user positives are masked; the label is not.
+  - F3: same-task only.
+  - F4: shared-music behaviour.
+  - F5: the music-0 row and the label-only row.
+  - F6: hand-computed CE; under the cold condition, H is absent from the candidates and from Pos_train.
+- **Gradients:** each task produces finite, non-zero grads on its own heads, and zero grads on the other heads. Video-only loss reaches the music tower; it does not with `use_music = False`.
+- **Stability:** empty history, a batch with no likes, a label-only row, and an OOV user with empty history are all finite. An injected NaN fails fast.
+- **OOV:** PAD/OOV rows stay exactly 0 after optimizer steps, and perturbing them leaves scores unchanged.
+- **Oversampling:** row and mask counts.
+- **Export:** parity checks 1-4 on the fixture.
+- **Cold condition:** an artifact from another `condition_id` is rejected.
+- **Smoke:** 2 epochs on the fixture run end to end. A real-data CPU run uses `--max_steps 5`.
+
+### D1-10 Execution tiers
+- **M4 required (full v1, not reduced):** everything above.
+- **M4 minimum complete deliverable:**
+  1. U0 (seed 0), trained on real data with val early stopping.
+  2. Export, then the shared evaluator via `ExportedScorer` on the masked, nomask and cold-user frames, with frame_ids matching M3.
+  3. Parity checks 1-4 pass on real data, with a working `retrieve()` example.
+  4. U1 trained and evaluated under the same protocol.
+  5. `metrics.csv`, per-user parquet, `run_meta.json` and `benchmark.json`.
+- **Targeted adjustments.** These are used only if U0 val masked R@20 is below Pop on any task, or clearly below ALS on long_view.
+  - Diagnose first:
+    - per-task loss curves and train convergence
+    - per-tower grad norms
+    - the FN-mask share
+    - the train label rank
+    - overfitting a small subset
+    - embedding collapse
+  - Then change one thing at a time, chosen on val only, with ≤ 7 extra configs in total:
+    1. τ ∈ {0.03, 0.1}
+    2. lr
+    3. `like_oversample = 4` (like tasks only)
+    4. a mean-pooling diagnostic. This only tests whether the Transformer is at fault. It does not replace the main model.
+  - Every adjustment is logged in `results/threetower/tuning.csv`.
+- **Optional, after the M5 required items:**
+  - seeds {1, 2}
+  - U2
+  - an in-batch variant
+  - Q2c delayed training
+  - cold-condition no-music / no-author ablations
+
+### D1-11 Server, reproducibility, artifacts (implementation constraints)
+- **Code source: the private GitHub repo** `Kuairand-3tower-Recommender`.
+  - **Authentication:**
+    - The server uses a **read-only Deploy Key**: a fresh `ed25519` key generated on the server. The user adds the public key without write access.
+    - A per-repo `~/.ssh/config` Host alias sets `IdentitiesOnly yes`.
+    - No personal SSH keys are read, copied or forwarded, and there is no agent forwarding.
+  - **Fallback if authentication is blocked:** report it first, then `git archive <SHA>` + rsync, with a sha256 check and a `GIT_SHA` file.
+- **Fixed SHA.**
+  - The server checks out `git checkout --detach <SHA>`.
+  - Every GPU run records `git rev-parse HEAD` in `run_meta.json`.
+  - A run refuses to start if `git status --porcelain` is non-empty.
+- **No pollution of the source tree.**
+  - On the server, `RUN_ROOT=/local-scratch/liang/runs/` sits outside the clone. All checkpoints, exports, logs and debug dumps go there, under `<RUN_ROOT>/threetower/<exp>/<run_id>/`. The trainer refuses an output dir inside the git worktree.
+  - Small result files (`results/threetower/<exp>/`) are pulled back to the Mac and committed there, never committed from the server.
+- **Raw data** is synced separately: Zenodo `KuaiRand-Pure.tar.gz` with md5 `0820331067a3784d9691136f772b35a7`, then per-CSV md5 against the Mac. If that is not possible, rsync from the Mac. Raw data stays read-only.
+- **Data consistency.** After the server reruns M2, `scripts/data_fingerprint.py` must agree with the Mac on:
+  - schema
+  - row counts
+  - canonical content hashes (key-sorted; floats rounded to 1e-9)
+  - parquet md5, as a reference only
+  - frame_ids, which must equal `frames_summary.json`
+- **Backup.** After each wave (benchmark, U0/U1, M5), the run's `config`, `run_meta`, selected checkpoint, export, logs and results are rsynced to the Mac. `/local-scratch` has no backup. The final layout on Google Drive is decided in M6.
+- **Scheduling.**
+  - Slurm is preferred. If it is unavailable, use `CUDA_VISIBLE_DEVICES` + tmux/nohup with per-job logs. No DDP: every experiment is an independent process.
+  - A single-GPU smoke test and benchmark come first. Parallelism follows the measured epoch time and peak memory: 2 jobs per GPU only if peak memory < 35 GB and utilisation < 50%. Do not assume any run time in advance.
+  - **Waves:**
+    1. U0 ∥ U1 (U1 uses the same v1 config).
+    2. Cold-video U0, no-history ablation, no-music ablation.
+    3. Optional runs on idle GPUs.
+
 ## 4. Open questions
 
 - **RESOLVED (P1, see 3b)** Evaluation protocol, information boundary, GT/denominators, cold users.
 - **RESOLVED (P1, see 3b)** Split cut timestamps and tie handling.
 - **RESOLVED (P1, see 3b)** History contents, same-timestamp handling, cap vs mask.
 - **RESOLVED (P1, see 3b)** Catalog definition, OOC handling, seen-item masking, train-unseen item/user constraints.
-- **RESOLVED (P1, see 3b) / OPEN (D1)** Repeated positives: evaluation is resolved. Training treatment is D1.
+- **RESOLVED (P1 3b + D1 3d)** Repeated positives: evaluation is covered by P1, and training by D1-3 (shared label column + same-task false-negative mask).
 - **RESOLVED (P1, see 3b)** Raw-log cleaning: duplicates, conflicts, tabs 5/6, same-timestamp groups, `duration_ms=0`.
 - **RESOLVED (P1, see 3b)** Sentinels, feature usability (U0 main, U1 required, U2 optional), `tab` not a feature.
 - **RESOLVED (P1, see 3b)** Cold-video holdout selection, removal, evaluation frame, comparison groups.
-- **OPEN (D1, before M4)** OOV implementation: a shared OOV index vs a zeroed ID component, and how OOV rows are trained (for example ID dropout). The P1-6b constraints themselves are fixed.
-- **OPEN (D1, before M4)** Train/test mismatch: fresh rolling history during training vs history frozen at T_test plus a 13-day test window.
-- **OPEN (D1, before M4)** Three-tower v1:
-  - tower internals and the history encoder
-  - how music and author feed the video tower
-  - the contrastive loss
-  - handling duplicate positives and false negatives
-  - balancing the two actions
-- **OPEN (after first runs)** Hyperparameters, number of seeds, extra ablations, and post-v1 exploration.
-- **To verify**:
+- **RESOLVED (D1, see 3d)** OOV implementation (D1-4), train/test history mismatch (D1-3, Q2a), and three-tower v1 internals (D1-1 to D1-3).
+- **OPEN (after the benchmark / first runs)** Batch size and max_epochs, set from the measured epoch time (D1-11). Targeted adjustments apply only under the D1-10 trigger. Seeds and extra ablations are optional.
+- **To verify** (server deployment, D1-11):
   - SSH from the Mac
-  - Zenodo download on the server
-  - torch with CUDA 13
-  - `implicit` on Py3.12, on both arm64 and the server
+  - Deploy Key clone of the private repo
+  - Zenodo download + md5 on the server
+  - torch with CUDA
+  - `implicit` on the server
   - Slurm vs direct GPU use

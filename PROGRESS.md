@@ -2,9 +2,14 @@
 
 ## Current Status
 
-- Stage: **M3 implemented and run, awaiting user review** (2026-10-11). M2 signed off. P1 is in `PLAN.md` §3b. M3 decisions are in §3c.
-- Next: user review of M3. D1/M4/M5 are not started and wait for the user.
-- Read first: `PLAN.md` (workflow, the P1 decisions in §3b, OPEN items), `results/audit/AUDIT.md` (audit numbers), `docs/assignment.md`.
+- Stage: **M4-3 (validation / selection, export, Direct / Exported scorers, retrieve(), strict parity) implemented and tested, with a CPU end-to-end smoke; awaiting independent review. M4-2 was approved. No GPU training has been run and M5 has not started.**
+  - M2 and M3 are signed off, including the M3 correctness audit.
+  - P1 is in `PLAN.md` §3b, M3 in §3c, and D1 in §3d.
+- Next: start M4 on the user's go. M4 implements `PLAN.md` §3d; the D1-10 minimum deliverable is the acceptance bar.
+- Read first:
+  - `PLAN.md`: the workflow, §3b/§3c/§3d, and the OPEN items
+  - `results/audit/AUDIT.md`
+  - `docs/assignment.md`
 
 ## Completed
 
@@ -111,7 +116,7 @@
 
 ## Issues / To Fix
 
-- Nothing is committed to git yet. Phase C code, the review fixes, and `results/audit/` are uncommitted. They should be committed after the user approves.
+- (Resolved) Everything through M3 has been committed and pushed: `730e643` on `origin/main`. The D1 plan file and these doc updates are not committed yet.
 - Minor: in `report.py`, the "Constant columns" line is hard-coded. It should be derived from `column_profile.csv`. Not yet fixed.
 - Minor: `daily_volume_splits.png` still overlays the like rate ×10. It is a candidate for the same treatment as the action-by-tab figure, if the user wants.
 - Runtime note: inside the Cursor sandbox `~/.matplotlib` is not writable, so matplotlib rebuilds its font cache on every run. The audit took about 118 s instead of about 26 s. Setting `MPLCONFIGDIR` to a writable directory avoids this.
@@ -234,10 +239,221 @@
 
 
 
+## D1 three-tower v1 design (approved 2026-10-11, Revision 2)
+
+- The binding summary is in `PLAN.md` §3d (D1-1 to D1-11). The full design and the R1/R2 revision history are in `.cursor/plans/d1_三塔_v1_设计_1d3a531b.plan.md`. P1 §3b and M3 §3c are unchanged.
+- Key decisions:
+  - **Loss:** train-seen full softmax with no logQ. A same-user, same-task false-negative mask is applied. In-batch negatives are optional only.
+  - **Feedback availability:** fixed delay, D = 20 min, decided by event age only. D is a conservative assumption, not a proven bound, and its residual risks are disclosed.
+  - **OOV:** fixed-zero PAD/OOV rows + ID dropout.
+  - **U1:** required, using U0's config with no separate tuning.
+  - **Parity:** strict, with no near-tie exemption.
+- Read-only evidence collected during D1 (real data; no code or artifacts changed):
+  - **Train targets:** 345,365 events (18,771 likes); 11,338 have an empty history. Max `play_time_ms` is 965 s.
+  - **Time semantics:**
+    - Gap ≥ previous play: 99.77%. Gap ≥ next play: 99.41%.
+    - Gap − play is within 1 s for only 0.01–0.02% of pairs (median excess about 36 s), because Pure keeps only candidate-pool videos, so sequences are incomplete.
+    - 312 likes have `play_time_ms = 0`.
+    - So `time_ms` semantics cannot be identified.
+  - **D = 20 min hides:** 2.6% of train tokens (42% of targets have at least 1), and a few hundred tokens at T_val / T_test.
+  - Official `KuaiRand-Pure.tar.gz` md5: `0820331067a3784d9691136f772b35a7` (from kuairand.com).
+- Implementation constraints added at approval:
+  - **Cold condition** (D1-5): the cold-video vocabs, scalers, feature mappings, checkpoint and scorer must all come from the same condition, checked via `condition_id`. They are never mixed with normal U0 artifacts.
+  - **GPU runs** (D1-11): pinned git SHA with a clean worktree. Outputs go to `RUN_ROOT` outside the clone. Important artifacts are backed up to the Mac after each wave.
+  - **Model selection** (D1-8): tuning, early stopping and checkpoint selection use validation only. Test is evaluated after selection is frozen.
+- Repo and server:
+  - The code source is the private GitHub repo `yangbright-2001/Kuairand-3tower-Recommender`. `main` is at `730e643` (content through M3), in sync with origin.
+  - The server will use a read-only Deploy Key generated on the server. The user adds the public key. Personal keys are not used.
+  - Fallback: `git archive` + rsync.
+
+## M4-1 features, history, towers (2026-10-11; awaiting review)
+
+- Scope: `models/features.py` and `models/towers.py` only. No loss, training, export or GPU work. No M2/M3 file changed.
+- `features.py` consumes M2 outputs as-is: `fit_condition` / `video_catalog` / `music_catalog`, `HistoryIndex.model_history`, `history_view` / `train_view`, `catalog.Vocab`.
+  - `build_history_batch(hidx, users, t_pred, HistoryConfig)` is the single builder. It asserts every token has age > 0, and applies the D = 20 min hide rule from (t_pred, t_event) only.
+  - `train_history_index` (train events) and `frozen_history_index(split)` (`history_view`) are the only index constructors.
+  - U1: `fit_user_feature_vocab` (train users, min_count 5, NaN / −124 as categories, rare + unseen → OOV) and `UserFeatureTable.lookup` (users missing from the snapshot → all OOV).
+- `towers.py`: Music / Video / User towers (MLP + LN → 128), 4 + 2 + 2 Linear(128→64) + L2 heads, a shared `MusicTower` instance, a 2-layer pre-norm Transformer (d 128, 4 heads) + learnable-query pooling, and `MaskedEmbedding` (fixed-zero PAD/OOV via a buffer mask; NO_MUSIC learnable). Ablation flags `use_music` / `use_author` / `use_history`.
+- Implementation choices within D1 (flagged for review):
+  - Recency bucket = 1 + min(floor(log2(1 + age_min)), 13). Real data: rolling train ages reach bucket 13 at most, but frozen T_test ages reach 14. An unclipped bucket 14 would be a never-trained row at test time (P1-6b).
+  - play_ratio buckets: row 0 = PAD/hidden (fixed zero), 1 = duration missing, 2 = play 0, then edges .1/.25/.5/.75/1/2.
+  - Hand-written attention block instead of `nn.TransformerEncoderLayer`, so its eval fast path cannot change the numerics between training, direct scoring and export.
+  - Item ID dropout is drawn per vocab entry once per catalog forward, so one draw is shared by candidates, history tokens and the video's music input. User ID dropout is per row.
+  - Dims: id 64, meta 16, U1 field 16, MLP hidden 256, FF 512, dropout 0.1. U0 has 3.77M params, U1 3.88M.
+- Tests: 34 new (`test_m4_features.py` L1-L5, buckets, U1; `test_m4_towers.py` OOV, gradients, stability, U0/U1; `test_m4_artifacts.py` real data). `uv run pytest`: **124 passed** (90 before), about 10 s.
+- Real-data check (read-only): 345,365 train targets, rolling histories built in 8.3 s, 11,338 empty. 2.64% of tokens hidden; 42.2% of targets have ≥ 1 hidden. Hidden tokens: 819 at T_val, 247 at T_test. These match D1. U1 values kept: feat3 644 / 1,419, feat8 349 / 451. A U0 eval forward on 512 users over the full catalogs takes 0.27 s on CPU, all finite.
+
+### M4-1 review fix (2026-10-11; awaiting confirmation)
+
+- Bug (found by the user's review): `VideoTower` called `MusicTower` a second time. With dropout in train mode, a video's music input therefore differed from its music candidate's `m_base`, and videos sharing a music drew different samples. The two towers shared parameters but not the forward output.
+- Fix:
+  - `ThreeTowerModel._music_forward` calls `MusicTower` exactly once per catalog forward. Its inputs are the music catalog rows plus `(NO_MUSIC, t)` for each distinct music_type t of the music_id-0 videos.
+  - The video tower now receives the per-video music base, gathered by `VideoFeatures.music_row`. The new field comes straight from `video_catalog.music_row`.
+  - music_id 0 keeps the learnable NO_MUSIC row and its own music_type. It is never mapped to a catalog row or the OOV row, and it is not a music candidate.
+  - A guard checks that a video's music inputs equal those of its catalog row.
+  - `ItemEncodings.video_music_base` exposes the gathered tensor.
+  - Eval-mode outputs are unchanged.
+- Real data: 204 music_id-0 videos, music_type_idx 7 (203) / 6 (1), so 2 NO_MUSIC inputs per forward.
+- Tests: +6 in `test_m4_towers.py` (extended fixture with 3 music_id-0 videos over 2 music types):
+  - train mode with dropout 0.5: bitwise equality with the candidate and exactly one MusicTower call
+  - shared music → one sample
+  - video loss → gradients reach the music id / NO_MUSIC rows
+  - `use_music=False`
+  - OOV music and NO_MUSIC paths
+  - the guard rejects inconsistent inputs
+
+  Negative control: re-introducing the double call makes the first two tests fail. Max difference under the old code: 0.61.
+- Recency coverage on real data: rows 1-14 are all used by train-target histories (smallest count 10,051). The frozen val / test histories use rows 1-14, all seen in train, whether built for split users or all users. No fix needed. Added `test_frozen_recency_buckets_all_occur_in_train_target_histories`.
+- `uv run pytest`: **131 passed**, 0 skipped. No M2/M3/P1/D1 file or protocol changed.
+
+## M4-2 loss, training data, trainer (2026-10-11; awaiting review)
+
+- Scope: `models/loss.py`, `models/data.py`, `models/train.py`, `configs/threetower_smoke.yaml`. No export, retrieve, val selection or GPU run. No P1/M3/D1 protocol, M2/M3 code or baseline result changed. `tests/m4_fixtures.make` gained an `exclude_video_ids` passthrough to `fit_condition`.
+- `loss.py`: `masked_logits` / `task_loss` / `multitask_loss`. cos/τ (τ 0.05) over the train-vocab candidate columns; FN pairs set to −inf; the label column is refused as an FN column and its logit is asserted finite; per-task mean over valid rows; equal-weight sum; empty task → skipped (None), never 0/0.
+- `data.py`:
+  - `TrainCondition` (one condition per artifact set): candidates = catalog rows whose id is in the train vocab (7,529 video / 7,151 music on real data), row↔column maps, and `condition_id` = sha256(name, sorted H). It asserts H is absent from the events, the vocab and the candidates. `normal_condition(P)` / `condition_from_fit(name, fit, H)`.
+  - `build_samples`: train events positive for any action (345,365; 18,771 likes); 4 task masks, and the music tasks require music ≠ 0.
+  - `PosTrain`: per-task CSR of distinct candidate columns of each user's train positives (music = the non-zero music of those videos, so shared music is merged). Built from the base samples only. `fn_pairs` drops the row's own label.
+  - `oversample_likes(k)`: k−1 copies per like sample, with the long_view masks off.
+  - `BatchBuilder`: rolling history via `build_history_batch` on `train_history_index` (t_pred = event time), plus targets and FN pairs. `epoch_batches`: one seeded permutation per epoch.
+- `train.py`:
+  - Each step runs `encode_items` once, and that one output feeds the video candidates, the music candidates and the history tokens.
+  - AdamW with 300-step linear warmup, then a constant lr. Weight decay 0.01 applies to `nn.Linear` weights only. Embeddings, biases, LayerNorm, the positional embedding and the pooling query get 0.
+  - `clip_grad_norm` 1.0. Determinism: seeds, `use_deterministic_algorithms`, TF32 off.
+  - Fail-fast on a non-finite loss, label logit or grad norm. It writes `debug/nonfinite_step*.json` and raises before `opt.step()`.
+  - `--max_steps`. A `validate(model, epoch)` hook (D1-8) handles patience and `best.pt`, but no validation is wired in yet (M4-3).
+  - The output dir must be outside the git worktree; `require_clean_git` is optional.
+  - Writes `run_meta.json`, `train_log.jsonl` and `last.pt` (with `condition_id`).
+- Tests: `tests/test_m4_loss.py` (30, hand-built fixture with hand-written Pos_train sets) covers:
+  - F1–F6 (including a brute-force FN-mask recomputation and a float64 hand-computed CE for all 4 tasks)
+  - the cold condition (H absent from samples, candidates, Pos_train and histories; an inconsistent condition is rejected)
+  - per-task head gradients, video loss reaching the music tower (and not with `use_music=False`)
+  - one `encode_items` / MusicTower / VideoTower call per step, with shared tensors, in train mode with dropout
+  - empty history / no-like batch / OOV user finite; NaN loss and NaN grad fail fast with a dump and no parameter update
+  - k = 4 oversampling counts; strict-past rolling history; val/test events changing no training input; weight-decay groups; warmup
+  - a 2-epoch fixture run, an overfit (loss halves), determinism, and the worktree guard
+
+  `test_m4_artifacts.py` adds 2 real-data tests: sample and candidate counts plus brute-force Pos_train on 200 users, and one real optimizer step.
+- Negative controls (monkeypatched mutations, not committed). Every mutation fails at least one test:
+  - no FN mask
+  - cross-task mask
+  - label masked
+  - music columns not merged
+  - val events used as samples
+  - τ dropped (caught by F6)
+- `uv run pytest`: **163 passed** (131 before), 36 s.
+- Real-data CPU smoke: `uv run python -m kuairand_rec.models.train --config configs/threetower_smoke.yaml --max_steps 5`.
+  - Setup 3.4 s; 3.77M params.
+  - B=256: 0.7 s/step. Loss 36.79 → 36.53 (≈ 4 × ln 7.5k at init). Pre-clip grad norm 31–41. No NaN/Inf.
+  - B=1024: 3.6 s/step, loss 36.72 → 36.67, grad norm 23–26.
+  - Data time is < 0.03 s/step. Reruns are bitwise identical.
+- Observations / risks for review:
+  - The pre-clip grad norm (~25–40) is far above clip = 1.0 at init, so clipping is active on every early step. With Adam this mostly rescales the moments; watch it in the GPU benchmark.
+  - `use_deterministic_algorithms(True)` may raise on CUDA for an op without a deterministic kernel. This is unverified until the GPU smoke.
+  - Pos_train includes later train positives of the same user (Q7a, by design; to document in the report).
+  - FN-mask share on real data: about 25 masked columns per long_view row (0.3% of 7,529).
+
+## M4-3 validation, export, scorers, retrieve(), parity (2026-10-11; awaiting review)
+
+- New modules:
+  - `models/artifacts.py`: condition fingerprint (vocabs, scalers, video/music feature tables, model events, candidates, U1 vocab; floats rounded to 1e-6); `load_model` refuses a checkpoint whose condition_id or fingerprint differs; data fingerprint; sha256.
+  - `models/inference.py`: inference settings (eval, FP32, TF32 off, deterministic, fixed threads, no grad); canonical batch-1 user encoding; `score_rows` (one `I @ u` per user); `EmbeddingScorer`; `DirectScorer`.
+  - `models/evaluation.py`: `build_eval_frames` (M3 `build_frames` on the unfiltered log, every frame_id asserted equal to `frames_summary.json`); `Validator` (val masked frames at T_val only); `selection_score`.
+  - `models/export.py`: `export_embeddings`, `ExportedScorer` (export files only, sha256-verified, condition_id-checked), `retrieve()`.
+  - `models/parity.py`: checks 1-4 as a CLI, run in a separate process. It rebuilds the condition from raw ids via `fit_condition` and requires the same fingerprint.
+- Changes to M4-2 code:
+  - `Trainer.fit`: validation after every epoch, and once more for a partial epoch cut by `max_steps`. The selection key is (mean R@20, mean N@20), compared with a strict `>` so the earliest wins exact ties. `best.pt` is saved on improvement; patience 3; a non-finite val score fails fast.
+  - The checkpoint now carries the fingerprint and num_stats.
+  - `run()` order: train → frozen `selection.json` → CPU export → val + test metrics through `ExportedScorer` (masked / nomask / cold) → parity subprocess.
+  - `TrainCondition` gained `num_stats` and `build_condition(spec)`. The cold spec uses `exclude_video_ids` or a file and refits via `fit_condition`.
+  - `user_features_for` added (U0/U1).
+- Interface finding and minimal fix (inside D1-7, no protocol change):
+  - On the M1, float32 GEMM results depend on how many rows are in the call and on the row's position: user embeddings change by ~1.5e-7 between batch sizes, and a single-row GEMM differs from a batch row by up to ~2e-5.
+  - Score gaps inside the top-51 reach 3e-8, so batch-dependent numbers could break strict top-50 parity by chance.
+  - Fix: the canonical export/direct path encodes users one at a time and scores per user with `I @ u`.
+  - Measured: numpy gemv equals torch mv bitwise; results are identical with 1 or 8 torch threads (they differ under OMP_NUM_THREADS=3, so the thread count is recorded in the manifest).
+  - Validation uses batch 256 for speed. That only affects checkpoint selection, never exported or reported numbers.
+  - Export is forced to CPU.
+- Tests: +24 `test_m4_export.py` (fixture) and +2 `test_m4_artifacts.py` (real data). `uv run pytest`: **189 passed** (163 before), 89 s. Coverage:
+  - Validation and selection:
+    - the validator reads val masked frames only
+    - changing test labels leaves the val score bitwise unchanged
+    - selection order, tie-break and patience (snapshot-verified `best.pt`)
+    - partial-epoch validation, and NaN validation fails fast
+  - Checkpoints and conditions:
+    - a checkpoint is rejected under a different condition_id, different feature tables, or different scalers
+  - Export:
+    - every catalog row and user is covered
+    - the export equals an independent forward pass, bitwise
+    - the exported seen mask equals the M3 frame mask CSR
+    - tampered files and the wrong condition are rejected
+    - batch independence
+  - `retrieve()`:
+    - matches the scorer and the mask
+    - mask_seen=False
+    - errors are raised for bad input
+    - tie-break is catalog row ascending
+  - Parity:
+    - bitwise on the fixture
+    - a negative control detects a perturbed export
+    - an export from a different checkpoint is refused
+  - Cold condition:
+    - its own vocab, checkpoint and export, which cannot be mixed with the normal ones
+    - H stays scored and in the catalog
+    - H is absent from cold histories
+  - Real data:
+    - frame_ids match M3
+    - parity on 256 stratified users with a random-init checkpoint
+- CPU end-to-end smoke (`--max_steps 5`, B 256; total 8.0 min on the M1):
+  - Train + val 49 s (val 45 s), export 117 s, ExportedScorer eval 76 s, parity 224 s.
+  - Parity on 2,048 users × every catalog row × 4 tasks × {val, test}:
+    - max |Δ| = **0.0** (bitwise equal), p99 0.0
+    - top-50 mismatches = 0, with and without the mask
+    - retrieve(): 8,192 user-task pairs checked, 0 issues; independent metric recomputation max deviation 1.4e-17
+    - per-user metrics identical on all 8 val/test masked frames (every user)
+    - user strata: cold 265, train-OOV with history 328, 1-5: 499, 6-20: 562, >20: 722
+  - Metrics after 5 steps are near random (val mean R@20 = 0.0025). This is a pipeline check, not a result.
+- Remaining risks / notes:
+  - Export and parity are CPU-only by design. GPU training is fine, because the checkpoint is reloaded on CPU. Bitwise parity relies on the same machine and thread count; the manifest records them.
+  - Per-user scoring costs ~75 s per eval pass on the M1 (fine on the server). Validation is about 45 s per epoch on CPU and may need `val_user_batch_size` tuning on GPU.
+  - The ExportedScorer cold frames use the empty-history zero-ID path (D1-4); cold users are reported separately.
+  - H selection for the cold-video condition is M5. `build_condition` accepts it, but no cold run has been done on real data (fixture only).
+  - The parity user sample comes from the test frames. Val-only users are covered by check 4 (every user of the val masked frames).
+
+## M4-4 GPU training readiness (2026-10-11; awaiting confirmation before commit / deploy)
+
+- M4-3 signed off by an independent review (no P0/P1 correctness bug).
+- New: `configs/threetower_u0.yaml` / `threetower_u1.yaml`.
+  - D1 values, `device: cuda`, normal condition, seed 0, `require_clean_git: true`, batch 1024 (OPEN until the benchmark), `run_root /local-scratch/liang/runs` (overridable by `$RUN_ROOT`).
+  - U1 differs from U0 only in `exp`, `user_features` and `u1_min_count` (test-enforced).
+- New: `models/benchmark.py`, a training-only benchmark.
+  - It reuses `Trainer` + `train_step` (losses are identical to `Trainer.fit` at the same seed, test-enforced).
+  - It records steps/s, data/compute time, the epoch estimate, peak GPU memory, loss and the grad-norm state, and optionally times one validation pass (`--val_once`) to give a D1-11 run-time upper bound.
+  - It skips selection, export, test and parity. `benchmark.json` is labelled "not a model metric".
+- `run()` now writes `selection_vs_export.json`. It compares the best epoch's validation-path metrics with the exported val metrics and flags epochs within the observed difference ("near ties"). This is a report only; the selection is unchanged.
+- `.gitignore`: `*_review.zip`.
+- Tests: +6 `test_m4_readiness.py`. `uv run pytest`: **195 passed**.
+- CPU dry run of the benchmark on real data (B 1024): 0.25 steps/s, data share 0.5%, pre-clip grad norm 16–26 (100% of steps clipped), losses finite. These are CPU numbers, not GPU.
+- Open:
+  - CUDA deterministic mode is unverified.
+  - `scripts/data_fingerprint.py` (D1-11) is not written yet.
+  - Batch size is still to be confirmed.
+
 ## Next Steps
 
-1. User review of M2. Then M3: shared evaluator + Pop/ALS, reusing `load_processed()`, `prediction_time()`, `HistoryIndex.seen_rows()` and the catalog rows.
-2. Tests still to add in M3+ (checklist):
+1. M4 (on the user's go), in order:
+   - features + leakage tests (L1-L5)
+   - towers + OOV/gradient tests
+   - loss/data + F1-F6
+   - export/parity
+   - train CLI + CPU smoke
+   - commit and push
+   - server deployment: Deploy Key, fixed SHA, data md5 + fingerprint, frame_id check
+   - GPU smoke + benchmark
+   - U0 end to end
+   - U1
+2. Then M5: bootstrap CIs, history buckets, the cold-video experiment, and the required ablations.
+3. Tests still to add in M3+ (checklist; the three-tower items are now specified in `PLAN.md` D1-9):
   - The mask never uses test labels (evaluator level).
   - Cold-video interactions are fully removed from every model input and fitted dataset (M5, end to end).
   - ALS scores unseen items as -inf.
@@ -245,5 +461,3 @@
   - In the cold-video condition, GT, mask, and population are identical to the normal condition.
   - The per-user random-reference expectation matches a simulated random ranking.
   - Hand-computed metric cases (Recall/NDCG, tie-break).
-3. D1 (three-tower v1 design review) runs in parallel with M2/M3.
-

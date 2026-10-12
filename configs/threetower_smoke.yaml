@@ -1,0 +1,31 @@
+# M4 CPU end-to-end smoke on real data (PLAN.md §3d D1-9 "Smoke"): a few optimizer steps, then
+# val selection, best checkpoint, export, ExportedScorer metrics and strict parity (separate process).
+# Run: uv run python -m kuairand_rec.models.train --config configs/threetower_smoke.yaml --max_steps 5
+# Outputs go to $RUN_ROOT/threetower/<exp>/<timestamp>/ (outside the git worktree, D1-11).
+exp: smoke
+processed_dir: data/processed
+run_root: /tmp/kuairand_runs      # overridden by $RUN_ROOT
+condition: normal                 # or {name: cold_..., exclude_video_ids_file: ...} (M5)
+user_features: u0                 # u0 (main) | u1
+device: cpu
+require_clean_git: false          # true for every GPU run (D1-11)
+history: {}                       # HistoryConfig defaults: max_len 100, D = 20 min, recency clip 13
+model: {}                         # TowerConfig defaults (D1-1): 128 base, 64 heads, id_dropout 0.1
+train:                            # TrainConfig (D1-3); batch_size is OPEN until the GPU benchmark
+  tau: 0.05
+  lr: 1.0e-3
+  warmup_steps: 300
+  weight_decay: 0.01
+  clip_grad_norm: 1.0
+  batch_size: 256                 # smaller for CPU only
+  max_epochs: 1
+  patience: 3
+  like_oversample: 1
+  seed: 0
+  max_steps: 5
+  log_every: 1
+eval:
+  threads: 1                      # torch threads for inference (export / direct / validation)
+  val_user_batch_size: 256        # validation only; export / direct use the canonical batch 1
+  chunk: 2048
+  parity_users: 2048

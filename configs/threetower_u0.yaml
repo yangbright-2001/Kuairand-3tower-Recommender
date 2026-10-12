@@ -1,0 +1,34 @@
+# Three-tower U0 (main model: user ID + history), normal condition, seed 0. PLAN.md §3d D1-1..D1-11.
+# Train:      uv run python -m kuairand_rec.models.train --config configs/threetower_u0.yaml
+# Benchmark:  uv run python -m kuairand_rec.models.benchmark --config configs/threetower_u0.yaml --steps 300 --val_once
+# Pipeline: train (train events only) -> val masked frames at T_val after every epoch (selection
+# only, D1-8) -> best.pt + selection.json frozen -> canonical CPU export -> val + test metrics via
+# ExportedScorer -> strict Direct/Export parity in a separate process.
+# Outputs: $RUN_ROOT/threetower/<exp>/<timestamp>/ (outside the git worktree; set RUN_ROOT on the server).
+exp: u0
+processed_dir: data/processed
+run_root: /local-scratch/liang/runs   # overridden by $RUN_ROOT
+condition: normal
+user_features: u0
+device: cuda
+require_clean_git: true               # D1-11: refuse to run on a dirty worktree
+history: {}                           # D1-2 defaults: max_len 100, D = 20 min, recency clip 13
+model: {}                             # D1-1 defaults: base 128, heads 64, 2-layer Transformer, id_dropout 0.1
+train:                                # D1-3
+  tau: 0.05
+  lr: 1.0e-3
+  warmup_steps: 300
+  weight_decay: 0.01
+  clip_grad_norm: 1.0
+  batch_size: 1024                    # initial value; OPEN until the GPU benchmark confirms it
+  max_epochs: 30
+  patience: 3
+  like_oversample: 1                  # v1; k = 4 only as a D1-10 targeted adjustment
+  seed: 0
+  max_steps: null
+  log_every: 50
+eval:
+  threads: 1                          # CPU threads for canonical export / parity (recorded in manifest)
+  val_user_batch_size: 256            # validation encoding batch (selection only; on the training device)
+  chunk: 2048
+  parity_users: 2048
