@@ -370,6 +370,90 @@ def test_parity_detects_a_perturbed_export(P, cond, run, tmp_path):
     assert res["check1_2_scores_topk"]["tasks"]["val/video_long_view"]["max_abs"] == 0.0
 
 
+def test_direct_scorer_builds_its_own_embeddings(P, cond, run, tmp_path):
+    """DirectScorer runs the towers itself (bitwise = an independent forward) and never reads
+    export files: it works with the export directory gone, and follows the model's weights."""
+    model, _ = A.load_model(run["out"] / "best.pt", cond)
+    sc = X.ExportedScorer(run["out"] / "export")
+    d = tmp_path / "moved"
+    shutil.move(str(run["out"] / "export"), d)                       # export unreachable for Direct
+    try:
+        direct = I.DirectScorer(model, cond, P["meta"])
+        users = sc.user_ids["test"]
+        items = TR.ItemInputs.from_condition(cond)
+        with I.inference_settings(1):
+            enc, ie = I.encode_items(model, items.vf, items.mf)
+            hidx, t = F.frozen_history_index(cond.events, "test", P["meta"])
+            ue = I.encode_users(model, enc, hidx, t, users, cond.vocabs, HCFG)
+        de = direct.user_embeddings(users, "test")
+        for task in TASKS:
+            Id = direct.I[task]
+            assert isinstance(Id, np.ndarray) and Id.dtype == np.float32 and Id.flags["C_CONTIGUOUS"]
+            assert np.array_equal(Id, ie[task].numpy())                 # catalog row order kept
+            assert np.array_equal(de[task], ue[task])
+        # A different model gives different Direct embeddings (Direct is not a cache of the export).
+        m2, _ = A.load_model(run["out"] / "best.pt", cond)
+        with torch.no_grad():
+            for p in m2.parameters():
+                p.add_(0.01)
+        d2 = I.DirectScorer(m2, cond, P["meta"])
+        assert not np.array_equal(d2.I["video_long_view"], direct.I["video_long_view"])
+        assert not np.array_equal(d2.user_embeddings(users, "test")["video_long_view"], de["video_long_view"])
+    finally:
+        shutil.move(str(d), run["out"] / "export")
+
+
+def test_direct_scorer_uses_canonical_score_rows(P, cond, run, monkeypatch):
+    """Direct and Exported share the single canonical scoring function (no torch matmul)."""
+    model, _ = A.load_model(run["out"] / "best.pt", cond)
+    direct = I.DirectScorer(model, cond, P["meta"])
+    ex = X.ExportedScorer(run["out"] / "export")
+    users = ex.user_ids["test"]
+    ctx = EvalContext("test", fx.META["t_test_ms"], pd.DataFrame({"time_ms": []}))
+    U_direct = direct.user_embeddings(users, "test")    # towers run (and cache) before the spies
+    calls = []
+    real = I.score_rows
+
+    def spy(U, It):
+        calls.append((U.shape, It.shape))
+        return real(U, It)
+
+    monkeypatch.setattr(I, "score_rows", spy)
+    monkeypatch.setattr(torch.Tensor, "__matmul__", lambda *a: pytest.fail("torch matmul used for scoring"))
+    for task in TASKS:
+        tgt, act = task.split("_", 1)
+        s = direct.score(users, tgt, act, ctx)
+        want = real(U_direct[task], direct.I[task])
+        assert s.dtype == np.float32 and np.array_equal(s, want)
+        assert np.array_equal(s, ex.score(users, tgt, act, ctx))
+    assert len(calls) == 2 * len(TASKS)                                 # Direct + Exported, every task
+    assert direct.score(users[:0], "video", "long_view", ctx).shape == (0, 6)
+
+
+def test_parity_fails_on_tampered_item_matrix(P, cond, run, tmp_path):
+    """Swapping two exported item rows (manifest sha re-signed) must fail checks 1, 2 and 4;
+    Direct is unaffected because it computes its own item embeddings."""
+    d = tmp_path / "exp"
+    shutil.copytree(run["out"] / "export", d)
+    man = json.loads((d / "manifest.json").read_text())
+    f = "items_music_is_like.npy"
+    It = np.load(d / f)
+    It[[0, 1]] = It[[1, 0]]
+    np.save(d / f, It)
+    man["files"][f] = A.sha256_file(d / f)
+    (d / "manifest.json").write_text(json.dumps(man))
+    model, _ = A.load_model(run["out"] / "best.pt", cond)
+    res = PR.parity_checks(model, cond, P, d, run["out"] / "best.pt", n_users=10, frames=run["frames"],
+                           require_all_strata=False)
+    assert not res["ok"]
+    s = res["check1_2_scores_topk"]
+    for split in ("val", "test"):
+        assert s["tasks"][f"{split}/music_is_like"]["max_abs"] > 1e-5
+        assert s["tasks"][f"{split}/music_is_like"]["top50_nomask_mismatch_users"] >= 1
+        assert s["tasks"][f"{split}/video_long_view"]["max_abs"] == 0.0       # untouched task
+    assert not res["check1_2_scores_topk"]["ok"]
+
+
 def test_parity_refuses_export_from_another_checkpoint(P, cond, run, tmp_path):
     other = tmp_path / "other.pt"
     ck = torch.load(run["out"] / "best.pt", weights_only=False)

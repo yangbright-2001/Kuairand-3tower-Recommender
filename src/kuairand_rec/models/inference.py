@@ -11,6 +11,12 @@ exported embedding and scores do not depend on which other users are in the batc
 exporter, `DirectScorer`, `ExportedScorer` and `retrieve()` see identical numbers by construction
 instead of by luck. Batched user encoding (`batch_size > 1`) is used only for in-training
 validation (checkpoint selection), never for exported / reported numbers.
+
+Canonical scoring backend: every scorer (Direct, Exported, retrieve) computes final scores with
+`score_rows` (numpy float32, one gemv per user). Different BLAS libraries do not agree bitwise on
+float32 dot products: on Linux x86 torch (MKL) and numpy (OpenBLAS) `I @ u` differ by ~1e-7,
+which flips near-tied items in a strict top-50. So DirectScorer must NOT score with torch; it
+still runs its own towers (independent embeddings) and only shares this final dot product.
 """
 
 from __future__ import annotations
@@ -56,8 +62,9 @@ def inference_settings(threads: int | None = None):
 
 
 def score_rows(U: np.ndarray, I: np.ndarray) -> np.ndarray:
-    """Canonical float32 cosine scores [n_users, n_items]: one `I @ u` per user (batch
-    independent; see module docstring). Both inputs are L2-normalised head outputs."""
+    """Canonical float32 cosine scores [n_users, n_items]: one numpy `I @ u` per user (batch
+    independent; see module docstring). Both inputs are L2-normalised head outputs. This is the
+    single scoring function of DirectScorer, ExportedScorer and retrieve()."""
     U = np.asarray(U, dtype=np.float32)
     I = np.ascontiguousarray(I, dtype=np.float32)
     out = np.empty((U.shape[0], I.shape[0]), dtype=np.float32)
@@ -150,8 +157,10 @@ class DirectScorer:
     """Scores straight from a model (D1-7): item and user towers are run here, on features
     rebuilt by the caller from raw ids. User history comes from `frozen_history_index` on the
     model condition's events (= `history_view`); embeddings use the canonical batch-1 encoding
-    and are cached per (split, user), which cannot change their values. Scores use torch
-    `I @ u` per user (independent of the numpy path used by `ExportedScorer`)."""
+    and are cached per (split, user), which cannot change their values. Item and user
+    embeddings are produced here by the model; export files are never read. Only the final dot
+    product is shared with `ExportedScorer`: the canonical `score_rows` (see module docstring),
+    so parity compares embeddings, not two BLAS backends."""
 
     name = "threetower_direct"
 
@@ -163,7 +172,9 @@ class DirectScorer:
         self.threads, self.device = threads, device
         self.items = ItemInputs.from_condition(cond, device)
         with inference_settings(threads):
-            self.enc, self.I = encode_items(model, self.items.vf, self.items.mf)
+            self.enc, I = encode_items(model, self.items.vf, self.items.mf)
+        # Item matrices as contiguous CPU float32 numpy, catalog row order (computed once).
+        self.I = {t: np.ascontiguousarray(v.detach().cpu().numpy(), dtype=np.float32) for t, v in I.items()}
         self._hidx: dict = {}
         self._cache: dict = {}
 
@@ -190,11 +201,7 @@ class DirectScorer:
         if ctx.t_pred != prediction_time(self.meta, ctx.split):
             raise ValueError("context t_pred does not match the frozen prediction time")
         t = task_name(target, action)
-        U = torch.as_tensor(self.user_embeddings(users, ctx.split)[t])
-        I = self.I[t]
-        with inference_settings(self.threads):
-            return torch.stack([I @ U[r] for r in range(U.shape[0])]).numpy().astype(np.float32) \
-                if U.shape[0] else np.zeros((0, I.shape[0]), np.float32)
+        return score_rows(self.user_embeddings(users, ctx.split)[t], self.I[t])
 
     def signal(self, users, target, action, ctx) -> np.ndarray:
         return np.ones(len(users), dtype=bool)
@@ -210,4 +217,5 @@ class InferenceSettings:
 
     def to_dict(self) -> dict:
         return {"threads": self.threads, "user_batch_size": self.user_batch_size, "device": "cpu", "fp32": True,
-                "tf32": False, "deterministic": True, "torch": torch.__version__, "score": "per-user I @ u"}
+                "tf32": False, "deterministic": True, "torch": torch.__version__, "numpy": np.__version__,
+                "score": "score_rows: numpy float32 per-user I @ u (shared by Direct / Exported / retrieve)"}

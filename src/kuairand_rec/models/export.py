@@ -14,7 +14,9 @@ Users exported = every user with >= 1 event in the cleaned log (so every M3 fram
 covered, incl. cold and train-OOV users). Embeddings use the canonical batch-1 encoding.
 
 Reported metrics come from `ExportedScorer` (numpy, export files only). `retrieve()` shares its
-scoring function (`score_rows`), the M3 `apply_mask` and the M3 `rank_topk`.
+scoring function (`score_rows`), the M3 `apply_mask` and the M3 `rank_topk`. `DirectScorer` also
+scores with `score_rows` (on its own independently computed embeddings), so parity is not
+exposed to BLAS-backend rounding differences (see `inference` module docstring).
 """
 
 from __future__ import annotations
@@ -103,7 +105,7 @@ def export_embeddings(model, cond, P: dict, out_dir, checkpoint_path, config: di
 
 
 class ExportedScorer(EmbeddingScorer):
-    """M3 Scorer reading only the export directory (numpy float32 `I @ u`)."""
+    """M3 Scorer reading only the export directory (canonical numpy float32 `score_rows`)."""
 
     def __init__(self, export_dir, expect_condition_id: str | None = None, verify_files: bool = True,
                  name: str = "threetower"):

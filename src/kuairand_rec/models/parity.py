@@ -15,6 +15,11 @@ Checks (all must pass; no near-tie exemption):
      an independent Recall/NDCG recomputation from retrieve()'s top-50 against the frame GT.
   4. Direct vs Export per-user metrics identical on the val and test masked frames (all users),
      both through the shared M3 evaluator.
+
+What is compared: DirectScorer recomputes item / user embeddings from the reloaded checkpoint
+and the condition; ExportedScorer reads them from the export files. Both apply the same
+canonical `score_rows` dot product, so any score difference comes from the embeddings (the
+thing under test), not from two BLAS backends rounding float32 differently.
 """
 
 from __future__ import annotations
