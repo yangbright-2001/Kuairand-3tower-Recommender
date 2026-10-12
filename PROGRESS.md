@@ -1,5 +1,31 @@
 # Project Progress
 
+## Final compliance audit and report revision (2026-10-12 PM; not committed)
+
+- Full requirement-by-requirement audit: `artifacts/final_compliance_review/ASSIGNMENT_COMPLIANCE_AUDIT.md`. Short version: `REVIEWER_SUMMARY.md` in the same folder.
+- **No blocking correctness bug found.** No protocol change, no retraining, and no formal artifact overwritten.
+- Evidence, all in `results/final_audit/`:
+  - 16 independent real-data checks (`scripts/audit_final_compliance.py checks`).
+  - The 5 formal exports re-scored on macOS.
+  - Stage-by-stage reruns at HEAD into `/tmp`: M1/M2/M3/cold byte-identical, M5 main ≤ 3e-16.
+  - CPU smoke with bitwise parity.
+  - `pytest` 259 passed.
+  - `scripts/check_report_claims.py` parses REPORT.md: 321 numbers (283 table cells + 38 anchored prose numbers) match; the rest is manual-review scope. (An earlier version only compared 124 hard-coded constants and did not read the report; corrected after independent review.)
+  - Corrected: the D1-10 targeted-tuning condition *was* met on validation LV; v1 was simply not tuned (report §1.4, §4, §5).
+  - Report §1.5 now lists seen-excluded GT pairs (859 / 63 / 913 / 72) and OOC events (0) for all four tasks.
+- Changes (docs and tooling only):
+  - REPORT.md rewritten in 5 sections with 4 embedded figures (`scripts/make_report_tables.py`; tables unchanged).
+  - README.md written.
+  - Error analysis added (`scripts/error_analysis.py` → `results/final_analysis/`).
+  - `models/retrieve.py` added: an assignment-signature wrapper + CLI, with 4 tests.
+  - The pre-revision report and README are backed up in `artifacts/final_compliance_review/pre_revision_backup/`.
+- Open:
+  - export the agent session logs;
+  - render the PDF and check the 5–8 pages;
+  - upload the artifacts;
+  - commit (user).
+- Needs approval: seeds 1–2 (GPU); any FN-mask or action-weight change.
+
 ## Current Status
 
 - Stage: **M5 fix round done (b1 cold selection, selection-vs-export, cold history metadata, label-conflict accounting, text fixes); awaiting the final targeted review. Not committed; no M5 GPU job started.** M4 formal U0/U1 at `9218a76` finished (parity ok) and were synced to `artifacts/`. See "M5 implementation" below.

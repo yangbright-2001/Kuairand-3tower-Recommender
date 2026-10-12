@@ -1,0 +1,30 @@
+{
+ "video_long_view": {
+  "rows": 339386,
+  "masked_cols_total": 8936626,
+  "mean_per_row": 26.331746153347517,
+  "share_from_strictly_earlier": 0.4984061098674153,
+  "share_from_same_or_later": 0.5015938901325847
+ },
+ "video_is_like": {
+  "rows": 18771,
+  "masked_cols_total": 199865,
+  "mean_per_row": 10.647541420275958,
+  "share_from_strictly_earlier": 0.49801616090861334,
+  "share_from_same_or_later": 0.5019838390913867
+ },
+ "music_long_view": {
+  "rows": 325370,
+  "masked_cols_total": 8260007,
+  "mean_per_row": 25.386504594769033,
+  "share_from_strictly_earlier": 0.4984756066187353,
+  "share_from_same_or_later": 0.5015243933812646
+ },
+ "music_is_like": {
+  "rows": 18187,
+  "masked_cols_total": 187519,
+  "mean_per_row": 10.31060647715401,
+  "share_from_strictly_earlier": 0.4980668625579275,
+  "share_from_same_or_later": 0.5019331374420726
+ }
+}

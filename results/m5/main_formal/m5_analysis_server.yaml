@@ -1,0 +1,73 @@
+processed_dir: data/processed
+output_dir: /local-scratch/liang/runs/m5_post/main_671dde9_jobs34_35
+split: test
+frame_kinds:
+- masked
+cold_user_frame: true
+tasks:
+- video_long_view
+- video_is_like
+- music_long_view
+- music_is_like
+metrics:
+- recall@10
+- recall@20
+- recall@50
+- ndcg@10
+- ndcg@20
+- ndcg@50
+bootstrap:
+  n_boot: 1000
+  seed: 0
+  ci: 0.95
+models:
+  pop:
+    kind: baseline
+    dir: results/baselines
+    m3_name: pop
+  als:
+    kind: baseline
+    dir: results/baselines
+    m3_name: als
+  als_like_aux:
+    kind: baseline
+    dir: results/baselines
+    m3_name: als_like_aux
+    tasks:
+    - video_is_like
+    - music_is_like
+  u0:
+    kind: threetower
+    run_dir: artifacts/u0/9218a76_seed0_job27
+    expect_condition_id: 133765eb12b75700
+  u1:
+    kind: threetower
+    run_dir: artifacts/u1/9218a76_seed0_job28
+    expect_condition_id: 133765eb12b75700
+  abl_nohist:
+    kind: threetower
+    run_dir: null
+    expect_condition_id: 133765eb12b75700
+  abl_nomusic:
+    kind: threetower
+    run_dir: null
+    expect_condition_id: 133765eb12b75700
+comparisons:
+- - u0
+  - pop
+- - u0
+  - als
+- - u0
+  - als_like_aux
+- - u1
+  - pop
+- - u1
+  - als
+- - u1
+  - als_like_aux
+- - u1
+  - u0
+- - abl_nohist
+  - u0
+- - abl_nomusic
+  - u0

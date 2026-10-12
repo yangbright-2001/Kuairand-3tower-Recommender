@@ -1,0 +1,4 @@
+git_sha=671dde9b4d029f468bc405f05b624a7076fcd0fe
+slurm_job=37
+runs=u0=/local-scratch/liang/runs/threetower/u0/9218a76_seed0_job27 u1=/local-scratch/liang/runs/threetower/u1/9218a76_seed0_job28 abl_nohist=/local-scratch/liang/runs/threetower/abl_nohist/671dde9_seed0_job34 abl_nomusic=/local-scratch/liang/runs/threetower/abl_nomusic/671dde9_seed0_job35
+start=2026-10-12T13:02:01+00:00

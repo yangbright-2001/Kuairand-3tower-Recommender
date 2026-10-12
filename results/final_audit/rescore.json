@@ -1,0 +1,349 @@
+{
+ "step": "rescore",
+ "git_sha": "671dde9b4d029f468bc405f05b624a7076fcd0fe",
+ "runtime_s": 204.4,
+ "failed": [],
+ "checks": {
+  "F1_local_rescore_of_formal_exports": {
+   "ok": true,
+   "runs": {
+    "u0": {
+     "frames": {
+      "val/video_long_view/masked": {
+       "n_users": 18664,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/video_is_like/masked": {
+       "n_users": 2081,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/music_long_view/masked": {
+       "n_users": 18475,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/music_is_like/masked": {
+       "n_users": 2052,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_long_view/masked": {
+       "n_users": 18752,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_long_view/cold": {
+       "n_users": 437,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_is_like/masked": {
+       "n_users": 1924,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_is_like/cold": {
+       "n_users": 68,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_long_view/masked": {
+       "n_users": 18595,
+       "users_differ": 1,
+       "max_abs_mean_diff": 2.0803202285812894e-08
+      },
+      "test/music_long_view/cold": {
+       "n_users": 434,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_is_like/masked": {
+       "n_users": 1895,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_is_like/cold": {
+       "n_users": 67,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      }
+     },
+     "max_users_differ": 1,
+     "max_abs_mean_diff": 2.0803202285812894e-08,
+     "seconds": 39.9
+    },
+    "u1": {
+     "frames": {
+      "val/video_long_view/masked": {
+       "n_users": 18664,
+       "users_differ": 1,
+       "max_abs_mean_diff": 1.2771966859115302e-08
+      },
+      "val/video_is_like/masked": {
+       "n_users": 2081,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/music_long_view/masked": {
+       "n_users": 18475,
+       "users_differ": 1,
+       "max_abs_mean_diff": 5.21168727896093e-08
+      },
+      "val/music_is_like/masked": {
+       "n_users": 2052,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_long_view/masked": {
+       "n_users": 18752,
+       "users_differ": 2,
+       "max_abs_mean_diff": 9.512516341292354e-08
+      },
+      "test/video_long_view/cold": {
+       "n_users": 437,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_is_like/masked": {
+       "n_users": 1924,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_is_like/cold": {
+       "n_users": 68,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_long_view/masked": {
+       "n_users": 18595,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_long_view/cold": {
+       "n_users": 434,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_is_like/masked": {
+       "n_users": 1895,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_is_like/cold": {
+       "n_users": 67,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      }
+     },
+     "max_users_differ": 2,
+     "max_abs_mean_diff": 9.512516341292354e-08,
+     "seconds": 40.5
+    },
+    "cold_u0": {
+     "frames": {
+      "val/video_long_view/masked": {
+       "n_users": 18664,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/video_is_like/masked": {
+       "n_users": 2081,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/music_long_view/masked": {
+       "n_users": 18475,
+       "users_differ": 1,
+       "max_abs_mean_diff": 3.574665807803967e-08
+      },
+      "val/music_is_like/masked": {
+       "n_users": 2052,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_long_view/masked": {
+       "n_users": 18752,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_long_view/cold": {
+       "n_users": 437,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_is_like/masked": {
+       "n_users": 1924,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_is_like/cold": {
+       "n_users": 68,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_long_view/masked": {
+       "n_users": 18595,
+       "users_differ": 1,
+       "max_abs_mean_diff": 1.086703370484221e-07
+      },
+      "test/music_long_view/cold": {
+       "n_users": 434,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_is_like/masked": {
+       "n_users": 1895,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_is_like/cold": {
+       "n_users": 67,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      }
+     },
+     "max_users_differ": 1,
+     "max_abs_mean_diff": 1.086703370484221e-07,
+     "seconds": 39.4
+    },
+    "abl_nohist": {
+     "frames": {
+      "val/video_long_view/masked": {
+       "n_users": 18664,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/video_is_like/masked": {
+       "n_users": 2081,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/music_long_view/masked": {
+       "n_users": 18475,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/music_is_like/masked": {
+       "n_users": 2052,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_long_view/masked": {
+       "n_users": 18752,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_long_view/cold": {
+       "n_users": 437,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_is_like/masked": {
+       "n_users": 1924,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_is_like/cold": {
+       "n_users": 68,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_long_view/masked": {
+       "n_users": 18595,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_long_view/cold": {
+       "n_users": 434,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_is_like/masked": {
+       "n_users": 1895,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_is_like/cold": {
+       "n_users": 67,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      }
+     },
+     "max_users_differ": 0,
+     "max_abs_mean_diff": 0.0,
+     "seconds": 39.8
+    },
+    "abl_nomusic": {
+     "frames": {
+      "val/video_long_view/masked": {
+       "n_users": 18664,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/video_is_like/masked": {
+       "n_users": 2081,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "val/music_long_view/masked": {
+       "n_users": 18475,
+       "users_differ": 1,
+       "max_abs_mean_diff": 5.412719891745299e-05
+      },
+      "val/music_is_like/masked": {
+       "n_users": 2052,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_long_view/masked": {
+       "n_users": 18752,
+       "users_differ": 1,
+       "max_abs_mean_diff": 1.3353261163473462e-08
+      },
+      "test/video_long_view/cold": {
+       "n_users": 437,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_is_like/masked": {
+       "n_users": 1924,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/video_is_like/cold": {
+       "n_users": 68,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_long_view/masked": {
+       "n_users": 18595,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_long_view/cold": {
+       "n_users": 434,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_is_like/masked": {
+       "n_users": 1895,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      },
+      "test/music_is_like/cold": {
+       "n_users": 67,
+       "users_differ": 0,
+       "max_abs_mean_diff": 0.0
+      }
+     },
+     "max_users_differ": 1,
+     "max_abs_mean_diff": 5.412719891745299e-05,
+     "seconds": 40.4
+    }
+   },
+   "note": "descriptive: formal metrics were scored on the Linux server; this re-scores the same export files with the same code on macOS. Differences come only from float32 BLAS rounding at exact/near ties."
+  }
+ }
+}

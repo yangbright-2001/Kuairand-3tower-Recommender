@@ -1,0 +1,303 @@
+{
+ "step": "checks",
+ "git_sha": "671dde9b4d029f468bc405f05b624a7076fcd0fe",
+ "runtime_s": 16.1,
+ "failed": [],
+ "checks": {
+  "A1_raw_row_counts": {
+   "ok": true,
+   "rows_per_file": [
+    1141112,
+    295497
+   ],
+   "total": 1436609,
+   "users": 27077,
+   "videos": 7551,
+   "metadata_videos": 7583,
+   "metadata_users": 27285,
+   "authors_metadata": 6510,
+   "authors_logged": 6489
+  },
+  "A2_music_sharing": {
+   "ok": true,
+   "nonzero_music_ids": 7201,
+   "music_ids_shared_gt1": 112,
+   "videos_on_shared_music": 290,
+   "max_videos_per_music": 15,
+   "videos_music_id_0": 204,
+   "videos_per_music_hist": {
+    "1": 7089,
+    "2": 82,
+    "3": 17,
+    "4": 8,
+    "5": 1,
+    "6": 1,
+    "8": 1,
+    "9": 1,
+    "15": 1
+   },
+   "music_ids_never_logged": 30
+  },
+  "A3_no_silent_row_drop": {
+   "ok": true,
+   "raw_distinct_events": 1413136,
+   "label_conflict_events_dropped": 2,
+   "cleaned_events": 1413134,
+   "users_kept": 27077,
+   "videos_kept": 7551
+  },
+  "A4_positive_counts": {
+   "ok": true,
+   "by_split": {
+    "train": {
+     "long_view": 339386,
+     "is_like": 18771
+    },
+    "val": {
+     "long_view": 69354,
+     "is_like": 3980
+    },
+    "test": {
+     "long_view": 65812,
+     "is_like": 3610
+    }
+   },
+   "action_rates_raw": {
+    "long_view": 0.331839769902597,
+    "is_like": 0.018478235901348245
+   },
+   "users_with_like_raw": 6768
+  },
+  "A5_statistic_file_never_used": {
+   "ok": true,
+   "loader_refuses_file": true,
+   "n_statistic_columns": 51,
+   "overlap_with_processed_columns": [],
+   "video_feature_fields": [
+    "video_idx",
+    "author_idx",
+    "music_idx",
+    "music_type_idx",
+    "music_row",
+    "cat",
+    "tags",
+    "num",
+    "num_missing"
+   ],
+   "video_metadata_sources": [
+    "video_type",
+    "upload_type",
+    "upload_dt",
+    "music_type",
+    "tag",
+    "video_duration",
+    "server_width",
+    "server_height",
+    "author_id",
+    "music_id"
+   ]
+  },
+  "B1_split_recomputed": {
+   "ok": true,
+   "t_val_ms": 1650124800000,
+   "t_test_ms": 1650902400000,
+   "shares": [
+    0.7055792302782327,
+    0.1474686760066632,
+    0.14695209371510415
+   ]
+  },
+  "B2_frozen_history_strict_past_cap100_delay": {
+   "ok": true,
+   "users_checked": 600,
+   "splits": [
+    "val",
+    "test"
+   ],
+   "mismatches": 0,
+   "hidden_tokens_seen": 22
+  },
+  "B3_rolling_train_history_strict_past": {
+   "ok": true,
+   "samples_checked": 600,
+   "mismatches": 0,
+   "samples_with_same_timestamp_siblings": 102
+  },
+  "B4_export_seen_mask_uncapped": {
+   "ok": true,
+   "users_checked": 600,
+   "mismatches": 0,
+   "users_with_more_than_100_seen_videos": 57
+  },
+  "B5_train_only_fits": {
+   "ok": true,
+   "popularity_equals_train_bincount": true,
+   "vocabs_equal_train_ids": true,
+   "numeric_scaler_equals_train_videos": "True",
+   "als_fit_fingerprints_equal_train_view": true,
+   "als_models_checked": 6
+  },
+  "B6_user_snapshot_date_upper_bound": {
+   "ok": true,
+   "earliest_upper_bound": "2022-05-02",
+   "user_of_earliest_bound": 25929,
+   "users_with_bound_before_log_end": 12,
+   "users_with_bound_before_T_test": 0,
+   "note": "snapshot_date <= first_event_date + register_days (registration precedes the first event); no lower bound exists, so the snapshot cannot be shown to precede T_val / T_test"
+  },
+  "D1_real_batch_labels_fn_mask_duplicates_loss": {
+   "ok": true,
+   "batches_checked": [
+    0,
+    1,
+    150,
+    336
+   ],
+   "label_mismatch_tasks": 0,
+   "fn_mask_mismatch_rows": 0,
+   "per_task": {
+    "video_long_view": {
+     "rows": 4096,
+     "valid": 4026,
+     "fn_pairs": 104584,
+     "dup_label_rows": 2031,
+     "dup_label_cols": 681,
+     "same_user_multi_rows": 286,
+     "shared_music_label_rows": 0,
+     "rows_with_future_only_pos": 3877,
+     "future_only_pos_masked": 0,
+     "max_loss_abs_diff": 2.322602004056762e-07,
+     "label_masked": 0,
+     "max_masked_softmax_weight": 0.0,
+     "n_fn_masked_reported_equals_pairs": true
+    },
+    "video_is_like": {
+     "rows": 4096,
+     "valid": 239,
+     "fn_pairs": 2399,
+     "dup_label_rows": 33,
+     "dup_label_cols": 16,
+     "same_user_multi_rows": 14,
+     "shared_music_label_rows": 0,
+     "rows_with_future_only_pos": 149,
+     "future_only_pos_masked": 0,
+     "max_loss_abs_diff": 6.96716869974523e-07,
+     "label_masked": 0,
+     "max_masked_softmax_weight": 0.0,
+     "n_fn_masked_reported_equals_pairs": true
+    },
+    "music_long_view": {
+     "rows": 4096,
+     "valid": 3843,
+     "fn_pairs": 96313,
+     "dup_label_rows": 1950,
+     "dup_label_cols": 656,
+     "same_user_multi_rows": 260,
+     "shared_music_label_rows": 115,
+     "rows_with_future_only_pos": 3689,
+     "future_only_pos_masked": 0,
+     "max_loss_abs_diff": 5.256672501730009e-07,
+     "label_masked": 0,
+     "max_masked_softmax_weight": 0.0,
+     "n_fn_masked_reported_equals_pairs": true
+    },
+    "music_is_like": {
+     "rows": 4096,
+     "valid": 235,
+     "fn_pairs": 2297,
+     "dup_label_rows": 33,
+     "dup_label_cols": 16,
+     "same_user_multi_rows": 14,
+     "shared_music_label_rows": 13,
+     "rows_with_future_only_pos": 146,
+     "future_only_pos_masked": 0,
+     "max_loss_abs_diff": 7.868786822129437e-07,
+     "label_masked": 0,
+     "max_masked_softmax_weight": 0.0,
+     "n_fn_masked_reported_equals_pairs": true
+    }
+   },
+   "definition": "label = candidate column of the row's own video / non-zero music; FN mask(row) = Pos_train(user, task) - {label} recomputed from raw train events; loss recomputed in float64 from the formal U0 checkpoint embeddings (eval mode)"
+  },
+  "D2_action_balance_as_trained": {
+   "ok": true,
+   "like_oversample": 1,
+   "samples": {
+    "rows": 345365,
+    "copies": 0,
+    "valid_video_long_view": 339386,
+    "valid_video_is_like": 18771,
+    "valid_music_long_view": 325370,
+    "valid_music_is_like": 18187
+   },
+   "mean_valid_rows_per_logged_batch": {
+    "video_long_view": 1005.6617647058823,
+    "video_is_like": 55.60294117647059,
+    "music_long_view": 963.9411764705883,
+    "music_is_like": 53.8235294117647
+   },
+   "per_row_weight_ratio_like_vs_lv_video": 18.086485056863264,
+   "loss": "sum over 4 tasks of the per-task mean CE (equal task weights)"
+  },
+  "E1_main_formal_point_estimates_equal_local_per_user_means": {
+   "ok": true,
+   "rows": 276,
+   "max_abs_dev": 1.304512053934559e-15
+  },
+  "E2_cold_metrics_equal_per_user_means": {
+   "ok": true,
+   "rows": 32,
+   "max_abs_dev": 9.367506770274758e-17
+  },
+  "E3_formal_run_provenance": {
+   "ok": true,
+   "runs": {
+    "u0": {
+     "git_sha": "9218a766796b107ab64f6ad3fce642cdacedf062",
+     "condition_id": "133765eb12b75700",
+     "best_epoch": 6,
+     "selection_frames": "normal_val_masked (pre-M5 schema)",
+     "test_used_for_selection": false,
+     "parity_ok": true,
+     "parity_max_abs": 0.0
+    },
+    "u1": {
+     "git_sha": "9218a766796b107ab64f6ad3fce642cdacedf062",
+     "condition_id": "133765eb12b75700",
+     "best_epoch": 8,
+     "selection_frames": "normal_val_masked (pre-M5 schema)",
+     "test_used_for_selection": false,
+     "parity_ok": true,
+     "parity_max_abs": 0.0
+    },
+    "cold_u0": {
+     "git_sha": "671dde9b4d029f468bc405f05b624a7076fcd0fe",
+     "condition_id": "1eee3839b6cc5c90",
+     "best_epoch": 7,
+     "selection_frames": "cold_val_selection",
+     "test_used_for_selection": false,
+     "parity_ok": true,
+     "parity_max_abs": 0.0
+    },
+    "abl_nohist": {
+     "git_sha": "671dde9b4d029f468bc405f05b624a7076fcd0fe",
+     "condition_id": "133765eb12b75700",
+     "best_epoch": 6,
+     "selection_frames": "normal_val_masked",
+     "test_used_for_selection": false,
+     "parity_ok": true,
+     "parity_max_abs": 0.0
+    },
+    "abl_nomusic": {
+     "git_sha": "671dde9b4d029f468bc405f05b624a7076fcd0fe",
+     "condition_id": "133765eb12b75700",
+     "best_epoch": 6,
+     "selection_frames": "normal_val_masked",
+     "test_used_for_selection": false,
+     "parity_ok": true,
+     "parity_max_abs": 0.0
+    }
+   }
+  }
+ }
+}
