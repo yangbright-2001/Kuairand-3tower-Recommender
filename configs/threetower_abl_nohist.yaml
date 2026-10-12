@@ -1,0 +1,33 @@
+# M5 ablation: U0 without the history encoder (model.use_history = false; D1-1 flag).
+# Identical to threetower_u0.yaml except `exp` and `model` (test-enforced): same condition, seed,
+# training config, val-only selection, export, ExportedScorer metrics and parity. The user tower
+# is then user-ID only, so train-OOV and cold users share the trained zero-ID path.
+# Train: sbatch -J abl_nohist train_threetower.sbatch configs/threetower_abl_nohist.yaml <SHA>
+exp: abl_nohist
+processed_dir: data/processed
+run_root: /local-scratch/liang/runs   # overridden by $RUN_ROOT
+condition: normal
+user_features: u0
+device: cuda
+require_clean_git: true
+history: {}
+model:
+  use_history: false
+train:
+  tau: 0.05
+  lr: 1.0e-3
+  warmup_steps: 300
+  weight_decay: 0.01
+  clip_grad_norm: 1.0
+  batch_size: 1024
+  max_epochs: 30
+  patience: 3
+  like_oversample: 1
+  seed: 0
+  max_steps: null
+  log_every: 50
+eval:
+  threads: 1
+  val_user_batch_size: 256
+  chunk: 2048
+  parity_users: 2048

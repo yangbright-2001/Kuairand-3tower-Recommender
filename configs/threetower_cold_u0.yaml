@@ -1,0 +1,36 @@
+# M5 cold-video model: U0 with every interaction on H removed (PLAN.md §3b P1-9, §3d D1-5).
+# Identical to threetower_u0.yaml except `exp` and `condition` (test-enforced). The M4 runner
+# rebuilds the condition with fit_condition(exclude_video_ids=H): own vocabs, scalers, feature
+# tables, event encodings, candidates, Pos_train and histories; condition_id = sha(name, sorted H).
+# The H file is committed (results/m5/cold_video/), produced once by
+#   uv run python -m kuairand_rec.experiments.cold_video select --config configs/cold_video.yaml
+# Train: sbatch -J cold_u0 train_threetower.sbatch configs/threetower_cold_u0.yaml <SHA>
+exp: cold_u0
+processed_dir: data/processed
+run_root: /local-scratch/liang/runs   # overridden by $RUN_ROOT
+condition:
+  name: cold_u0
+  exclude_video_ids_file: results/m5/cold_video/H_video_ids.txt   # relative to the repo root (cwd)
+user_features: u0
+device: cuda
+require_clean_git: true
+history: {}
+model: {}
+train:
+  tau: 0.05
+  lr: 1.0e-3
+  warmup_steps: 300
+  weight_decay: 0.01
+  clip_grad_norm: 1.0
+  batch_size: 1024
+  max_epochs: 30
+  patience: 3
+  like_oversample: 1
+  seed: 0
+  max_steps: null
+  log_every: 50
+eval:
+  threads: 1
+  val_user_batch_size: 256
+  chunk: 2048
+  parity_users: 2048

@@ -2,7 +2,8 @@
 
 ## Current Status
 
-- Stage: **M4-3 (validation / selection, export, Direct / Exported scorers, retrieve(), strict parity) implemented and tested, with a CPU end-to-end smoke; awaiting independent review. M4-2 was approved. No GPU training has been run and M5 has not started.**
+- Stage: **M5 fix round done (b1 cold selection, selection-vs-export, cold history metadata, label-conflict accounting, text fixes); awaiting the final targeted review. Not committed; no M5 GPU job started.** M4 formal U0/U1 at `9218a76` finished (parity ok) and were synced to `artifacts/`. See "M5 implementation" below.
+- Previous: M4-3 (validation / selection, export, Direct / Exported scorers, retrieve(), strict parity) implemented and tested, with a CPU end-to-end smoke.
   - M2 and M3 are signed off, including the M3 correctness audit.
   - P1 is in `PLAN.md` §3b, M3 in §3c, and D1 in §3d.
 - Next: start M4 on the user's go. M4 implements `PLAN.md` §3d; the D1-10 minimum deliverable is the acceptance bar.
@@ -438,6 +439,94 @@
   - CUDA deterministic mode is unverified.
   - `scripts/data_fingerprint.py` (D1-11) is not written yet.
   - Batch size is still to be confirmed.
+
+## M5 implementation + CPU tests (2026-10-12; awaiting independent review, not committed)
+
+- Scope: new files only. No existing module, M4 config, server run dir or protocol changed. No GPU job started.
+- Formal M4 inputs (read-only): `artifacts/u0/9218a76_seed0_job27`, `artifacts/u1/9218a76_seed0_job28` (git `9218a76`, condition `133765eb12b75700`, parity ok; data content fingerprint equal to the local M2 build; only `data_git_sha` differs, so it is excluded from the comparison).
+- New package `src/kuairand_rec/experiments/`:
+  - `bootstrap.py`: paired user bootstrap. Stream = `SeedSequence([seed, sha256(population_id/stratum)])`. Each replicate mean is its own 1-D dot product, so the result is bitwise independent of the chunk size and of the model / metric set. CI = percentile.
+  - `sources.py`: loads already-produced per-user parquet files and rejects anything not on the shared frame (frame_id, population_id, users and order, n_gt, value range, mean equal to the model's own `metrics.csv` ≤ 1e-12). Three-tower runs also need `test_used_for_selection = false`, `parity.ok`, the expected condition_id, export = selected checkpoint, and the same data content fingerprint.
+  - `buckets.py`: 1-5 / 6-20 / >20 on `EvalFrame.hist_len_capped` (= min(full, 100), the M3/P1-2 definition). It asserts the buckets partition the frame and that the weighted bucket means reproduce the overall mean.
+  - `analysis.py` (CLI, `configs/m5_analysis.yaml`): main comparison on the test masked frames + the cold-user frame. Runs U0/U1 vs Pop / pure ALS / aux ALS, U1 vs U0, and ablations vs U0 when present.
+  - `cold_video.py` (CLI `select` / `evaluate`, `configs/cold_video.yaml`): H selection, removal checks, fixed cold frames, per-user random reference, cold/seen Pop+ALS (selected M3 configs reused), paired bootstrap.
+- New configs (each differs from `threetower_u0.yaml` only as stated; test-enforced):
+  - `threetower_cold_u0.yaml`: `exp`, `condition`
+  - `threetower_abl_nohist.yaml`: `exp`, `model.use_history=false`
+  - `threetower_abl_nomusic.yaml`: `exp`, `model.use_music=false`
+
+  All three are run by the unchanged M4 runner `models.train`.
+- Implementation choices within P1-9 (flagged for review):
+  - popularity = the label-free train event count per video
+  - 10 equal-size rank strata, ties broken by video_id
+  - per stratum: round(10%) drawn with `default_rng([0, stratum])`
+  - H-only candidate set = mask every non-H row plus the seen rows
+  - random reference = closed form per user, from that user's own C_u
+- Results:
+  - **H** (`results/m5/cold_video/`, committed text/JSON): 750 of 7,529 train-seen videos (75 per stratum), sha256 `2cac2d6f…`, cold condition_id `1eee3839b6cc5c90`.
+    - 99,914 train events removed (10.0%), plus 23,517 val and 24,276 test events.
+    - Author still in cold train: 22.8%. Non-zero music still in cold train: 4.0% (24 H videos have music 0).
+    - Outcomes only: 439 / 136 H videos have test lv / like positives.
+    - Cold vocabs: users 25,676, videos 6,779, authors 5,904, music 6,455.
+    - All 12 removal checks pass: events, vocab, candidates, OOV idx, samples, Pos_train, frozen histories at val and test, model-side seen sets, rolling index.
+  - **Cold frames** (unfiltered log):
+    - video_long_view: 5,936 users, 7,536 GT_H pairs on 434 videos; 5 users excluded for having only H history; 168 train-OOV users.
+    - video_is_like: 305 users, 336 pairs on 132 videos.
+    - Mean candidates: 7,530 (full catalog) / 745 (H-only).
+  - **Main analysis** (`results/m5/main/`; 1000 resamples, seed 0; 3.5 s; bitwise identical on rerun):
+    - Test masked R@20, U0 − ALS: video_lv −0.0119 [−0.0160, −0.0079], music_lv −0.0120.
+    - Test masked R@20, U1 − ALS: video_lv +0.0031 [−0.0013, 0.0071] (CI includes 0).
+    - **Corrected 2026-10-12** (an earlier version of this line wrongly said U0 beats pure ALS on all 4 tasks):
+      - U0 > Pop on all 4 tasks (R@20).
+      - U0 > **pure** ALS (`als` = `als_like_pure` on like) only on the two like tasks: video .0913 vs .0555, music .1022 vs .0586.
+      - On both long_view tasks U0 < pure ALS: video .1124 vs .1244, music .1162 vs .1282.
+      - U0 − `als_like_aux` (a separate model) on like: CI includes 0.
+    - U1 − U0: video_lv +0.0150, music_lv +0.0159, video_like CI includes 0, music_like −0.0157.
+  - **CPU cold smoke** (`/tmp`, 5 steps, B 256): the M4 runner trained / exported / evaluated in the cold condition (6,779 / 6,455 candidates) and parity passed bitwise. `cold_video evaluate` on that smoke checkpoint plus the formal U0: the seen Pop/ALS refits reproduce M3 per-user tables exactly, cold ALS has every GT_H unscorable (P1-6b), and cold Pop scores 0 on the full catalog. These are pipeline checks only, not results.
+- Tests: +41 (`test_m5_bootstrap.py` 7, `test_m5_analysis.py` 13, `test_m5_cold_video.py` 17, `test_m5_artifacts.py` 4). `uv run pytest`: **239 passed**, 88 s.
+  - The fixture tests run the real M4 runner (normal, nohist, nomusic, cold) plus in-process parity.
+- Open questions for review: see `PLAN.md` §4 (M5 items).
+
+## M5 fix round after independent review (2026-10-12; awaiting final targeted review, not committed)
+
+- Approved decisions (user, after the third-party review of `m5_code_review.zip`):
+  - b1 cold selection (see `PLAN.md` §4).
+  - H unchanged: 750 ids, sha `2cac2d6f…`, train-event-count strata, seed 0. Not redrawn.
+  - M4 U0/U1 protocol and artifacts unchanged.
+- Fixes:
+  1. **Cold validation selection (b1).** New `models/evaluation.build_cold_selection_frames`. `Validator` uses it only when `cond.exclude_video_ids` is non-empty.
+     - GT = val positives on non-H videos. Music GT comes from non-H video interactions only.
+     - Mask = unfiltered seen rows before T_val. Full catalog, H rows included.
+     - Population = non-empty GT and ≥ 1 non-H history event.
+     - Namespaced population/frame ids (schema `m5-cold-val-selection-v1` + H sha + condition_id).
+     - D1-8 objective / tie-break / patience / max epochs are unchanged.
+     - `selection.json` records `selection_frames` (kind, definition, per-task ids and counts).
+     - Real data, cold val selection users / GT (normal M3 val in parentheses):
+       - video_lv 17,976 / 59,111 (18,664 / 66,867)
+       - video_like 1,938 / 3,437 (2,081 / 3,807)
+       - music_lv 17,795 / 57,510 (18,475 / 64,938)
+       - music_like 1,911 / 3,357 (2,052 / 3,716)
+       - Total reduction −688 / −143 / −680 / −141: only-H val GT −668 / −140 / −660 / −138, plus only-H history −20 / −3 / −20 / −3 (see `PLAN.md` §4).
+     - Counts (final-round fix): unprefixed counts describe the final selection frame; `base_*` counts are the pre-filter base population.
+       - Previously `evaluated_users_train_oov` (20 / 3 / 20 / 3) was a stale base value and has been removed.
+       - Final cold-train OOV = 0 and normal-train OOV = 0 on all 4 tasks.
+       - Frame / population ids, GT and mask are unchanged.
+  2. **Selection vs export.**
+     - `compare_selection_with_export` raises if the per-task frame ids of the validation history and the export summary differ.
+     - Cold runs re-evaluate the ExportedScorer on the cold selection frames (`selection_frame_export_metrics.csv`, a consistency check only, never reported).
+     - The normal compare path is unchanged.
+     - Reported val/test metrics, export and parity of a cold run stay on the M3 frames.
+  3. **Cold history metadata.** `ColdVideoFrame.hist_len_full/capped`, and the bucket in the frame tables, now come from the non-H history (the cold model's input, cap 100).
+     - Frame/population ids are unchanged: they hash only users / GT / mask.
+     - `is_train_oov_user` = cold-train OOV (172 lv / 7 like). Normal-train OOV is kept separately (168 / 7).
+     - 182 lv / 7 like users change bucket vs the unfiltered history.
+     - Non-H buckets (lv) are 325 / 1,216 / 4,395, summing to 5,936.
+  4. **Label-conflict accounting.**
+     - The test conflict (user 13532, video 6266 ∈ H, long_view_any) is a possible GT_H pair: unseen before T_test, user has 74 non-H events and is in the cold population.
+     - Upper bound: 1 pair (lv), 0 (like).
+     - Recorded in `H_selection.json` and the cold report; GT / mask are not changed.
+  5. **Text.** The corrected U0 vs pure-ALS statement is above. `MAIN_ANALYSIS.md` shows `als (pure)`, with CSV keys unchanged; the CSVs are byte-identical after the rerun. The cold report marks the H-only cold Pop row as a fixed tie-break ranking and the random row as analytical.
+- `H_selection.json` regenerated (H ids / strata unchanged, every cold frame id unchanged); adds `cold_val_selection_frames` and the new per-frame metadata.
 
 ## Next Steps
 

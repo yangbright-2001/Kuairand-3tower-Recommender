@@ -1,0 +1,29 @@
+# M5 controlled cold-video experiment (PLAN.md §3b P1-9, §3d D1-5).
+# 1. Draw H once (CPU, train data only; refuses to overwrite a different existing H):
+#      uv run python -m kuairand_rec.experiments.cold_video select --config configs/cold_video.yaml
+# 2. Train the cold model with the unchanged M4 runner (GPU):
+#      sbatch -J cold_u0 train_threetower.sbatch configs/threetower_cold_u0.yaml <SHA>
+# 3. Evaluate all comparison groups on the fixed cold frames (CPU):
+#      uv run python -m kuairand_rec.experiments.cold_video evaluate --config configs/cold_video.yaml \
+#        --cold_run <cold_u0 run dir> --seen_run <u0 run dir>
+processed_dir: data/processed
+baselines_dir: results/baselines          # selected M3 ALS configs (val-selected), reused unchanged
+condition_name: cold_u0                   # must equal threetower_cold_u0.yaml condition.name
+h_file: results/m5/cold_video/H_video_ids.txt
+selection_json: results/m5/cold_video/H_selection.json
+output_dir: results/m5/cold_video
+selection:                                # P1-9: ~10% of train-seen videos, stratified by train popularity
+  fraction: 0.10
+  n_strata: 10                            # equal-size rank bins of the train event count
+  seed: 0
+  popularity: train_events                # label-free train interaction count
+bootstrap:
+  n_boot: 1000
+  seed: 0
+  ci: 0.95
+comparisons:                              # a - b; main claims = cold model vs cold-condition baselines
+  - [cold_threetower, cold_pop]
+  - [cold_threetower, cold_als]
+  - [cold_threetower, cold_als_like_aux]
+  - [cold_threetower, random_expected]
+  - [seen_threetower, cold_threetower]     # context only ("becoming cold" gap), not a main claim

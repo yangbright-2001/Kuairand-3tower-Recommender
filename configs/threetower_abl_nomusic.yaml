@@ -1,0 +1,32 @@
+# M5 ablation: U0 without the music input to the video tower (model.use_music = false; D1-1 flag).
+# The music tower and music heads are still trained by the two music tasks; only the video
+# tower's music input is removed. Identical to threetower_u0.yaml except `exp` and `model`.
+# Train: sbatch -J abl_nomusic train_threetower.sbatch configs/threetower_abl_nomusic.yaml <SHA>
+exp: abl_nomusic
+processed_dir: data/processed
+run_root: /local-scratch/liang/runs   # overridden by $RUN_ROOT
+condition: normal
+user_features: u0
+device: cuda
+require_clean_git: true
+history: {}
+model:
+  use_music: false
+train:
+  tau: 0.05
+  lr: 1.0e-3
+  warmup_steps: 300
+  weight_decay: 0.01
+  clip_grad_norm: 1.0
+  batch_size: 1024
+  max_epochs: 30
+  patience: 3
+  like_oversample: 1
+  seed: 0
+  max_steps: null
+  log_every: 50
+eval:
+  threads: 1
+  val_user_batch_size: 256
+  chunk: 2048
+  parity_users: 2048

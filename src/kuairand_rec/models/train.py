@@ -338,10 +338,21 @@ def compare_selection_with_export(selection: dict, summary) -> dict:
     path difference of the best one (on the score, or on the tie-break when the scores tie),
     i.e. the choice of epoch could depend on the numeric path. Report-only: the frozen
     selection is never changed here.
+
+    The two sides must be computed on the *same* frames: if the validation history records
+    frame ids (`frame_ids`, per task) and `summary` has a `frame_id` column, every task's ids
+    must match, otherwise a ValueError is raised (a difference between two different frames is
+    not a numeric-path difference). Cold runs pass the export metrics on the cold selection frames.
     """
     hist = selection["val_history"]
     best = next(h for h in hist if h["epoch"] == selection["best_epoch"] and h.get("improved"))
     ex = summary[(summary.split == "val") & (summary.kind == "masked")]
+    sel_ids = best.get("frame_ids")
+    if sel_ids is not None and "frame_id" in ex.columns:
+        ex_ids = {f"{r.target}_{r.action}": r.frame_id for _, r in ex.iterrows()}
+        bad = sorted(t for t in set(sel_ids) | set(ex_ids) if sel_ids.get(t) != ex_ids.get(t))
+        if bad:
+            raise ValueError(f"selection vs export compare on different frames for {bad}")
     per, diffs = {}, []
     for _, r in ex.iterrows():
         t = f"{r.target}_{r.action}"
@@ -359,6 +370,7 @@ def compare_selection_with_export(selection: dict, summary) -> dict:
         if gap_s <= 2 * d_score or (gap_s == 0 and abs(h["tie"] - best["tie"]) <= 2 * d_tie):
             near.append({"epoch": h["epoch"], "score": h["score"], "tie": h["tie"]})
     return {"best_epoch": best["epoch"], "per_task": per,
+            "frame_ids": sel_ids, "frames_checked_equal": sel_ids is not None and "frame_id" in ex.columns,
             "score": {"validation": best["score"], "export": ex_score, "abs_diff": d_score},
             "tie": {"validation": best["tie"], "export": ex_tie, "abs_diff": d_tie},
             "max_abs_diff": max(diffs) if diffs else 0.0, "near_tie_epochs": near,
@@ -416,6 +428,8 @@ def run(cfg: dict, max_steps: int | None = None, out_dir: str | None = None, run
                  "earliest wins exact ties", "best_epoch": res.get("best_epoch"), "best_step": res.get("best_step"),
                  "best_score": res.get("best_score"), "best_tie": res.get("best_tie"),
                  "val_history": res["val_history"], "test_used_for_selection": False,
+                 # Which val frames the selection used (normal: M3 val masked; cold: b1 selection frames).
+                 "selection_frames": validator.frames_meta,
                  "checkpoint_sha256": A.sha256_file(out / "best.pt"), "frozen_at": time.strftime("%Y-%m-%dT%H:%M:%S")}
     A.write_json(out / "selection.json", selection)
 
@@ -440,8 +454,18 @@ def run(cfg: dict, max_steps: int | None = None, out_dir: str | None = None, run
     summ["checkpoint"] = "best.pt"
     summ.to_csv(out / "metrics.csv", index=False)
     t_eval = time.time() - t3
-    # Report only (does not change the frozen selection): validation-path vs exported val metrics.
-    sel_vs_export = compare_selection_with_export(selection, summ)
+    # Report only (does not change the frozen selection): validation-path vs exported val metrics,
+    # on the SAME frames the selection used. Normal: the M3 val masked rows of `summ` (unchanged
+    # path). Cold (b1): the exported scorer re-evaluated on the cold selection frames; these
+    # metrics are a consistency check only and are never reported as the cold run's val metrics.
+    if validator.frames_meta["kind"] == "cold_val_selection":
+        _, summ_sel = evaluate_frames(sc, validator.frames, contexts(P, ("val",)), list(validator.frames),
+                                      int(ecfg.get("chunk", 2048)))
+        summ_sel.to_csv(out / "selection_frame_export_metrics.csv", index=False)
+    else:
+        summ_sel = summ
+    sel_vs_export = compare_selection_with_export(selection, summ_sel)
+    sel_vs_export["compare_frames"] = validator.frames_meta["kind"]
     A.write_json(out / "selection_vs_export.json", sel_vs_export)
     if sel_vs_export["selection_may_be_sensitive"]:
         print(json.dumps({"WARNING": "validation-path vs export differences could reorder near-tied epochs",

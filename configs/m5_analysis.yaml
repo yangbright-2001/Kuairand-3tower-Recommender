@@ -1,0 +1,36 @@
+# M5 main comparison: paired user bootstrap CIs + history buckets on already-produced results.
+# Run (CPU, read-only on all inputs):
+#   uv run python -m kuairand_rec.experiments.analysis --config configs/m5_analysis.yaml
+# Override / add finished three-tower runs without editing this file:
+#   ... --run u0=<run_dir> --run u1=<run_dir> --run abl_nohist=<run_dir> --run abl_nomusic=<run_dir>
+# A three-tower model with run_dir: null is reported as pending and skipped.
+processed_dir: data/processed
+output_dir: results/m5/main
+split: test
+frame_kinds: [masked]                     # main protocol (P1-1); buckets are computed on these frames
+cold_user_frame: true                     # cold-user frame (no history) analysed separately (Pop, three-tower)
+tasks: [video_long_view, video_is_like, music_long_view, music_is_like]
+metrics: [recall@10, recall@20, recall@50, ndcg@10, ndcg@20, ndcg@50]
+bootstrap:                                # P1-1: 1000 user-level resamples, shared (paired) across models
+  n_boot: 1000
+  seed: 0
+  ci: 0.95
+models:
+  pop: {kind: baseline, dir: results/baselines, m3_name: pop}
+  als: {kind: baseline, dir: results/baselines, m3_name: als}          # like tasks: als_like_pure (O1 headline)
+  als_like_aux: {kind: baseline, dir: results/baselines, m3_name: als_like_aux, tasks: [video_is_like, music_is_like]}
+  # Formal M4 runs at 9218a76 (synced from the server; sha256 in artifacts/SHA256SUMS.server).
+  u0: {kind: threetower, run_dir: artifacts/u0/9218a76_seed0_job27, expect_condition_id: 133765eb12b75700}
+  u1: {kind: threetower, run_dir: artifacts/u1/9218a76_seed0_job28, expect_condition_id: 133765eb12b75700}
+  abl_nohist: {kind: threetower, run_dir: null, expect_condition_id: 133765eb12b75700}
+  abl_nomusic: {kind: threetower, run_dir: null, expect_condition_id: 133765eb12b75700}
+comparisons:                              # a - b on the same resampled users
+  - [u0, pop]
+  - [u0, als]
+  - [u0, als_like_aux]
+  - [u1, pop]
+  - [u1, als]
+  - [u1, als_like_aux]
+  - [u1, u0]
+  - [abl_nohist, u0]
+  - [abl_nomusic, u0]

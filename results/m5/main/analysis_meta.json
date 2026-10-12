@@ -1,0 +1,516 @@
+{
+ "config": {
+  "processed_dir": "data/processed",
+  "output_dir": "results/m5/main",
+  "split": "test",
+  "frame_kinds": [
+   "masked"
+  ],
+  "cold_user_frame": true,
+  "tasks": [
+   "video_long_view",
+   "video_is_like",
+   "music_long_view",
+   "music_is_like"
+  ],
+  "metrics": [
+   "recall@10",
+   "recall@20",
+   "recall@50",
+   "ndcg@10",
+   "ndcg@20",
+   "ndcg@50"
+  ],
+  "bootstrap": {
+   "n_boot": 1000,
+   "seed": 0,
+   "ci": 0.95
+  },
+  "models": {
+   "pop": {
+    "kind": "baseline",
+    "dir": "results/baselines",
+    "m3_name": "pop"
+   },
+   "als": {
+    "kind": "baseline",
+    "dir": "results/baselines",
+    "m3_name": "als"
+   },
+   "als_like_aux": {
+    "kind": "baseline",
+    "dir": "results/baselines",
+    "m3_name": "als_like_aux",
+    "tasks": [
+     "video_is_like",
+     "music_is_like"
+    ]
+   },
+   "u0": {
+    "kind": "threetower",
+    "run_dir": "artifacts/u0/9218a76_seed0_job27",
+    "expect_condition_id": "133765eb12b75700"
+   },
+   "u1": {
+    "kind": "threetower",
+    "run_dir": "artifacts/u1/9218a76_seed0_job28",
+    "expect_condition_id": "133765eb12b75700"
+   },
+   "abl_nohist": {
+    "kind": "threetower",
+    "run_dir": null,
+    "expect_condition_id": "133765eb12b75700"
+   },
+   "abl_nomusic": {
+    "kind": "threetower",
+    "run_dir": null,
+    "expect_condition_id": "133765eb12b75700"
+   }
+  },
+  "comparisons": [
+   [
+    "u0",
+    "pop"
+   ],
+   [
+    "u0",
+    "als"
+   ],
+   [
+    "u0",
+    "als_like_aux"
+   ],
+   [
+    "u1",
+    "pop"
+   ],
+   [
+    "u1",
+    "als"
+   ],
+   [
+    "u1",
+    "als_like_aux"
+   ],
+   [
+    "u1",
+    "u0"
+   ],
+   [
+    "abl_nohist",
+    "u0"
+   ],
+   [
+    "abl_nomusic",
+    "u0"
+   ]
+  ]
+ },
+ "run_overrides": {},
+ "git_sha": "9218a766796b107ab64f6ad3fce642cdacedf062-dirty",
+ "data_fingerprint": {
+  "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+  "n_events": 1413134,
+  "t_val_ms": 1650124800000,
+  "t_test_ms": 1650902400000,
+  "data_git_sha": "cd26f310639e6f9828bf5ee8f87d9fea721b48f1-dirty"
+ },
+ "n_boot": 1000,
+ "seed": 0,
+ "ci": 0.95,
+ "metrics": [
+  "recall@10",
+  "recall@20",
+  "recall@50",
+  "ndcg@10",
+  "ndcg@20",
+  "ndcg@50"
+ ],
+ "metric_definitions": {
+  "recall@K": "hits@K / |GT(u)| (P1-1); GT = deduped test positives minus seen / OOC / sentinel items",
+  "ndcg@K": "binary-gain DCG@K / IDCG over min(|GT(u)|, K) relevant items",
+  "ranking": "full catalog, score desc then catalog row asc; masked frames set seen items to -inf",
+  "aggregate": "equal-weight mean over evaluated users (= eval.evaluator.summarize)",
+  "bootstrap": "paired user-level resampling with replacement, n = population size, identical replicates for every model of a (frame, stratum); stream = SeedSequence([seed, sha256(population_id/stratum)])",
+  "ci": "percentile (numpy.quantile, method='linear')",
+  "p_two_sided": "min(1, 2 min(P*(d<=0), P*(d>=0))) over replicates; descriptive, not corrected",
+  "history_bucket": "min(#events with t < T_test, 100) from the unfiltered log (P1-2); 1-5 / 6-20 / >20"
+ },
+ "pending_models": [
+  "abl_nohist",
+  "abl_nomusic"
+ ],
+ "comparisons": [
+  [
+   "u0",
+   "pop"
+  ],
+  [
+   "u0",
+   "als"
+  ],
+  [
+   "u0",
+   "als_like_aux"
+  ],
+  [
+   "u1",
+   "pop"
+  ],
+  [
+   "u1",
+   "als"
+  ],
+  [
+   "u1",
+   "als_like_aux"
+  ],
+  [
+   "u1",
+   "u0"
+  ],
+  [
+   "abl_nohist",
+   "u0"
+  ],
+  [
+   "abl_nomusic",
+   "u0"
+  ]
+ ],
+ "user_sets": {
+  "test/video_long_view/masked": {
+   "n_users": 18752,
+   "population_id": "38803afd1c6e2fe442ffb4260b3f4bf4b3e6b1efb976bf7855726e21b25a236a",
+   "frame_id": "f60e1dc513ef2817a33fcd840a8d12754ae8a8a8ad3270e549a2a2c42fb56827",
+   "user_ids_sha256": "9b3f4622c544890240f5e25b54b18a2dafdd83e4bc71f1f8fba0f3c0b51ad892",
+   "file": "user_sets/test_video_long_view_masked.csv"
+  },
+  "test/video_long_view/cold": {
+   "n_users": 437,
+   "population_id": "6838be6c24855c5ddfc0e0d18479a86b18d993792670ce8b66ab1c5068b255c8",
+   "frame_id": "1e7c8f50e9b684bf593de2bccef7e33cf4fb6bfc55aa408127854efb1775affe",
+   "user_ids_sha256": "bea23d4c2be4e1937971818772734b51282a5d5aa3978adefed834ec516522a6"
+  },
+  "test/video_is_like/masked": {
+   "n_users": 1924,
+   "population_id": "feb1768b2e371edf17104d7135e9a7c0c749b97b191eaa464724a895f3a39e9c",
+   "frame_id": "1b0e11c124de27e343023342a9e5eebb03d804ba6a4817cb56ba287725c462c4",
+   "user_ids_sha256": "76f32b8e8cd4b867a13f81ed006056281966695ab850b6663691bf54d9fd9e0d",
+   "file": "user_sets/test_video_is_like_masked.csv"
+  },
+  "test/video_is_like/cold": {
+   "n_users": 68,
+   "population_id": "eaa880d8eaf60477c0011d1a9cd8fb1acbfd40b955be283c896017269477e455",
+   "frame_id": "c008402f92a33312099607f31acbee78447b27becf50003a98fde18cd1e9704a",
+   "user_ids_sha256": "ce76d4763261338a6ddc797a2397650c2fb54f9ffe16f69eb5e34accdc08ef81"
+  },
+  "test/music_long_view/masked": {
+   "n_users": 18595,
+   "population_id": "4ce9612b234127ab1635ab4c37a99d7fac93625f34b58b908d3b2df4717df3b2",
+   "frame_id": "4d28e61497c0a6486c0a4ab9375df27a602a735523abc24988b78ddd5d59fcfe",
+   "user_ids_sha256": "9bbecb85da5bb4f0de3fe4786d443d48cc918f5637b66553c14dc5db947fa2db",
+   "file": "user_sets/test_music_long_view_masked.csv"
+  },
+  "test/music_long_view/cold": {
+   "n_users": 434,
+   "population_id": "e28fa53a59698ed34c4abfecacff6163bd234f0183d30e621bc8371caae82a4b",
+   "frame_id": "60c1e41ffdb98856261713bf054146a45519fc982bfe681c8c4ff918e72d15e0",
+   "user_ids_sha256": "6d83d3697b1fc78881776845feb778385d7a1e92ee87e697bf73a275b323d28b"
+  },
+  "test/music_is_like/masked": {
+   "n_users": 1895,
+   "population_id": "2d2d2fe155e4c4d285dc0f92b149418157553341cef44fe0e09b56809b93978d",
+   "frame_id": "37e15860aa387b6b37f28400eaf053f85dc3de26a87e27907b9423db0c195bd4",
+   "user_ids_sha256": "f838b6c6deb20c0a7aca51878489ef0933e70359861f3b0a0783712b09c6d3ae",
+   "file": "user_sets/test_music_is_like_masked.csv"
+  },
+  "test/music_is_like/cold": {
+   "n_users": 67,
+   "population_id": "71f591161f2fc67a4c8d0eb52a1173aa980ad3c8e0a2bbe3fd0daf26829103cf",
+   "frame_id": "8073b09a37214482263364544b60b40b7e296fc9f0a2f8f995ae180e988d072a",
+   "user_ids_sha256": "4d431d9c03a9740174ff1a1546565207e708c51b4d06a262f58a2e4d6c88fe0e"
+  }
+ },
+ "inputs": {
+  "masked/video_long_view/pop": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/pop/test_video_long_view_masked.parquet",
+   "sha256": "6130af446dac1a633f9c0131f0188abee964ac472ab942184df0fec5d8deb143",
+   "n_users": 18752,
+   "metrics_csv_max_abs_dev": 7.632783294297951e-17
+  },
+  "masked/video_long_view/als": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/als/test_video_long_view_masked.parquet",
+   "sha256": "5d16509ab3a073a4e946574f6ee217b8b0f41d155a265dc46f23c056200bbcd8",
+   "n_users": 18752,
+   "metrics_csv_max_abs_dev": 9.71445146547012e-17
+  },
+  "masked/video_long_view/u0": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27/per_user/test_video_long_view_masked.parquet",
+   "sha256": "84ebfa43ea63cd017b540edaef89a48a547537ca32a1cb9329619a9d5474a93f",
+   "n_users": 18752,
+   "metrics_csv_max_abs_dev": 6.938893903907228e-17
+  },
+  "masked/video_long_view/u1": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u1/9218a76_seed0_job28/per_user/test_video_long_view_masked.parquet",
+   "sha256": "f99adf45c599b344f0ad1cb6f50d75330e971176b9690552fbe48c8efc32d605",
+   "n_users": 18752,
+   "metrics_csv_max_abs_dev": 9.71445146547012e-17
+  },
+  "cold/video_long_view/pop": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/pop/test_video_long_view_cold.parquet",
+   "sha256": "163b2c8b54c6299f046266bb70a481a401c98934a5c15768d1483d7cfb05e9cb",
+   "n_users": 437,
+   "metrics_csv_max_abs_dev": 8.326672684688674e-17
+  },
+  "cold/video_long_view/u0": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27/per_user/test_video_long_view_cold.parquet",
+   "sha256": "28580c31308fec1db7eed8b1f524e90c4b6369f27d557db67a71f98a9faa6456",
+   "n_users": 437,
+   "metrics_csv_max_abs_dev": 6.245004513516506e-17
+  },
+  "cold/video_long_view/u1": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u1/9218a76_seed0_job28/per_user/test_video_long_view_cold.parquet",
+   "sha256": "ea52463698252aa29f59674f9875014807798b934b4feb5f539315063306e189",
+   "n_users": 437,
+   "metrics_csv_max_abs_dev": 9.71445146547012e-17
+  },
+  "masked/video_is_like/pop": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/pop/test_video_is_like_masked.parquet",
+   "sha256": "2bbfcb7377e2abd76577ee667ab8b7efbcecaee38c9ebe08562ce9ef065df63b",
+   "n_users": 1924,
+   "metrics_csv_max_abs_dev": 8.326672684688674e-17
+  },
+  "masked/video_is_like/als": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/als/test_video_is_like_masked.parquet",
+   "sha256": "cb538c61274d5e04254b6e171dc8a80cab11de7584d1d7599cca82f184276945",
+   "n_users": 1924,
+   "metrics_csv_max_abs_dev": 8.326672684688674e-17
+  },
+  "masked/video_is_like/als_like_aux": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/als_like_aux/test_video_is_like_masked.parquet",
+   "sha256": "e964e1a96143b6926cbeb9197f8028653af1e7fad97b77578ab7f4587e151f0a",
+   "n_users": 1924,
+   "metrics_csv_max_abs_dev": 6.938893903907228e-17
+  },
+  "masked/video_is_like/u0": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27/per_user/test_video_is_like_masked.parquet",
+   "sha256": "fc70236ca69ee83ca21974e184ccecb57dcaa503827a417652ea1a68ffb49415",
+   "n_users": 1924,
+   "metrics_csv_max_abs_dev": 4.163336342344337e-17
+  },
+  "masked/video_is_like/u1": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u1/9218a76_seed0_job28/per_user/test_video_is_like_masked.parquet",
+   "sha256": "306f36f40ee8d2781874c830457d0273bf6eaefbdd804309a8ca35b774cb0e86",
+   "n_users": 1924,
+   "metrics_csv_max_abs_dev": 6.938893903907228e-17
+  },
+  "cold/video_is_like/pop": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/pop/test_video_is_like_cold.parquet",
+   "sha256": "b08733fef0edf6cb1237983f6fe30455d7ef5e0e1b1cc7b7a2f81fde3f11f743",
+   "n_users": 68,
+   "metrics_csv_max_abs_dev": 5.551115123125783e-17
+  },
+  "cold/video_is_like/u0": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27/per_user/test_video_is_like_cold.parquet",
+   "sha256": "9daa5ead38e8c73e61105d5d87e60e38dafdeba8a1af6e7a88fcdce2da7b724c",
+   "n_users": 68,
+   "metrics_csv_max_abs_dev": 9.367506770274758e-17
+  },
+  "cold/video_is_like/u1": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u1/9218a76_seed0_job28/per_user/test_video_is_like_cold.parquet",
+   "sha256": "4b965809eab3c6fb351432a9d3b7e73da16d1f4434b2b27005427faca7bee518",
+   "n_users": 68,
+   "metrics_csv_max_abs_dev": 8.326672684688674e-17
+  },
+  "masked/music_long_view/pop": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/pop/test_music_long_view_masked.parquet",
+   "sha256": "11cabacda41b3bcc3637421bc5a6b5dae03831c980cfd67313b1c33814b129c4",
+   "n_users": 18595,
+   "metrics_csv_max_abs_dev": 6.938893903907228e-17
+  },
+  "masked/music_long_view/als": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/als/test_music_long_view_masked.parquet",
+   "sha256": "738ed70b1cc94709e99579a3cbce6e1ddc23df2dd0c9f89e1eeebad5edf1900c",
+   "n_users": 18595,
+   "metrics_csv_max_abs_dev": 8.326672684688674e-17
+  },
+  "masked/music_long_view/u0": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27/per_user/test_music_long_view_masked.parquet",
+   "sha256": "71ffde3bf2f0da1e0227fb16e231989768c3752898d871221da6261a0c00fb38",
+   "n_users": 18595,
+   "metrics_csv_max_abs_dev": 5.551115123125783e-17
+  },
+  "masked/music_long_view/u1": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u1/9218a76_seed0_job28/per_user/test_music_long_view_masked.parquet",
+   "sha256": "435fe8496dcb079eab4f626cba30d2178b27b489a029c95d19ea3f11332742ec",
+   "n_users": 18595,
+   "metrics_csv_max_abs_dev": 5.551115123125783e-17
+  },
+  "cold/music_long_view/pop": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/pop/test_music_long_view_cold.parquet",
+   "sha256": "08cc2961c398b32561c7f1c12325eb9bcd4de360eaaca2c9238d344c3b7210ff",
+   "n_users": 434,
+   "metrics_csv_max_abs_dev": 8.326672684688674e-17
+  },
+  "cold/music_long_view/u0": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27/per_user/test_music_long_view_cold.parquet",
+   "sha256": "0be57e246e0c20ae716ecfac5788ed6c1faff9a321c83be60120cf0ee5a7dd3c",
+   "n_users": 434,
+   "metrics_csv_max_abs_dev": 9.71445146547012e-17
+  },
+  "cold/music_long_view/u1": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u1/9218a76_seed0_job28/per_user/test_music_long_view_cold.parquet",
+   "sha256": "0395ff66fe96066ff59070ca78974ae8fd8603a30e6daf08eb61af88bcae56e8",
+   "n_users": 434,
+   "metrics_csv_max_abs_dev": 6.938893903907228e-17
+  },
+  "masked/music_is_like/pop": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/pop/test_music_is_like_masked.parquet",
+   "sha256": "c1816a905e95560960a2f36233e8e256ca22c777a9792c6443af5639307edcb1",
+   "n_users": 1895,
+   "metrics_csv_max_abs_dev": 9.020562075079397e-17
+  },
+  "masked/music_is_like/als": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/als/test_music_is_like_masked.parquet",
+   "sha256": "124475752b7addf7785215b4f444460230bf136cd4897fbbc2327451fdfba3d8",
+   "n_users": 1895,
+   "metrics_csv_max_abs_dev": 9.71445146547012e-17
+  },
+  "masked/music_is_like/als_like_aux": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/als_like_aux/test_music_is_like_masked.parquet",
+   "sha256": "267b77766b698cb00922857908fd7cd512d1558672e4ab9077594b3e88b29a25",
+   "n_users": 1895,
+   "metrics_csv_max_abs_dev": 6.938893903907228e-17
+  },
+  "masked/music_is_like/u0": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27/per_user/test_music_is_like_masked.parquet",
+   "sha256": "e89656363914cbe5213129943d9afb479827c8a70167bddf9a625a409918b24f",
+   "n_users": 1895,
+   "metrics_csv_max_abs_dev": 9.020562075079397e-17
+  },
+  "masked/music_is_like/u1": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u1/9218a76_seed0_job28/per_user/test_music_is_like_masked.parquet",
+   "sha256": "848b4f10075a96b5d7d44c50a56ca72a0c03f9e9b752f7d6de1c67c04cd30c59",
+   "n_users": 1895,
+   "metrics_csv_max_abs_dev": 8.326672684688674e-17
+  },
+  "cold/music_is_like/pop": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/results/baselines/per_user/pop/test_music_is_like_cold.parquet",
+   "sha256": "f4a8c24984006248d396d94f0ab61d6335de897ab69a8a13c1fea14d4f915595",
+   "n_users": 67,
+   "metrics_csv_max_abs_dev": 8.326672684688674e-17
+  },
+  "cold/music_is_like/u0": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27/per_user/test_music_is_like_cold.parquet",
+   "sha256": "0a15f6c35218a9de73b4b27e1a7c10646446573ca71373d8d56d5496a380bce2",
+   "n_users": 67,
+   "metrics_csv_max_abs_dev": 8.153200337090993e-17
+  },
+  "cold/music_is_like/u1": {
+   "file": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u1/9218a76_seed0_job28/per_user/test_music_is_like_cold.parquet",
+   "sha256": "6772b5278d8a16653dcf5aeab431c3214904a3eeddc35b397d93b7106d13ba16",
+   "n_users": 67,
+   "metrics_csv_max_abs_dev": 9.367506770274758e-17
+  }
+ },
+ "threetower_provenance": {
+  "u0": {
+   "run_dir": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27",
+   "git_sha": "9218a766796b107ab64f6ad3fce642cdacedf062",
+   "condition_id": "133765eb12b75700",
+   "exp": "u0",
+   "user_features": "u0",
+   "model_config": {},
+   "condition": "normal",
+   "best_epoch": 6,
+   "best_val_score": 0.125246153238786,
+   "checkpoint_sha256": "8da570cd531ddb2ac9dbc7e99905b62cf1e7cf9433c99a1154b924909626ef3f",
+   "parity_ok": true,
+   "data_git_sha_of_export": "730e64387afdb4d764a245667ebf1c40fb6aab83"
+  },
+  "u1": {
+   "run_dir": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u1/9218a76_seed0_job28",
+   "git_sha": "9218a766796b107ab64f6ad3fce642cdacedf062",
+   "condition_id": "133765eb12b75700",
+   "exp": "u1",
+   "user_features": "u1",
+   "model_config": {},
+   "condition": "normal",
+   "best_epoch": 8,
+   "best_val_score": 0.12646979844184253,
+   "checkpoint_sha256": "c105e40e017c2ab239ed48215f0522c4e64cc08c88c38b295658f9efc921b432",
+   "parity_ok": true,
+   "data_git_sha_of_export": "730e64387afdb4d764a245667ebf1c40fb6aab83"
+  }
+ },
+ "checks": {
+  "masked/video_long_view": {
+   "bucket_partition_max_dev": 5.551115123125783e-17,
+   "models": [
+    "pop",
+    "als",
+    "u0",
+    "u1"
+   ]
+  },
+  "cold/video_long_view": {
+   "models": [
+    "pop",
+    "u0",
+    "u1"
+   ]
+  },
+  "masked/video_is_like": {
+   "bucket_partition_max_dev": 2.7755575615628914e-17,
+   "models": [
+    "pop",
+    "als",
+    "als_like_aux",
+    "u0",
+    "u1"
+   ]
+  },
+  "cold/video_is_like": {
+   "models": [
+    "pop",
+    "u0",
+    "u1"
+   ]
+  },
+  "masked/music_long_view": {
+   "bucket_partition_max_dev": 2.0816681711721685e-17,
+   "models": [
+    "pop",
+    "als",
+    "u0",
+    "u1"
+   ]
+  },
+  "cold/music_long_view": {
+   "models": [
+    "pop",
+    "u0",
+    "u1"
+   ]
+  },
+  "masked/music_is_like": {
+   "bucket_partition_max_dev": 2.7755575615628914e-17,
+   "models": [
+    "pop",
+    "als",
+    "als_like_aux",
+    "u0",
+    "u1"
+   ]
+  },
+  "cold/music_is_like": {
+   "models": [
+    "pop",
+    "u0",
+    "u1"
+   ]
+  }
+ },
+ "runtime_s": 4.6
+}

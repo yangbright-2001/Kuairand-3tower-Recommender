@@ -495,6 +495,36 @@ Full design and revision history (R1, R2): `.cursor/plans/d1_三塔_v1_设计_1d
 - **RESOLVED (P1, see 3b)** Cold-video holdout selection, removal, evaluation frame, comparison groups.
 - **RESOLVED (D1, see 3d)** OOV implementation (D1-4), train/test history mismatch (D1-3, Q2a), and three-tower v1 internals (D1-1 to D1-3).
 - **OPEN (after the benchmark / first runs)** Batch size and max_epochs, set from the measured epoch time (D1-11). Targeted adjustments apply only under the D1-10 trigger. Seeds and extra ablations are optional.
+- **RESOLVED (M5, approved by the user 2026-10-12 after independent review; P1/M3/D1 text unchanged)**
+  - **Cold-model checkpoint selection = b1.**
+    - In the cold condition only, the Validator scores a dedicated *cold validation selection frame* per task:
+      - GT = val positives on non-H videos. Music GT is aggregated from non-H video interactions, so a shared music keeps its legitimate non-H GT.
+      - Mask = the unfiltered strict-past seen interactions before T_val.
+      - Candidates = the full catalog, H rows included and not extra-masked.
+      - Population = non-empty GT after the mask and ≥ 1 non-H history event before T_val.
+    - The D1-8 objective is unchanged: mean val R@20 over 4 tasks, N@20 tie-break, patience 3, ≤ 30 epochs. The normal condition is unchanged.
+    - Rationale: H's val labels never influence the cold model's epoch choice, which makes the "controlled cold" condition closed.
+    - Limitations:
+      - The cold model's selection population differs from the normal U0 val population. The reduction has two parts:
+
+        | task | normal M3 val users | − only-H val GT | − only-H history | cold selection users | total reduction |
+        |---|---:|---:|---:|---:|---:|
+        | video_lv | 18,664 | −668 | −20 | 17,976 | −688 |
+        | video_like | 2,081 | −140 | −3 | 1,938 | −143 |
+        | music_lv | 18,475 | −660 | −20 | 17,795 | −680 |
+        | music_like | 2,052 | −138 | −3 | 1,911 | −141 |
+
+        - "Only-H val GT": users whose every val GT item (after the mask) is on H, or for music reached only via H videos.
+        - "Only-H history": users with non-H val GT but no non-H event before T_val. Their only pre-T_val events are on H, so the cold model would see an empty history.
+      - H rows remain negatives in the selection candidates, so selection is if anything biased against H.
+      - The cold run's *reported* val/test metrics still use the standard M3 frames; the selection frame is never reported as a result.
+    - Selection-vs-export consistency is checked on the same (cold selection) frames, and frame-id mismatches are refused.
+  - **H selection kept as implemented:** label-free train event count, 10 equal-size rank strata, round(10%) per stratum, seed 0. 750 ids stored in `results/m5/cold_video/`; not redrawn.
+  - **Cold frame metadata.**
+    - History length / bucket = the cold model's actual non-H input (cap 100).
+    - Normal-train OOV and cold-train OOV are reported separately.
+    - The label-conflict GT_H upper bound is computed from the saved `label_conflict_events` (read-only).
+  - **Cold-frame H-only candidates.** Implemented as an extra mask on non-H rows. Cold Pop there is a fixed tie-break ranking (all H scores 0, catalog-row order), not a random ranking. It is reported separately from the analytical random reference.
 - **To verify** (server deployment, D1-11):
   - SSH from the Mac
   - Deploy Key clone of the private repo
