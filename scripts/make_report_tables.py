@@ -18,6 +18,7 @@ os.environ.setdefault("MPLCONFIGDIR", "/tmp/mpl")
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.ticker  # noqa: F401  (MaxNLocator for the ablation axes)
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -205,6 +206,13 @@ def figures(mo, di, b, cb, meta):
     errs = [[get(t, m)[1] for m in models] for t in TASKS]
     fig, ax = plt.subplots(figsize=(7.2, 3.0))
     _bars(ax, groups, models, vals, errs, [COLOR[m] for m in models], labels)
+    # Mark bars that do not exist (ALS aux is defined for the like tasks only) instead of leaving a gap.
+    w = 0.8 / len(models)
+    for i in range(len(TASKS)):
+        for j in range(len(models)):
+            if vals[i][j] is None:
+                ax.text(i - 0.4 + w * (j + 0.5), 0.003, "n/a", ha="center", va="bottom", fontsize=7,
+                        color="#333", rotation=90)
     ax.set_ylabel("test Recall@20 (95% CI)", fontsize=8)
     ax.set_title("Full-catalog, seen-masked test Recall@20 (same users per task)", fontsize=9)
     ax.legend(fontsize=7, ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.2), frameon=False)
@@ -234,6 +242,12 @@ def figures(mo, di, b, cb, meta):
             v.append(row_v)
             e.append(row_e)
         _bars(ax, cgroups, cm_models, v, e, cm_colors, cm_labels)
+        # A bar of height exactly 0 is invisible: label it so it is not mistaken for a missing bar.
+        w = 0.8 / len(cm_models)
+        for i in range(len(cgroups)):
+            for j in range(len(cm_models)):
+                if v[i][j] == 0:
+                    ax.text(i - 0.4 + w * (j + 0.5), 0, "0", ha="center", va="bottom", fontsize=7, color="#333")
         ax.set_title(title, fontsize=8.5)
     axes[0].set_ylabel("test Recall@20 on GT_H (95% CI)", fontsize=8)
     n_lv = meta["frames"]["video_long_view/cold_video_full"]["n_users"]
@@ -241,8 +255,11 @@ def figures(mo, di, b, cb, meta):
     axes[1].text(0.98, 0.97, f"users: LV {n_lv:,}, like {n_like:,}", transform=axes[1].transAxes, ha="right",
                  va="top", fontsize=7)
     h, l = axes[0].get_legend_handles_labels()
-    fig.legend(h, l, fontsize=7, ncol=4, loc="lower center", frameon=False)
-    fig.tight_layout(rect=(0, 0.08, 1, 1))
+    fig.legend(h, l, fontsize=7, ncol=4, loc="lower center", bbox_to_anchor=(0.5, 0.045), frameon=False)
+    fig.text(0.5, 0.012, "\"0\" = exactly zero. Cold ALS has no factors for the held-out videos (H is unscorable); "
+             "cold Pop scores every H video 0, so on the full catalog H is always ranked last.",
+             ha="center", va="bottom", fontsize=6.5, color="#444")
+    fig.tight_layout(rect=(0, 0.13, 1, 1))
     fig.savefig(OUT_F / "fig2_cold_video.png", dpi=200)
     plt.close(fig)
 
@@ -274,7 +291,7 @@ def figures(mo, di, b, cb, meta):
     # Figure 4: ablations, paired differences vs U0 (R@20 and NDCG@20, 95% CI).
     d = di[(di.stratum == "all") & (di.frame_kind == "masked") & (di.model_b == "u0")
            & di.model_a.isin(["abl_nohist", "abl_nomusic"])]
-    fig, axes = plt.subplots(1, 2, figsize=(7.2, 2.5), sharey=True)
+    fig, axes = plt.subplots(2, 1, figsize=(7.2, 4.6))           # stacked: each panel gets the full width
     ys = np.arange(len(TASKS))[::-1]
     for ax, met in zip(axes, ("recall@20", "ndcg@20")):
         for k, (m, off) in enumerate((("abl_nohist", 0.15), ("abl_nomusic", -0.15))):
@@ -288,8 +305,9 @@ def figures(mo, di, b, cb, meta):
         ax.tick_params(axis="x", labelsize=7)
         ax.set_xlabel(f"Δ test {met.replace('recall', 'Recall').replace('ndcg', 'NDCG')} vs U0 (95% CI)",
                       fontsize=7.5)
+        ax.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(nbins=8))
         ax.grid(axis="x", lw=0.3, alpha=0.6)
-    axes[0].legend(fontsize=7, loc="lower left", frameon=False)
+    axes[0].legend(fontsize=7, loc="upper left", bbox_to_anchor=(1.0, 1.0), frameon=False)
     fig.tight_layout()
     fig.savefig(OUT_F / "fig4_ablations.png", dpi=200)
     plt.close(fig)

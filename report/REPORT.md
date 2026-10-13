@@ -351,7 +351,7 @@ The LV deficit is a heavy-user effect: U0 wins in the 1–5 bucket and loses in 
 
 Each ablation is a single configuration flag change from U0, with the same data, seed, selection rule and evaluation.
 
-![Figure 4: paired test differences vs U0 (95% CI) for the two ablations. Left: Recall@20; right: NDCG@20. Source: results/m5/main_formal/bootstrap_diffs.csv.](figures/fig4_ablations.png)
+![Figure 4: paired test differences vs U0 (95% CI) for the two ablations. Top: Recall@20; bottom: NDCG@20. Source: results/m5/main_formal/bootstrap_diffs.csv.](figures/fig4_ablations.png)
 
 **No history** (user ID only):
 - R@20 drops significantly on video LV (−.012\*), music LV (−.011\*) and music like (−.017\*).
