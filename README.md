@@ -79,9 +79,11 @@ The model is compared with Popularity and implicit ALS, under one leakage-contro
 
 Details: §4.4 and [`docs/EXPLORATORY_RESULTS.md`](docs/EXPLORATORY_RESULTS.md).
 
-## 3. Three-tower architecture (formal v1)
+## 3. Three-tower architecture (formal U0/U1)
 
 ![Formal v1 three-tower architecture](report/figures/arch_threetower.png)
+
+This diagram shows the formal U0/U1 architecture. The post-hoc no-music ablation removes the music-to-video input connection while retaining the music tower for music retrieval (see §4.4).
 
 ### 3.1 Towers
 
