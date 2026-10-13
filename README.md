@@ -27,9 +27,18 @@ The model is compared with Popularity and implicit ALS, under one leakage-contro
 
 ## 2. Key findings
 
-Test split, full catalog, seen-masked ranking, Recall@20, 95% paired bootstrap (1,000 user resamples). \* = CI excludes 0.
+**Model variants.** Two versions of the three-tower model differ only in the user-tower inputs:
+- **U0** is the main model. It uses the user ID plus the user's strict-past interaction history, and no user metadata.
+- **U1** is U0 plus 21 user-profile fields. These come from a single, undated snapshot, so their availability at prediction time cannot be verified. U1 is reported with that caveat.
 
-- **U0 beats Popularity on all four tasks.** U0 is the main, metadata-free model (user ID + strict-past history). The gains are +.020\* to +.032\*.
+**How to read the numbers.** Every number is a difference in test Recall@20 between two models, evaluated on the same users:
+- The metric is computed over the full item catalog, with items the user had already interacted with excluded from the ranking.
+- Brackets give the 95% confidence interval from a paired bootstrap over 1,000 user resamples.
+- A star (\*) marks a statistically significant difference, i.e. its 95% interval does not include 0.
+
+**Findings.**
+
+- **U0 beats Popularity on all four tasks.** The gains are +.020\* to +.032\*.
 - **U0 vs pure implicit ALS is mixed:**
   - *better* on both like tasks (+.036\* video, +.044\* music);
   - *worse* on both long-view tasks (−.012\* each).
