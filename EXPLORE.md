@@ -83,6 +83,19 @@ count unchanged (3 / 7). Planned val-only comparison: U0 {44, 39, 40} vs no-musi
 numbers are not paired initialisations (different first-layer width). Gated E2 and stop-gradient
 fusion are not implemented (see `results/explore/wave3_review/WAVE3_GATE_REVIEW.md`).
 
+## Wave 3 results (jobs 47-49; post-hoc exploratory, validation only)
+
+- All three runs are valid (rc 0, parity PASS). Job 47 reproduces formal no-music job 35 bitwise.
+- No-music vs U0 (3 seeds each):
+  - mean val R@20 .1286 ± .0018 vs .1220 ± .0036;
+  - higher on 3/3 seeds for video long-view, music long-view and the 4-task mean;
+  - no systematic like cost.
+- Vs pure ALS on long-view: no significant difference detected for any no-music seed (CIs include 0).
+  This is not a demonstration of equivalence.
+- Descriptive cross-seed consistency (n = 3), not a cross-seed significance result. The mechanism is
+  not identified.
+- Details: `results/explore/wave3/wave3_analysis.md`.
+
 ## Selection protocol (pre-registered)
 
 - D1-8 unchanged for every run: normal val masked frames at T_val, mean val R@20 over the 4 tasks,

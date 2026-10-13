@@ -135,3 +135,7 @@ Paired val bootstrap, lr 5e-4 runs vs baselines (R@20):
   the best runs tie it. "Higher" in this document means numerically higher unless a CI is quoted.
 - Wave 1 §4 (`results/explore/wave1/validation_analysis.md`) says lr 5e-4 "exceeds the U0 seed max";
   that is numerical (single seed) and is superseded by the 3-seed analysis here.
+
+Terminology (2026-10-12 22:15 PT): in this document "tie" / "within user noise" / "持平" vs a baseline
+means "the paired val bootstrap CI includes 0, i.e. no significant difference detected". It does NOT
+mean demonstrated equivalence: no equivalence margin was specified or tested.

@@ -96,3 +96,7 @@ separate hypotheses (i)-(iii). Verdict: **not worth implementing**.
   | analysis | 15 min |
 
   That leaves no margin before the 60-min reserve. Record it as the next experiment.
+
+Terminology (2026-10-12 22:15 PT): in this document "tie" / "within user noise" / "持平" vs a baseline
+means "the paired val bootstrap CI includes 0, i.e. no significant difference detected". It does NOT
+mean demonstrated equivalence: no equivalence margin was specified or tested.

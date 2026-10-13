@@ -1,0 +1,35 @@
+{
+ "job47_sha": "be5ceb96b5e10bf9754983de168d8c3542e0de85",
+ "job35_sha": "671dde9b4d029f468bc405f05b624a7076fcd0fe",
+ "config_diff_vs_job35": {
+  "top": [
+   "exp",
+   "run_root"
+  ],
+  "train": []
+ },
+ "val_history_epochs": [
+  10,
+  10
+ ],
+ "val_history_all_bitwise_equal": true,
+ "best_epoch": [
+  6,
+  6
+ ],
+ "best_score_equal": true,
+ "train_log_records": [
+  68,
+  68
+ ],
+ "train_log_bitwise_equal": true,
+ "best_pt_state_dict_bitwise_equal": true,
+ "export_item_and_val_user_embeddings_sha_equal": true,
+ "n_embedding_files": 8,
+ "val_per_user_metrics_equal": {
+  "video_long_view": true,
+  "video_is_like": true,
+  "music_long_view": true,
+  "music_is_like": true
+ }
+}

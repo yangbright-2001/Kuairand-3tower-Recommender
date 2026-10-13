@@ -140,3 +140,7 @@ Errata (2026-10-12 21:00 PT): superseded by the 3-seed x 2-lr analysis in
 `results/explore/wave2/wave2_analysis.md` (lr 5e-4 mean +.0048 over 3 seeds, about one seed std;
 like-driven; long-view seed-dependent). "Exceeds" / "higher" above are numerical, single-seed
 statements. tau 0.1 s0 is numerically above pure ALS on both long-view tasks (CIs include 0).
+
+Terminology (2026-10-12 22:15 PT): in this document "tie" / "within user noise" / "持平" vs a baseline
+means "the paired val bootstrap CI includes 0, i.e. no significant difference detected". It does NOT
+mean demonstrated equivalence: no equivalence margin was specified or tested.
