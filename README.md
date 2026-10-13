@@ -19,7 +19,7 @@ The model is compared with Popularity and implicit ALS, under one leakage-contro
 
 | Resource | Location |
 |---|---|
-| Research report | [`report/REPORT.md`](report/REPORT.md) (design, results, error analysis, limitations, next steps); extended version with all evidence and the exploratory study: [`report/REPORT_FULL.md`](report/REPORT_FULL.md) |
+| Research report | **PDF: [`report/REPORT.pdf`](report/REPORT.pdf)** (8 pages; submitted version). Source: [`report/REPORT.md`](report/REPORT.md) (design, results, error analysis, limitations, next steps); extended version with all evidence and the exploratory study: [`report/REPORT_FULL.md`](report/REPORT_FULL.md) |
 | Task specification | [`docs/assignment.md`](docs/assignment.md) |
 | Full reproduction guide | [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) |
 | Post-hoc exploratory results | [`docs/EXPLORATORY_RESULTS.md`](docs/EXPLORATORY_RESULTS.md) (validation only) |
@@ -157,7 +157,7 @@ After the formal results were analysed, a separate exploratory study (branch `ex
   - Like is not systematically lower.
   - The lead holds at nearly every epoch, so it is not an early-stopping artefact.
   - Same seed numbers are not paired initialisations.
-- **Seeds matter.** Across three U0 seeds, the 4-task mean val R@20 is .1220 ± .0036 (range .0072), larger than the user-bootstrap uncertainty. Single-seed differences below about .007 are not interpretable.
+- **Seeds matter.** Across three U0 seeds, the 4-task mean val R@20 is .1220 ± .0036. The observed range of .0072 is larger than the user-bootstrap uncertainty; it is not a statistical threshold. Single-seed differences of that size should be read with caution.
 - **Learning rate.** lr 5e-4 is numerically higher than the formal lr 1e-3 on all three seeds (+.0048 on average, about one seed std). The gain comes mainly from like; long view is seed-dependent.
 - **Temperature.** τ = 0.1 lifts long view and lowers like, leaving the mean unchanged.
 - **Against ALS on validation.**
@@ -262,9 +262,9 @@ docs/           task specification, reproducibility guide, exploratory results
 | where | what |
 |---|---|
 | This repository | Source, configs, tests, small result files (metrics, bootstrap CSVs, frames summary, audits) and the report |
-| [Google Drive](https://drive.google.com/drive/folders/1VRXe8liHr7IiZfjhHi-K9HIZbtqeaT8U?usp=sharing) | The 5 complete formal runs (checkpoints, exported embeddings, ID mappings, per-user metrics, parity, logs); processed data and baseline per-user tables; the results and audit bundle; Cursor coding-agent session logs. `00_START_HERE.md` is the navigation page, and `MANIFEST_SHA256.txt` lists every file's hash |
+| [Google Drive](https://drive.google.com/drive/folders/1VRXe8liHr7IiZfjhHi-K9HIZbtqeaT8U?usp=sharing) | The 5 complete formal runs (checkpoints, exported embeddings, ID mappings, per-user metrics, parity, logs); processed data and baseline per-user tables; the results and audit bundle; Cursor coding-agent session logs; and `05_Exploratory_Experiments.zip`, the post-hoc exploratory Waves 1–3 (11 runs, validation only, kept separate from the formal bundle). `00_START_HERE.md` is the navigation page, and `MANIFEST_SHA256.txt` lists every file's hash |
 
-The research report is [`report/REPORT.md`](report/REPORT.md); the extended version is [`report/REPORT_FULL.md`](report/REPORT_FULL.md).
+The research report is [`report/REPORT.pdf`](report/REPORT.pdf) (source [`report/REPORT.md`](report/REPORT.md)); the extended version is [`report/REPORT_FULL.md`](report/REPORT_FULL.md).
 
 ## 9. Limitations
 

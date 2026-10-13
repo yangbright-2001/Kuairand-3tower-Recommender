@@ -38,7 +38,7 @@ Unabridged report and audit evidence: [`REPORT_FULL.md`](REPORT_FULL.md). All me
 
 **Data.** There are 1,436,609 raw rows from 27,077 users on 7,551 videos, and the catalog has 7,583 videos. Long view is positive on 33.2% of rows and like on only 1.85%.
 
-**Music.** It is almost one-to-one with video: of 7,201 non-zero music IDs, only 112 are shared, by at most 15 videos. `music_id = 0` (204 videos) means "no music": it is never a music candidate or music ground truth, and gets a learnable NO_MUSIC embedding.
+**Music.** It is almost one-to-one with video: of 7,201 non-zero music IDs, only 112 are shared, by at most 15 videos. `music_id = 0` (204 videos) is treated as a "no music" sentinel. This is our assumption; the data dictionary does not confirm it. It is never a music candidate or music ground truth, and gets a learnable NO_MUSIC embedding.
 
 **Cleaning.** Before the split, keyed on (user, video, time):
 - 21,987 exact duplicates are collapsed;
@@ -139,7 +139,7 @@ $$\ell_r=-\log\frac{\exp(\cos(u_r,i_{y_r})/\tau)}{\sum_{c\notin \mathrm{FN}(r)}\
 
 # 2. Results
 
-All numbers are test results from `results/m5/`. A star (\*) marks a 95% CI that excludes 0; full metrics are in `tables/`.
+§2.1–2.3 report formal **test** results from `results/m5/`. §2.4 is a separate post-hoc **validation** study. A star (\*) marks a 95% CI that excludes 0; full metrics are in `tables/`.
 
 ## 2.1 Main comparison
 
@@ -217,6 +217,8 @@ One configuration flag changed, everything else as U0; paired difference vs U0.
 - CIs are paired user bootstraps. They cover user sampling, not training randomness. Seed statistics use n = 3, so they are descriptive.
 - Same-config reruns reproduce the formal U0 (job 27) and the formal no-music run (job 35) bitwise.
 
+<div style="break-inside: avoid; page-break-inside: avoid;">
+
 **Table 4. Validation R@20, three seeds per setting (mean ± std); brackets give the per-seed range of the same-seed difference vs U0.**
 
 | setting | video LV | music LV | video like | music like | 4-task mean |
@@ -227,6 +229,8 @@ One configuration flag changed, everything else as U0; paired difference vs U0.
 | lr 5e-4 | .1266 ± .0046 | .1320 ± .0068 | .1229 ± .0061 | .1253 ± .0076 | .1267 ± .0035 |
 | Δ lr 5e-4 − U0 | +.0010 [−.005, +.004] | +.0035 [−.010, +.015] | +.0082 [+.003, +.016] | +.0063 [+.002, +.011] | +.0048 [+.003, +.006] |
 | τ 0.1 (seed 0 only), Δ vs U0 s0 | +.0085\* | +.0094\* | −.0114\* | −.0083 | −.0005 |
+
+</div>
 
 <img src="../results/explore/wave3/figures/fig2_nomusic_minus_u0.png" alt="Same-seed differences no-music minus U0, validation R@20" width="74%">
 
@@ -241,7 +245,7 @@ One configuration flag changed, everything else as U0; paired difference vs U0.
 - On long-view NDCG@20, no-music is above pure ALS on 6/6 seed-task pairs (+.003 to +.004, nominal 95% CIs exclude 0). This is a secondary metric, uncorrected for multiple comparisons and not confirmed on test.
 
 **Tuning.**
-- Seed variation of the 4-task mean (range .0072) exceeds user-bootstrap uncertainty, so single-seed gains of that size are not interpretable.
+- Across the three U0 seeds, the 4-task mean spans .0072. This is the observed range, not a statistical threshold, but it exceeds user-bootstrap uncertainty, so single-seed gains of that size should be read with caution.
 - lr 5e-4 is higher on 3/3 seeds, but by about one seed std, mostly on like, and LV changes sign across seeds.
 - τ = 0.1 (one seed) moves performance from like to LV without changing the mean.
 
@@ -253,7 +257,7 @@ Details: [`REPORT_FULL.md`](REPORT_FULL.md) §2.5 and [`docs/EXPLORATORY_RESULTS
 
 # 3. Error analysis
 
-Post-hoc breakdowns of the test results (`results/final_analysis/ERROR_ANALYSIS.md`), never used for any choice.
+Post-hoc breakdowns of the test results (`results/final_analysis/ERROR_ANALYSIS.md`). They were not used for any choice in the formal v1, but they did motivate the later exploratory study (§2.4).
 
 **E1. The like gain over pure ALS is mostly coverage.**
 - *Observed:* 608 of the 1,924 like users have no prior like, so pure ALS cannot score them; on them U0 gains +.086\*. On users with a prior like, U0 − pure ALS is only +.012 [−.005, +.029], and U0 is *below* ALS aux (−.022\*).
