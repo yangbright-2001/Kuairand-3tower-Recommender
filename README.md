@@ -1,235 +1,223 @@
-# KuaiRand-Pure multi-action three-tower retrieval
+# KuaiRand-Pure: multi-action three-tower retrieval for videos and background music
 
-This is a research take-home. On [KuaiRand-Pure](https://kuairand.com/), we retrieve **videos** and their **background-music IDs** for two engagement actions, **long view** and **like**. That gives four full-catalog retrieval tasks: video/long view, video/like, music/long view and music/like.
+## 1. Overview
 
-The three-tower model (user / video / music) is compared with Popularity and implicit ALS. All models run under one leakage-controlled temporal protocol and are scored by one shared evaluator with paired bootstrap CIs.
+### 1.1 What it does
 
-- **Report:** [`report/REPORT.md`](report/REPORT.md). It covers design, results, error analysis, limitations and next steps, with figures in `report/figures/` and full tables in `report/tables/`.
-- **Specification:** [`docs/assignment.md`](docs/assignment.md).
-- **Design decisions:** [`PLAN.md`](PLAN.md) §3b (protocol), §3c (evaluator and baselines) and §3d (model).
-- **Progress log:** [`PROGRESS.md`](PROGRESS.md).
-- **Requirement-by-requirement audit:** `artifacts/final_compliance_review/ASSIGNMENT_COMPLIANCE_AUDIT.md` (the artifacts bundle).
+A three-tower model (user / video / music) trained on [KuaiRand-Pure](https://kuairand.com/) retrieves, from the full catalog, both **videos** and their **background-music IDs** for two actions, **long view** and **like**. That gives four tasks:
 
-## Headline results
+- video / long view
+- video / like
+- music / long view
+- music / like
 
-Test split, full catalog, seen-masked ranking; Recall@20 with 95% paired user-bootstrap CIs.
+### 1.2 Baselines and protocol
 
-| model | video LV | video like | music LV | music like |
-|---|---:|---:|---:|---:|
-| Popularity | .0806 | .0716 | .0856 | .0726 |
-| ALS (pure) | **.1244** | .0555 | **.1282** | .0586 |
-| ALS (like + 0.3·LV) | – | **.1008** | – | **.1054** |
-| 3T-U0 (main: ID + history) | .1124 | .0913 | .1162 | .1022 |
-| 3T-U1 (+ user snapshot; leakage risk) | .1274 | .0859 | .1321 | .0864 |
+The model is compared with Popularity and implicit ALS, under one leakage-controlled temporal protocol, scored by one shared evaluator with paired user-bootstrap confidence intervals.
 
-- U0 beats Popularity on all four tasks.
-- It loses to pure ALS on long view (−0.012, significant) and beats it on like.
-- It is statistically tied with the auxiliary-signal ALS on like.
-- In the controlled cold-video experiment, the content path clearly beats random *among held-out videos*, but is not significantly better than random on the full catalog.
+### 1.3 Quick links
 
-These negative results are reported as is; see the report for the full picture.
+| Resource | Location |
+|---|---|
+| Research report | [`report/REPORT.md`](report/REPORT.md) (design, results, error analysis, limitations, next steps) |
+| Task specification | [`docs/assignment.md`](docs/assignment.md) |
+| Full reproduction guide | [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) |
+| Trained runs, embeddings, logs | [Google Drive bundle](https://drive.google.com/drive/folders/1VRXe8liHr7IiZfjhHi-K9HIZbtqeaT8U?usp=sharing) (start with `00_START_HERE.md`) |
+| Design decisions / progress log | [`PLAN.md`](PLAN.md) · [`PROGRESS.md`](PROGRESS.md) |
 
-## Repository layout
+## 2. Key findings
 
-```
-src/kuairand_rec/
-  data/        io (allowed-file loaders), clean, split, catalog (catalogs + train-only vocabs),
-               history (strict-past history + uncapped seen mask), train_stats, pipeline (M2 CLI)
-  audit/       dataset audit (M1 CLI)
-  eval/        views (train_view / history_view), frame (GT / mask / population), metrics, evaluator
-  baselines/   popularity, als (implicit), run (M3 CLI)
-  models/      features, towers, loss, data (samples / Pos_train / batches), train (M4 CLI),
-               evaluation (validation / selection), export, inference, parity (CLI), retrieve (CLI),
-               artifacts (fingerprints), benchmark (CLI)
-  experiments/ bootstrap, buckets, sources, analysis (M5 CLI), cold_video (M5 CLI)
-configs/       one YAML per step (data, baselines, threetower_{smoke,u0,u1,cold_u0,abl_nohist,abl_nomusic},
-               cold_video, m5_analysis)
-scripts/       audit_m3_correctness.py, audit_final_compliance.py, error_analysis.py,
-               make_report_tables.py, check_report_claims.py (+ superseded audit_phase_a*.py)
-tests/         259 CPU tests (hand-built fixtures + real-data checks that skip if data is absent)
-results/       small committed outputs (audit, data report, baselines, M5, final audit / analysis)
-report/        REPORT.md, figures/, tables/
-artifacts/     (git-ignored, shipped separately) checkpoints, exports, run logs, review documents
-```
+Test split, full catalog, seen-masked ranking, Recall@20, 95% paired bootstrap (1,000 user resamples). \* = CI excludes 0.
 
-## Setup
+- **U0 beats Popularity on all four tasks.** U0 is the main, metadata-free model (user ID + strict-past history). The gains are +.020\* to +.032\*.
+- **U0 vs pure implicit ALS is mixed:**
+  - *better* on both like tasks (+.036\* video, +.044\* music);
+  - *worse* on both long-view tasks (−.012\* each).
+- **Against a stronger like baseline there is no significant edge.** That baseline is ALS with an auxiliary long-view signal: −.009 [−.025, +.005] video, −.003 [−.019, +.014] music.
+- **Controlled cold-video holdout** (750 videos removed from training):
+  - **among held-out videos only**, the content path clearly beats the same-condition baselines (+.078\* over random on long view);
+  - **on the full catalog** it is not distinguishable from random (+.0014 [−.0000, +.0032]).
+- **Ablations:**
+  - removing history hurts long view (−.012\* / −.011\*);
+  - removing the music input to the video tower **improves** long view (+.010\* / +.009\*). This is a negative result for that design choice.
+- **Correctness was prioritised over winning:**
+  - chronological split;
+  - strict-past histories;
+  - train-only statistics;
+  - no future-leaking statistics file;
+  - bitwise export/direct score parity;
+  - a requirement-by-requirement audit.
 
-**Environment.**
-- Python 3.12 with [uv](https://docs.astral.sh/uv/). The pinned dependencies are in `uv.lock`: torch 2.14.1, implicit 0.7.3, pandas 3.0.6 and numpy 2.5.4.
-- Install with `uv sync`.
-- Optionally, `export MPLCONFIGDIR=/tmp/mpl` avoids a matplotlib cache rebuild when the home directory is read-only.
+## 3. Three-tower architecture (formal v1)
 
-**Data.**
-- Download `KuaiRand-Pure.tar.gz` from [Zenodo](https://zenodo.org/records/10439422) (md5 `0820331067a3784d9691136f772b35a7`) and extract it to `data/raw/KuaiRand-Pure/data/`.
-- Alternatively, set `KUAIRAND_RAW_DIR` to the extracted `data/` directory.
-- Raw files are read-only.
-- Only the two standard logs, `user_features_pure.csv` and `video_features_basic_pure.csv` are read.
-- The loader refuses `video_features_statistic_pure.csv` (future-leaking monthly aggregates) and the random log.
+![Formal v1 three-tower architecture](report/figures/arch_threetower.png)
 
-## Reproduction workflow
+### 3.1 Towers
 
-Every step is a CLI with a YAML config. The commands below were checked against `--help`. Indicative runtimes are for an M1 Mac (CPU) or one A100.
+- **One shared music tower.** It runs once per step. The video tower gathers its music input from that same output, and the video losses back-propagate into the music tower.
+- **The video tower** combines video ID, author, the music representation and metadata.
+- **The user tower** combines user ID with a 2-layer Transformer over the last 100 events strictly before the prediction time. History tokens are the shared video embeddings plus feedback, play-ratio, recency and position.
+
+### 3.2 Representations and heads
+
+- Each tower outputs a 128-d base embedding.
+- Separate `Linear(128→64) + L2` heads are used per target × action: 4 on the user side, 2 for video and 2 for music.
+- The score is cosine similarity.
+
+### 3.3 Training objective
+
+- Per task: an exact full softmax over all train-vocabulary items (τ = 0.05). There is no sampling, so no logQ correction is needed.
+- Duplicate positives share one candidate column.
+- Other train positives of the same user and task are masked as false negatives. The row's own label is never masked.
+- The four task losses are summed with equal weights.
+
+### 3.4 U0 vs U1
+
+- **U0** (main) uses no user metadata.
+- **U1** adds 21 user-snapshot fields whose historical availability could not be verified, so it is reported with a leakage caveat and is not the headline.
+
+The code is in [`models/towers.py`](src/kuairand_rec/models/towers.py) and [`models/loss.py`](src/kuairand_rec/models/loss.py); the diagram is drawn by [`scripts/draw_architecture.py`](scripts/draw_architecture.py).
+
+## 4. Experimental results
+
+All figures are generated from the formal result CSVs by [`scripts/make_report_tables.py`](scripts/make_report_tables.py). Error bars are 95% paired-bootstrap CIs, and every y-axis starts at 0.
+
+### 4.1 Main comparison
+
+Each task is evaluated on the same users for every model.
+
+![Test Recall@20, four tasks](report/figures/fig1_baselines.png)
+
+- U0 is above Popularity everywhere.
+- U0 is below pure ALS on long view and above it on like.
+- On like, U0 is statistically tied with ALS aux.
+- U1 reaches ALS level on long view, with the snapshot caveat.
+- Source: `results/m5/main_formal/bootstrap_models.csv`. Full R/NDCG@10/20/50 are in [`report/tables/t1_main_metrics.md`](report/tables/t1_main_metrics.md); all paired differences are in [`t2_paired_diffs.md`](report/tables/t2_paired_diffs.md).
+
+### 4.2 Controlled cold-video experiment
+
+Only same-condition baselines are shown; the seen-video reference is context, not a baseline.
+
+![Cold-video Recall@20](report/figures/fig2_cold_video.png)
+
+- **Left, full catalog (7,583 videos):** cold videos rarely reach the top 20, and the result is not distinguishable from random.
+- **Right, held-out videos only (750):** the cold model ranks clearly better than cold Pop, cold ALS (0 by construction) and the analytical random ranking.
+- Source: `results/m5/cold_video/eval_671dde9_job33/`. Full table: [`report/tables/t5_cold_video.md`](report/tables/t5_cold_video.md).
+
+### 4.3 Ablations
+
+Each is a single configuration flag, with the same data, seed and selection rule.
+
+![Ablation differences vs U0](report/figures/fig4_ablations.png)
+
+- No history: lower long view.
+- No music input: higher long view.
+- Like-task differences are mostly not significant.
+- History-length buckets and the error analysis are in the [report](report/REPORT.md) §2.3 and §3.
+
+## 5. Quick start
+
+### 5.1 Environment and tests
+
+`uv run` executes a command inside the project's uv-managed Python environment (Python 3.12, pinned by `uv.lock`).
 
 ```bash
-# M1  Dataset audit (no filtering; ~30 s, ~2 min in a sandbox) -> results/audit/{AUDIT.md, audit.json, figures/}
-uv run python -m kuairand_rec.audit.run --out results/audit
-
-# M2  Clean, split, catalogs, train-only vocabs/stats (~12 s, deterministic)
-#     -> data/processed/ (git-ignored), results/data_pipeline/{DATA_REPORT.md, data_report.json}
-uv run python -m kuairand_rec.data.pipeline --config configs/data.yaml
-
-# M3  Shared evaluator frames + Popularity + ALS (val grid, then test once; ~10 min)
-#     -> results/baselines/{BASELINES.md, metrics.csv, als_tuning.csv, frames_summary.json, run_meta.json}
-uv run python -m kuairand_rec.baselines.run --config configs/baselines.yaml
-uv run python scripts/audit_m3_correctness.py          # independent oracle (~3 min; exit 1 on failure)
-
-# M4  Three-tower: CPU smoke on real data (5 steps -> val selection -> export -> metrics -> parity; ~7 min)
-RUN_ROOT=/tmp/kuairand_runs uv run python -m kuairand_rec.models.train --config configs/threetower_smoke.yaml --max_steps 5
-
-# M4  Formal runs (GPU; ~13 min train + ~5 min export/eval + ~5 min parity each). Output goes to
-#     $RUN_ROOT/threetower/<exp>/<timestamp>/ (or --out_dir); the trainer refuses dirs inside the worktree,
-#     and require_clean_git: true refuses a dirty tree.
-uv run python -m kuairand_rec.models.train --config configs/threetower_u0.yaml
-uv run python -m kuairand_rec.models.train --config configs/threetower_u1.yaml
-uv run python -m kuairand_rec.models.parity --run_dir <run_dir>          # re-run strict parity (also run by train)
-uv run python -m kuairand_rec.models.benchmark --config configs/threetower_u0.yaml --steps 300 --val_once
-
-# M5  Controlled cold-video experiment
-uv run python -m kuairand_rec.experiments.cold_video select --config configs/cold_video.yaml   # draws H once (train only)
-uv run python -m kuairand_rec.models.train --config configs/threetower_cold_u0.yaml             # GPU, H removed
-uv run python -m kuairand_rec.experiments.cold_video evaluate --config configs/cold_video.yaml \
-    --cold_run <cold_u0 run dir> --seen_run <u0 run dir> --out_dir results/m5/cold_video/<name>
-
-# M5  Ablations (GPU; single-flag configs) + main analysis (bootstrap CIs, history buckets; CPU, seconds)
-uv run python -m kuairand_rec.models.train --config configs/threetower_abl_nohist.yaml
-uv run python -m kuairand_rec.models.train --config configs/threetower_abl_nomusic.yaml
-uv run python -m kuairand_rec.experiments.analysis --config configs/m5_analysis.yaml \
-    --run u0=<u0 run> --run u1=<u1 run> --run abl_nohist=<run> --run abl_nomusic=<run>
-
-# Report tables / figures, error analysis, claim check (read-only on formal results)
-uv run python scripts/make_report_tables.py
-uv run python scripts/error_analysis.py
-uv run python scripts/check_report_claims.py
+uv sync                    # install the environment
+uv run pytest              # 259 CPU tests (~2 min); real-data tests skip without data
 ```
 
-**GPU runs.** The formal runs used Slurm with `artifacts/m5_gpu_jobs/scripts_server/train_threetower_m5.sbatch`. That script checks the expected git SHA and a clean worktree, sets `OPENBLAS_NUM_THREADS=1` and `CUBLAS_WORKSPACE_CONFIG=:4096:8`, and then calls `models.train` with `--out_dir`.
+### 5.2 Data pipeline and CPU smoke run
 
-**Reproducing the formal analysis from the shipped artifacts.**
-- `configs/m5_analysis.yaml` points U0 and U1 at `artifacts/`. Add `--run abl_nohist=artifacts/abl_nohist/671dde9_seed0_job34 --run abl_nomusic=artifacts/abl_nomusic/671dde9_seed0_job35` for the ablations.
-- For the cold-video evaluation, use `--cold_run artifacts/cold_u0/671dde9_seed0_job33 --seen_run artifacts/u0/9218a76_seed0_job27`.
-- Both reproduce `results/m5/main_formal/` and `results/m5/cold_video/eval_671dde9_job33/` locally (see `results/final_audit/REPRODUCTION.md`).
+Download KuaiRand-Pure from [Zenodo](https://zenodo.org/records/10439422) into `data/raw/KuaiRand-Pure/data/`, then run:
 
-## Evaluation protocol in one paragraph
-
-**Split and representation.**
-- The logs are split globally by time at CST midnights: train up to 04-16, val 04-17–04-25, test 04-26–05-08.
-- Users are frozen at T_test. Each user is represented by their history strictly before T_test (train + val events), capped at the 100 most recent events.
-
-**Ground truth and ranking.**
-- GT is the de-duplicated set of a user's test positives. Out-of-catalog items, `music_id = 0` and items the user interacted with before T_test are removed from it.
-- Seen items are masked using all pre-T_test interactions, uncapped.
-- The catalog is all 7,583 metadata videos and all 7,201 non-zero music IDs.
-- Ties are broken by catalog row.
-
-**Metrics and population.**
-- Recall@K = hits / |GT|. NDCG@K uses binary gain.
-- Users with a non-empty GT and at least one history event are evaluated. Cold users (no history) are reported separately.
-
-**Fitting and statistics.**
-- Every fitted quantity (vocabularies, scalers, Popularity, ALS, U1 vocabulary) uses train only. Validation selects ALS configs and three-tower epochs. Test is evaluated once.
-- CIs: 1,000 paired user-level bootstrap resamples with percentile intervals.
-
-## Architecture
-
-- **Music tower:** music ID + music type, through an MLP + LayerNorm, gives a 128-d embedding.
-- **Video tower:** video ID, author, the shared music-tower output (computed once per step) and metadata (type, upload type/date, tags, log duration/width/height with missing flags) give a 128-d embedding.
-- **User tower:** user ID plus a 2-layer Transformer history encoder over the shared video embeddings, with feedback bits, play ratio, recency and position. U1 adds 21 snapshot fields. The output is 128-d.
-- **Heads:** separate Linear(128 → 64) + L2 projections per target × action (4 user, 2 video, 2 music). The score is cosine similarity.
-
-**Training.**
-- The loss is an exact full softmax over the train-vocab items per task (τ = 0.05). Duplicate positives share one candidate column.
-- Same-user, same-task train positives are masked as false negatives; the label is never masked.
-- The four task losses are summed with equal weights.
-- PAD and OOV rows are fixed at zero, and ID dropout of 0.1 trains the zero-ID content path for unseen items and users.
-
-## Export and `retrieve()`
-
-Each run exports, to `<run_dir>/export/`:
-- item matrices for every catalog row;
-- user matrices at T_val and T_test;
-- id lists and the T_test seen-mask CSR;
-- a `manifest.json` with every file's sha256, the git SHA, the condition ID and the data fingerprint.
-
-**Reported metrics.** These come only from `ExportedScorer` (numpy float32). A separate process reloads the checkpoint and recomputes the scores (`models.parity`). Across 2,048 stratified users, every catalog row, the 4 tasks and both val and test, the scores are bitwise equal, and the top-50 lists and per-user metrics are identical.
-
-**`retrieve()` in Python.**
-
-```python
-from kuairand_rec.models.retrieve import load_retriever
-retrieve = load_retriever("artifacts/u0/9218a76_seed0_job27/export")
-retrieve(user_id=1, target="video", action="long_view", k=10)   # [(video_id, cosine score), ...]
+```bash
+uv run python -m kuairand_rec.data.pipeline --config configs/data.yaml        # M2, ~12 s
+RUN_ROOT=/tmp/kuairand_runs uv run python -m kuairand_rec.models.train \
+    --config configs/threetower_smoke.yaml --max_steps 5                      # CPU smoke, ~7 min
 ```
 
-**`retrieve()` from the command line.**
+The smoke run trains 5 steps, then performs selection, export, evaluation and strict export/direct parity end to end.
+
+### 5.3 Inspect results without training
+
+Reading the results needs no training. See `results/` and the report, or download a trained run from Drive and query it:
 
 ```bash
 uv run python -m kuairand_rec.models.retrieve --export_dir artifacts/u0/9218a76_seed0_job27/export \
-    --user_id 1 --target video --action long_view --k 10      # --no_mask_seen to include seen items
+    --user_id 1 --target video --action long_view --k 10
 ```
 
-**Behaviour.**
-- Users are represented at T_test.
-- Items the user interacted with before T_test are excluded by default.
-- An unknown user raises `KeyError`.
-- The scores and ranking are exactly those of the evaluator. `tests/test_retrieve_interface.py` recomputes the formal U0 R@20 and NDCG@20 from `retrieve()` output.
+## 6. Reproducibility
 
-## Tests
+### 6.1 Local CPU
 
-```bash
-uv run pytest            # 259 tests, ~2 min on an M1; real-data tests skip if data/processed is absent
+- Setup, tests and the CPU smoke run.
+- M1 dataset audit, M2 data pipeline, M3 Popularity/ALS baselines and the independent M3 oracle.
+- Cold-video H selection and evaluation, bootstrap/bucket analysis, `retrieve()` and parity re-checks.
+- Report tables and figures.
+
+### 6.2 Remote GPU (Slurm)
+
+- The five formal three-tower trainings: U0, U1, cold U0, no-history, no-music. Each run also exports, evaluates and checks parity in the same job.
+- The formal runs were submitted with `sbatch` after SSH-ing to the GPU server. The job runs on a compute node and does not depend on the SSH session.
+- The batch scripts (with our cluster paths, which must be replaced) are in the Drive bundle.
+
+The stage-by-stage commands, their order and dependencies, which outputs overwrite committed files, and how to re-derive every formal analysis from the Drive runs on a CPU are all in [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md).
+
+### 6.3 Report helper scripts
+
+Both are read-only on the formal results, and neither trains or re-scores a model.
+
+- [`scripts/make_report_tables.py`](scripts/make_report_tables.py) regenerates the Markdown tables in `report/tables/` and figures 1–4 in `report/figures/` from the formal M5 and cold-video CSVs.
+- [`scripts/check_report_claims.py`](scripts/check_report_claims.py) parses `report/REPORT.md` and checks 321 numbers against the formal CSV/JSON files, including significance stars:
+  - every cell of the key result tables;
+  - a fixed list of anchored prose numbers.
+
+  Qualitative text, figure captions and dataset/model descriptions are listed as manual-review scope in `results/final_audit/report_claims.json`.
+
+### 6.4 Formal runs and provenance
+
+
+| run | training commit | condition |
+|---|---|---|
+| U0, U1 | `9218a76` | normal |
+| cold U0, no-history, no-music | `671dde9` | normal / cold (H = 750 videos) |
+
+- Each run records its git SHA, config, data and condition fingerprints, the selection log (`test_used_for_selection: false`) and per-file sha256 hashes.
+- Post-processing ran at `671dde9`.
+- Every stage was re-run locally and matches the formal outputs ([`results/final_audit/REPRODUCTION.md`](results/final_audit/REPRODUCTION.md)).
+
+## 7. Repository structure
+
+```
+src/kuairand_rec/
+  data/         loaders (allowed files only), cleaning, split, catalogs + train-only vocabs, history, pipeline
+  audit/        dataset audit
+  eval/         train/history views, evaluation frames (GT, seen mask, population), metrics, evaluator
+  baselines/    popularity, implicit ALS, baseline runner
+  models/       features, towers, loss, training, validation, export, parity, retrieve
+  experiments/  bootstrap, history buckets, cold-video experiment, main analysis
+configs/        one YAML per stage (data, baselines, 6 three-tower configs, cold video, analysis)
+tests/          259 tests for leakage, masking, metrics, loss, parity, cold-video isolation
+scripts/        report tables/figures, claim check, error analysis, audits, architecture diagram
+results/        committed small outputs: audit, data report, baselines, M5 analysis, final audit
+report/         REPORT.md, figures/, tables/
+docs/           task specification, reproducibility guide
 ```
 
-The tests are focused on correctness-critical logic:
-- **Leakage:** strict t < t_pred and same-timestamp exclusion, the cap of 100, the feedback delay, invariance to any event at or after t_pred, and cold-video H removal everywhere.
-- **Masking:** the uncapped seen mask, GT de-duplication, sentinel and OOC handling.
-- **Metrics:** hand-computed Recall/NDCG, tie-break, and −inf handling.
-- **Loss:** duplicate positives, the FN mask against a brute-force definition, shared music, and hand-computed CE.
-- **Train-only fitting guards.**
-- **ALS semantics:** fold-in against `implicit`.
-- **Bootstrap:** correctness and determinism.
-- **Export/direct parity, and `retrieve()`.**
+## 8. Artifacts and report
 
-## Official results and provenance
+| where | what |
+|---|---|
+| This repository | Source, configs, tests, small result files (metrics, bootstrap CSVs, frames summary, audits) and the report |
+| [Google Drive](https://drive.google.com/drive/folders/1VRXe8liHr7IiZfjhHi-K9HIZbtqeaT8U?usp=sharing) | The 5 complete formal runs (checkpoints, exported embeddings, ID mappings, per-user metrics, parity, logs); processed data and baseline per-user tables; the results and audit bundle; Cursor coding-agent session logs. `00_START_HERE.md` is the navigation page, and `MANIFEST_SHA256.txt` lists every file's hash |
 
-| run | git SHA | condition | best epoch | artifacts |
-|---|---|---|---:|---|
-| U0 | `9218a76` | normal `133765eb12b75700` | 6 | `artifacts/u0/9218a76_seed0_job27` |
-| U1 | `9218a76` | normal | 8 | `artifacts/u1/9218a76_seed0_job28` |
-| cold U0 | `671dde9` | cold `1eee3839b6cc5c90` (H = 750 videos) | 7 | `artifacts/cold_u0/671dde9_seed0_job33` |
-| no-history | `671dde9` | normal | 6 | `artifacts/abl_nohist/671dde9_seed0_job34` |
-| no-music | `671dde9` | normal | 6 | `artifacts/abl_nomusic/671dde9_seed0_job35` |
+The research report is [`report/REPORT.md`](report/REPORT.md).
 
-**Run artifacts.** Each run directory holds:
-- `config.yaml`, `run_meta.json` (git SHA, data and condition fingerprints, sample counts, timing) and `selection.json` (validation history, with `test_used_for_selection: false`);
-- `best.pt` and `last.pt`;
-- `export/` with its manifest;
-- `metrics.csv` and per-user parquet;
-- `parity.json`, `train_log.jsonl` and the Slurm logs.
+## 9. Limitations
 
-**Checksums.** They are in `artifacts/SHA256SUMS.server` (M4) and `artifacts/m5_gpu_jobs/SHA256SUMS_m5_*.txt` (M5), and all verify.
-
-**Result files.**
-- Formal M5 analysis: `results/m5/main_formal/` (server job 37, git `671dde9`).
-- Formal cold-video evaluation: `results/m5/cold_video/eval_671dde9_job33/`.
-- `results/m5/main/` is an earlier U0/U1-only run of the same analysis. Its rows are identical to the corresponding rows of `main_formal`.
-
-## Known limitations
-
-These are discussed in report §4.
-- One seed per model.
-- U1 uses a user snapshot of unknown date that is no later than 2022-05-02 (inside the test period), so U1 may leak. U0, the main model, uses no user metadata.
-- The 20-minute feedback-delay rule is an assumption.
-- Cold-video retrieval on the full catalog is at random level.
-- The music input to the video tower hurts long view.
-- The formal metrics were scored on Linux. Re-scoring on macOS changes at most 2 users per frame through exact ties at the cut-off (test means ≤ 1.1e-7).
-- Pure contains candidate-pool videos only, so absolute metric levels are not production-comparable.
+- **User metadata.** None of the 21 snapshot fields used by U1 can be shown to be available at the historical prediction time: 2 are time-dependent by definition, and 19 have unknown availability. U0 therefore uses no user metadata. This is a documented deviation from "ID + usable metadata + history".
+- **Cold videos on the full catalog.** The content path ranks new videos sensibly among themselves, but rarely surfaces them against warm videos.
+- **One seed per model.** CIs reflect user sampling, not training variance. Differences of about 0.01 between three-tower variants may not hold across seeds.
+- **Cross-platform numerics.** The formal metrics were scored on Linux. Re-scoring the same exports on macOS changes at most 2 users per frame (test means ≤ 1.1e-7) through exact score ties at the cut-off.
+- **Further caveats.** The 20-minute feedback delay is an assumption, and KuaiRand-Pure keeps candidate-pool videos only. See report §4.
