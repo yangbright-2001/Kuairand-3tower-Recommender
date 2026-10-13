@@ -58,6 +58,17 @@ Planned comparison (val only): lr 1e-3 {x_u0_repro, x_u0_s1 (39), x_u0_s2 (40)} 
 x_lr5e4_s1, x_lr5e4_s2}; same-seed paired differences, means, std, per-task trade-offs; 3 seeds are
 descriptive, not a significance test. Wave 3 (e.g. E2 music fusion) is decided after Wave 2.
 
+## Wave 2 results and Wave 3 gate (status 2026-10-12 21:10 PT)
+
+- Wave 2 completed (jobs 44-46, rc 0, parity PASS). `x_u0_repro` reproduces formal job 27 bitwise.
+  Validation-only analysis in `results/explore/wave2/` (`wave2_analysis.md`, incl. errata on the
+  long-view vs ALS wording): lr 5e-4 is numerically higher on mean val R@20 on 3/3 seeds (+.0048 mean,
+  about one seed std), like-driven; long-view is seed-dependent; no run has a CI-supported long-view
+  advantage over pure ALS (best runs tie).
+- Wave 3: read-only gate review only (`results/explore/wave3_review/`, `scripts/explore/diagnose_longview.py`).
+  **No Wave 3 GPU job has been run.** Gated E2 = No-Go (pure reparameterisation of the first Linear).
+  Proposed next: no-music seed replicates (E-1, config only); stop-gradient fusion (E-2) is deferred.
+
 ## Selection protocol (pre-registered)
 
 - D1-8 unchanged for every run: normal val masked frames at T_val, mean val R@20 over the 4 tasks,

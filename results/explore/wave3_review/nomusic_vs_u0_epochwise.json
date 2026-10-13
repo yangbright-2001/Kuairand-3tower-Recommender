@@ -1,0 +1,113 @@
+{
+ "video_long_view": {
+  "U0 lr1e-3 s0 (job27=44)": {
+   "epochs": 10,
+   "no_music_higher": 10,
+   "mean_diff": 0.007438695901156846
+  },
+  "U0 lr1e-3 s1 (39)": {
+   "epochs": 10,
+   "no_music_higher": 10,
+   "mean_diff": 0.008907961733476157
+  },
+  "U0 lr1e-3 s2 (40)": {
+   "epochs": 9,
+   "no_music_higher": 9,
+   "mean_diff": 0.010200245192071446
+  },
+  "vs_max_of_3_U0_seeds": {
+   "epochs": 9,
+   "no_music_higher": 9
+  }
+ },
+ "video_is_like": {
+  "U0 lr1e-3 s0 (job27=44)": {
+   "epochs": 10,
+   "no_music_higher": 5,
+   "mean_diff": 0.0035000189497461755
+  },
+  "U0 lr1e-3 s1 (39)": {
+   "epochs": 10,
+   "no_music_higher": 8,
+   "mean_diff": 0.004109956531268402
+  },
+  "U0 lr1e-3 s2 (40)": {
+   "epochs": 9,
+   "no_music_higher": 7,
+   "mean_diff": 0.009360340242928743
+  },
+  "vs_max_of_3_U0_seeds": {
+   "epochs": 9,
+   "no_music_higher": 5
+  }
+ },
+ "music_long_view": {
+  "U0 lr1e-3 s0 (job27=44)": {
+   "epochs": 10,
+   "no_music_higher": 9,
+   "mean_diff": 0.00646006114107286
+  },
+  "U0 lr1e-3 s1 (39)": {
+   "epochs": 10,
+   "no_music_higher": 9,
+   "mean_diff": 0.007972021629531784
+  },
+  "U0 lr1e-3 s2 (40)": {
+   "epochs": 9,
+   "no_music_higher": 9,
+   "mean_diff": 0.009511998885060867
+  },
+  "vs_max_of_3_U0_seeds": {
+   "epochs": 9,
+   "no_music_higher": 8
+  }
+ },
+ "music_is_like": {
+  "U0 lr1e-3 s0 (job27=44)": {
+   "epochs": 10,
+   "no_music_higher": 6,
+   "mean_diff": 0.0026405604295181183
+  },
+  "U0 lr1e-3 s1 (39)": {
+   "epochs": 10,
+   "no_music_higher": 6,
+   "mean_diff": 0.0007855838994039854
+  },
+  "U0 lr1e-3 s2 (40)": {
+   "epochs": 9,
+   "no_music_higher": 7,
+   "mean_diff": 0.0027535131735242557
+  },
+  "vs_max_of_3_U0_seeds": {
+   "epochs": 9,
+   "no_music_higher": 5
+  }
+ },
+ "selected_epoch_values": {
+  "video_long_view": {
+   "no_music": 0.13336318158674873,
+   "U0_seed_min": 0.124054762152275,
+   "U0_seed_max": 0.12674695454051887,
+   "U0_seed_mean": 0.1256097984588644
+  },
+  "video_is_like": {
+   "no_music": 0.11766867603004076,
+   "U0_seed_min": 0.10885349719832575,
+   "U0_seed_max": 0.12231970289182602,
+   "U0_seed_mean": 0.11468922668854827
+  },
+  "music_long_view": {
+   "no_music": 0.13521420377119925,
+   "U0_seed_min": 0.12033975915334676,
+   "U0_seed_max": 0.13438493794383624,
+   "U0_seed_mean": 0.12850997157620775
+  },
+  "music_is_like": {
+   "no_music": 0.12481745335847502,
+   "U0_seed_min": 0.11486642370930297,
+   "U0_seed_max": 0.12183201374807842,
+   "U0_seed_mean": 0.11903842143493559
+  }
+ },
+ "caveat": "no-music is ONE seed (job 35, sha 671dde9). It shares only the data order with U0 seed 0; its first video-tower layer has 128 fewer inputs, so parameter initialisation and every later random draw differ -> not a paired comparison. Epochs are autocorrelated."
+}

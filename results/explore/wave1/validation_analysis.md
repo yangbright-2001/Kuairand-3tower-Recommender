@@ -97,7 +97,7 @@ Answers:
 
 - **A. lr = 5e-4 vs U0.** It has the highest mean val R@20 (.1307) and N@20 (.0724). The gain over U0
   s0 is +.0055 R@20 and is spread over all 4 tasks (each +.004 to +.006; CI excludes 0 on both
-  long-view tasks, includes 0 on both like tasks). It exceeds the U0 seed max (.1252) and is
+  long-view tasks, includes 0 on both like tasks). It is numerically above the U0 seed max (.1252) and is
   +.0087 above the 3-seed mean, i.e. about 1.2x the observed seed range (.0072). With one seed of the
   candidate and three of the baseline, this is **a promising but not a demonstrated improvement**.
 - **B. tau.** tau = 0.03 and 0.1 are both within noise of U0 on the primary metric (-.0007 / -.0005).
@@ -135,3 +135,8 @@ differ from the formal config).
 Recommended (pending approval): one wave of three jobs in parallel: `x_u0_repro`, `x_lr5e4_s1`,
 `x_lr5e4_s2` (~30 min wall clock), then a 3-vs-3 seed comparison (U0 {repro, s1, s2} vs lr5e4
 {s0, s1, s2}) on val only. The D1-10 count stays at 3/7 (seed replicates are not new configs).
+
+Errata (2026-10-12 21:00 PT): superseded by the 3-seed x 2-lr analysis in
+`results/explore/wave2/wave2_analysis.md` (lr 5e-4 mean +.0048 over 3 seeds, about one seed std;
+like-driven; long-view seed-dependent). "Exceeds" / "higher" above are numerical, single-seed
+statements. tau 0.1 s0 is numerically above pure ALS on both long-view tasks (CIs include 0).
