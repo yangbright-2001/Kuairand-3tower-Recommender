@@ -1,0 +1,22 @@
+# S9 exploratory run registry (explore/s9-opt). Pre-registered BEFORE any explore GPU job.
+# Selection protocol for every run: PLAN.md D1-8 unchanged (normal val masked frames at T_val,
+# mean R@20 over 4 tasks, N@20 tie-break, earliest wins exact ties, patience 3, <= 30 epochs).
+# Test metrics are computed by the unchanged runner but are SEALED: explore summaries read only
+# val per-user files, selection.json and train_log.jsonl until the user decides on adoption.
+#
+# D1-10 budget: "<= 7 extra configs in total", one change at a time, chosen on val only.
+# Counted = configs that change a training/model knob relative to U0 under the D1-10 list.
+# Seed replicates are D1-10 "optional seeds {1, 2}", not targeted adjustments (not counted).
+# The formal v1 used 0 of the 7 (no targeted adjustment was run; PROGRESS.md, Track A).
+d1_10_budget: 7
+runs:
+  x_u0_s1:  {wave: 1, status: prepared, kind: seed_calibration, d1_10: false, change: {train.seed: 1}}
+  x_u0_s2:  {wave: 1, status: prepared, kind: seed_calibration, d1_10: false, change: {train.seed: 2}}
+  x_lr5e4:  {wave: 1, status: prepared, kind: d1_10_lr,  d1_10: true, change: {train.lr: 5.0e-4}}
+  # Temperature single-variable candidates: prepared only; NOT submitted in Wave 1 (need approval).
+  x_tau003: {wave: null, status: prepared_not_approved, kind: d1_10_tau, d1_10: true, change: {train.tau: 0.03}}
+  x_tau010: {wave: null, status: prepared_not_approved, kind: d1_10_tau, d1_10: true, change: {train.tau: 0.1}}
+  # Wave 2 (code change, separate approval; config not created until the code and tests exist):
+  #   x_musicgate: model.music_fusion = gated, model.music_gate_init = 1.0 (new architecture experiment,
+  #                outside the D1-10 list, counted separately; not part of v1)
+  #   x_u0_repro:  U0 at the explore code SHA with every new switch off (regression, not a candidate)

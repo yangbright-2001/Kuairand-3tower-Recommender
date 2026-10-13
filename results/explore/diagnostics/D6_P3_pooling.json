@@ -1,0 +1,83 @@
+{
+ "method": "U0 best.pt at T_val. D6: final pooling weights on users with 100 tokens; self-attention entropy per layer (mean over heads / query rows). P3: pool_query := 0 (uniform pooling) with everything else fixed, re-evaluated on the 4 val frames. Near-uniform pooling does NOT make the encoder equivalent to mean pooling (the self-attention layers still mix).",
+ "D6": {
+  "first3000_video_lv": {
+   "n_users": 3000,
+   "n_full_100": 272,
+   "pool_entropy_mean": 4.5991,
+   "uniform_entropy": 4.6052,
+   "pool_eff_tokens": 99.4,
+   "pool_mass_last_k": {
+    "1": 0.009999999776482582,
+    "5": 0.04899999871850014,
+    "10": 0.0989999994635582,
+    "20": 0.19900000095367432,
+    "50": 0.5019999742507935
+   },
+   "self_attention_entropy_mean_by_layer": {
+    "0": 2.6356,
+    "1": 1.1984
+   }
+  },
+  "all_val_users": {
+   "n_users": 18745,
+   "n_full_100": 1678,
+   "pool_entropy_mean": 4.5992,
+   "uniform_entropy": 4.6052,
+   "pool_eff_tokens": 99.4,
+   "pool_mass_last_k": {
+    "1": 0.009999999776482582,
+    "5": 0.04899999871850014,
+    "10": 0.0989999994635582,
+    "20": 0.19900000095367432,
+    "50": 0.5009999871253967
+   },
+   "self_attention_entropy_mean_by_layer": {
+    "0": 2.6401,
+    "1": 1.1915
+   }
+  }
+ },
+ "P3": {
+  "original": {
+   "video_long_view": {
+    "recall@20": 0.126028,
+    "ndcg@20": 0.078141
+   },
+   "video_is_like": {
+    "recall@20": 0.12232,
+    "ndcg@20": 0.058945
+   },
+   "music_long_view": {
+    "recall@20": 0.130805,
+    "ndcg@20": 0.080313
+   },
+   "music_is_like": {
+    "recall@20": 0.121832,
+    "ndcg@20": 0.059873
+   }
+  },
+  "uniform_pooling": {
+   "video_long_view": {
+    "recall@20": 0.125795,
+    "ndcg@20": 0.078015
+   },
+   "video_is_like": {
+    "recall@20": 0.124378,
+    "ndcg@20": 0.059994
+   },
+   "music_long_view": {
+    "recall@20": 0.130747,
+    "ndcg@20": 0.080424
+   },
+   "music_is_like": {
+    "recall@20": 0.120187,
+    "ndcg@20": 0.059441
+   }
+  },
+  "mean_r20": {
+   "original": 0.125246,
+   "uniform_pooling": 0.125277
+  }
+ }
+}

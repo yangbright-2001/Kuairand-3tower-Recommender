@@ -1,0 +1,445 @@
+{
+ "method": "selection.json val_history (D1-8 validation path). Epoch-wise counts share only the data order (epoch_batches(seed, epoch)); model init / dropout RNG consumption and code SHA differ, and epochs are autocorrelated -> not independent trials.",
+ "runs": {
+  "u0": {
+   "best_epoch": 6,
+   "best_score": 0.125246,
+   "epochs": [
+    {
+     "epoch": 0,
+     "score": 0.0907,
+     "tie": 0.0495,
+     "video_long_view": 0.094,
+     "video_is_like": 0.0772,
+     "music_long_view": 0.0992,
+     "music_is_like": 0.0922
+    },
+    {
+     "epoch": 1,
+     "score": 0.0956,
+     "tie": 0.0552,
+     "video_long_view": 0.1031,
+     "video_is_like": 0.0841,
+     "music_long_view": 0.1074,
+     "music_is_like": 0.0878
+    },
+    {
+     "epoch": 2,
+     "score": 0.1071,
+     "tie": 0.0581,
+     "video_long_view": 0.1061,
+     "video_is_like": 0.1107,
+     "music_long_view": 0.1104,
+     "music_is_like": 0.1014
+    },
+    {
+     "epoch": 3,
+     "score": 0.1169,
+     "tie": 0.0631,
+     "video_long_view": 0.117,
+     "video_is_like": 0.1137,
+     "music_long_view": 0.1183,
+     "music_is_like": 0.1187
+    },
+    {
+     "epoch": 4,
+     "score": 0.1176,
+     "tie": 0.0645,
+     "video_long_view": 0.1174,
+     "video_is_like": 0.1128,
+     "music_long_view": 0.1233,
+     "music_is_like": 0.117
+    },
+    {
+     "epoch": 5,
+     "score": 0.1145,
+     "tie": 0.0623,
+     "video_long_view": 0.1209,
+     "video_is_like": 0.1037,
+     "music_long_view": 0.1241,
+     "music_is_like": 0.1093
+    },
+    {
+     "epoch": 6,
+     "score": 0.1252,
+     "tie": 0.0693,
+     "video_long_view": 0.126,
+     "video_is_like": 0.1223,
+     "music_long_view": 0.1308,
+     "music_is_like": 0.1218
+    },
+    {
+     "epoch": 7,
+     "score": 0.1169,
+     "tie": 0.0642,
+     "video_long_view": 0.1241,
+     "video_is_like": 0.1055,
+     "music_long_view": 0.1304,
+     "music_is_like": 0.1076
+    },
+    {
+     "epoch": 8,
+     "score": 0.1222,
+     "tie": 0.0677,
+     "video_long_view": 0.1301,
+     "video_is_like": 0.1107,
+     "music_long_view": 0.1372,
+     "music_is_like": 0.111
+    },
+    {
+     "epoch": 9,
+     "score": 0.1149,
+     "tie": 0.0638,
+     "video_long_view": 0.1266,
+     "video_is_like": 0.1026,
+     "music_long_view": 0.1313,
+     "music_is_like": 0.0991
+    }
+   ]
+  },
+  "u1": {
+   "best_epoch": 8,
+   "best_score": 0.12647,
+   "epochs": [
+    {
+     "epoch": 0,
+     "score": 0.0906,
+     "tie": 0.0485,
+     "video_long_view": 0.0913,
+     "video_is_like": 0.0843,
+     "music_long_view": 0.0914,
+     "music_is_like": 0.0956
+    },
+    {
+     "epoch": 1,
+     "score": 0.0982,
+     "tie": 0.0567,
+     "video_long_view": 0.101,
+     "video_is_like": 0.0935,
+     "music_long_view": 0.1035,
+     "music_is_like": 0.0949
+    },
+    {
+     "epoch": 2,
+     "score": 0.108,
+     "tie": 0.0595,
+     "video_long_view": 0.1014,
+     "video_is_like": 0.1119,
+     "music_long_view": 0.1069,
+     "music_is_like": 0.112
+    },
+    {
+     "epoch": 3,
+     "score": 0.12,
+     "tie": 0.064,
+     "video_long_view": 0.1162,
+     "video_is_like": 0.1181,
+     "music_long_view": 0.1227,
+     "music_is_like": 0.1229
+    },
+    {
+     "epoch": 4,
+     "score": 0.1183,
+     "tie": 0.0634,
+     "video_long_view": 0.1198,
+     "video_is_like": 0.1117,
+     "music_long_view": 0.127,
+     "music_is_like": 0.1146
+    },
+    {
+     "epoch": 5,
+     "score": 0.1167,
+     "tie": 0.0635,
+     "video_long_view": 0.1213,
+     "video_is_like": 0.1067,
+     "music_long_view": 0.1285,
+     "music_is_like": 0.1102
+    },
+    {
+     "epoch": 6,
+     "score": 0.126,
+     "tie": 0.0693,
+     "video_long_view": 0.1282,
+     "video_is_like": 0.1204,
+     "music_long_view": 0.1362,
+     "music_is_like": 0.1193
+    },
+    {
+     "epoch": 7,
+     "score": 0.1193,
+     "tie": 0.0659,
+     "video_long_view": 0.1303,
+     "video_is_like": 0.1044,
+     "music_long_view": 0.1354,
+     "music_is_like": 0.1071
+    },
+    {
+     "epoch": 8,
+     "score": 0.1265,
+     "tie": 0.0696,
+     "video_long_view": 0.134,
+     "video_is_like": 0.1167,
+     "music_long_view": 0.1397,
+     "music_is_like": 0.1154
+    },
+    {
+     "epoch": 9,
+     "score": 0.1232,
+     "tie": 0.068,
+     "video_long_view": 0.1346,
+     "video_is_like": 0.1098,
+     "music_long_view": 0.1391,
+     "music_is_like": 0.1095
+    },
+    {
+     "epoch": 10,
+     "score": 0.1208,
+     "tie": 0.0674,
+     "video_long_view": 0.1338,
+     "video_is_like": 0.1061,
+     "music_long_view": 0.1392,
+     "music_is_like": 0.1042
+    },
+    {
+     "epoch": 11,
+     "score": 0.1199,
+     "tie": 0.0657,
+     "video_long_view": 0.1325,
+     "video_is_like": 0.1066,
+     "music_long_view": 0.136,
+     "music_is_like": 0.1046
+    }
+   ]
+  },
+  "abl_nohist": {
+   "best_epoch": 6,
+   "best_score": 0.105297,
+   "epochs": [
+    {
+     "epoch": 0,
+     "score": 0.0855,
+     "tie": 0.0444,
+     "video_long_view": 0.0836,
+     "video_is_like": 0.0864,
+     "music_long_view": 0.0827,
+     "music_is_like": 0.0892
+    },
+    {
+     "epoch": 1,
+     "score": 0.0928,
+     "tie": 0.0492,
+     "video_long_view": 0.0941,
+     "video_is_like": 0.0878,
+     "music_long_view": 0.0958,
+     "music_is_like": 0.0935
+    },
+    {
+     "epoch": 2,
+     "score": 0.0992,
+     "tie": 0.0542,
+     "video_long_view": 0.0997,
+     "video_is_like": 0.0928,
+     "music_long_view": 0.1032,
+     "music_is_like": 0.1013
+    },
+    {
+     "epoch": 3,
+     "score": 0.0971,
+     "tie": 0.0523,
+     "video_long_view": 0.0999,
+     "video_is_like": 0.0917,
+     "music_long_view": 0.1012,
+     "music_is_like": 0.0956
+    },
+    {
+     "epoch": 4,
+     "score": 0.0984,
+     "tie": 0.0539,
+     "video_long_view": 0.0988,
+     "video_is_like": 0.0904,
+     "music_long_view": 0.1079,
+     "music_is_like": 0.0964
+    },
+    {
+     "epoch": 5,
+     "score": 0.1017,
+     "tie": 0.0554,
+     "video_long_view": 0.1048,
+     "video_is_like": 0.0942,
+     "music_long_view": 0.1089,
+     "music_is_like": 0.0991
+    },
+    {
+     "epoch": 6,
+     "score": 0.1053,
+     "tie": 0.0573,
+     "video_long_view": 0.1076,
+     "video_is_like": 0.0965,
+     "music_long_view": 0.113,
+     "music_is_like": 0.1041
+    },
+    {
+     "epoch": 7,
+     "score": 0.1041,
+     "tie": 0.0568,
+     "video_long_view": 0.1066,
+     "video_is_like": 0.0969,
+     "music_long_view": 0.1129,
+     "music_is_like": 0.1
+    },
+    {
+     "epoch": 8,
+     "score": 0.1038,
+     "tie": 0.0569,
+     "video_long_view": 0.108,
+     "video_is_like": 0.096,
+     "music_long_view": 0.1141,
+     "music_is_like": 0.0973
+    },
+    {
+     "epoch": 9,
+     "score": 0.102,
+     "tie": 0.0559,
+     "video_long_view": 0.1094,
+     "video_is_like": 0.0898,
+     "music_long_view": 0.1147,
+     "music_is_like": 0.0942
+    }
+   ]
+  },
+  "abl_nomusic": {
+   "best_epoch": 6,
+   "best_score": 0.127766,
+   "epochs": [
+    {
+     "epoch": 0,
+     "score": 0.0972,
+     "tie": 0.0523,
+     "video_long_view": 0.0999,
+     "video_is_like": 0.0878,
+     "music_long_view": 0.1006,
+     "music_is_like": 0.1007
+    },
+    {
+     "epoch": 1,
+     "score": 0.1059,
+     "tie": 0.0598,
+     "video_long_view": 0.1113,
+     "video_is_like": 0.1007,
+     "music_long_view": 0.1059,
+     "music_is_like": 0.1058
+    },
+    {
+     "epoch": 2,
+     "score": 0.1152,
+     "tie": 0.062,
+     "video_long_view": 0.1094,
+     "video_is_like": 0.1186,
+     "music_long_view": 0.1177,
+     "music_is_like": 0.1151
+    },
+    {
+     "epoch": 3,
+     "score": 0.1257,
+     "tie": 0.0684,
+     "video_long_view": 0.1274,
+     "video_is_like": 0.1226,
+     "music_long_view": 0.1323,
+     "music_is_like": 0.1204
+    },
+    {
+     "epoch": 4,
+     "score": 0.1257,
+     "tie": 0.0688,
+     "video_long_view": 0.1304,
+     "video_is_like": 0.1204,
+     "music_long_view": 0.1377,
+     "music_is_like": 0.1143
+    },
+    {
+     "epoch": 5,
+     "score": 0.1173,
+     "tie": 0.0646,
+     "video_long_view": 0.1288,
+     "video_is_like": 0.0996,
+     "music_long_view": 0.1316,
+     "music_is_like": 0.1094
+    },
+    {
+     "epoch": 6,
+     "score": 0.1278,
+     "tie": 0.0692,
+     "video_long_view": 0.1334,
+     "video_is_like": 0.1177,
+     "music_long_view": 0.1352,
+     "music_is_like": 0.1248
+    },
+    {
+     "epoch": 7,
+     "score": 0.1178,
+     "tie": 0.0647,
+     "video_long_view": 0.132,
+     "video_is_like": 0.1044,
+     "music_long_view": 0.137,
+     "music_is_like": 0.0976
+    },
+    {
+     "epoch": 8,
+     "score": 0.1227,
+     "tie": 0.067,
+     "video_long_view": 0.1343,
+     "video_is_like": 0.1069,
+     "music_long_view": 0.1408,
+     "music_is_like": 0.1086
+    },
+    {
+     "epoch": 9,
+     "score": 0.1165,
+     "tie": 0.0633,
+     "video_long_view": 0.1328,
+     "video_is_like": 0.0996,
+     "music_long_view": 0.138,
+     "music_is_like": 0.0958
+    }
+   ]
+  }
+ },
+ "epochwise_comparison": {
+  "abl_nomusic_vs_u0": {
+   "video_long_view": {
+    "epochs": 10,
+    "other_higher": 10
+   },
+   "video_is_like": {
+    "epochs": 10,
+    "other_higher": 5
+   },
+   "music_long_view": {
+    "epochs": 10,
+    "other_higher": 9
+   },
+   "music_is_like": {
+    "epochs": 10,
+    "other_higher": 6
+   }
+  },
+  "u1_vs_u0": {
+   "video_long_view": {
+    "epochs": 10,
+    "other_higher": 6
+   },
+   "video_is_like": {
+    "epochs": 10,
+    "other_higher": 7
+   },
+   "music_long_view": {
+    "epochs": 10,
+    "other_higher": 7
+   },
+   "music_is_like": {
+    "epochs": 10,
+    "other_higher": 7
+   }
+  }
+ }
+}

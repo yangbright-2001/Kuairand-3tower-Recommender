@@ -1,0 +1,37 @@
+{
+ "method": "train-vocab candidates; effective rank = exp(entropy of s_i^2 / sum s^2) of the centred matrix (head dim 64, base 128). Descriptive only: no causal link to metrics is claimed.",
+ "runs": {
+  "u0/best.pt": {
+   "v_base": 7.81,
+   "m_base": 6.49,
+   "video_long_view": 6.06,
+   "video_is_like": 5.87,
+   "music_long_view": 6.23,
+   "music_is_like": 6.14
+  },
+  "u0/last.pt": {
+   "v_base": 8.74,
+   "m_base": 7.41,
+   "video_long_view": 6.99,
+   "video_is_like": 6.28,
+   "music_long_view": 7.51,
+   "music_is_like": 6.84
+  },
+  "abl_nomusic/best.pt": {
+   "v_base": 9.03,
+   "m_base": 8.19,
+   "video_long_view": 7.51,
+   "video_is_like": 7.36,
+   "music_long_view": 7.22,
+   "music_is_like": 6.95
+  },
+  "abl_nohist/best.pt": {
+   "v_base": 5.17,
+   "m_base": 4.64,
+   "video_long_view": 3.91,
+   "video_is_like": 3.84,
+   "music_long_view": 4.6,
+   "music_is_like": 4.74
+  }
+ }
+}

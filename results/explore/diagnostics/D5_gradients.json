@@ -1,0 +1,155 @@
+{
+ "method": "U0 best.pt, 4 random train batches (B=1024, rng 0), single-task loss (tau 0.05) backward in TRAIN mode (dropout on; per-task draws differ). Only the final checkpoint: says nothing about gradient conflict during training.",
+ "tasks_order": [
+  "video_long_view",
+  "video_is_like",
+  "music_long_view",
+  "music_is_like"
+ ],
+ "groups": {
+  "music_tower": {
+   "grad_norm_mean": {
+    "video_long_view": 0.39,
+    "video_is_like": 1.297,
+    "music_long_view": 0.673,
+    "music_is_like": 2.39
+   },
+   "cos_mean": [
+    [
+     1.0,
+     0.20600000023841858,
+     0.6800000071525574,
+     0.1120000034570694
+    ],
+    [
+     0.20600000023841858,
+     1.0,
+     0.12399999797344208,
+     0.609000027179718
+    ],
+    [
+     0.6800000071525574,
+     0.12399999797344208,
+     1.0,
+     0.0820000022649765
+    ],
+    [
+     0.1120000034570694,
+     0.609000027179718,
+     0.0820000022649765,
+     1.0
+    ]
+   ],
+   "cos_min_over_batches_and_pairs": -0.011,
+   "share_negative_pair_batches": 0.042
+  },
+  "video_tower": {
+   "grad_norm_mean": {
+    "video_long_view": 0.563,
+    "video_is_like": 1.531,
+    "music_long_view": 0.318,
+    "music_is_like": 0.577
+   },
+   "cos_mean": [
+    [
+     1.0,
+     0.22599999606609344,
+     0.27300000190734863,
+     0.1469999998807907
+    ],
+    [
+     0.22599999606609344,
+     1.0,
+     0.3230000138282776,
+     0.2759999930858612
+    ],
+    [
+     0.27300000190734863,
+     0.3230000138282776,
+     1.0,
+     0.2370000034570694
+    ],
+    [
+     0.1469999998807907,
+     0.2759999930858612,
+     0.2370000034570694,
+     1.0
+    ]
+   ],
+   "cos_min_over_batches_and_pairs": -0.315,
+   "share_negative_pair_batches": 0.042
+  },
+  "user_tower": {
+   "grad_norm_mean": {
+    "video_long_view": 0.703,
+    "video_is_like": 1.447,
+    "music_long_view": 0.54,
+    "music_is_like": 1.373
+   },
+   "cos_mean": [
+    [
+     1.0,
+     0.2720000147819519,
+     0.8949999809265137,
+     0.18299999833106995
+    ],
+    [
+     0.2720000147819519,
+     1.0,
+     0.30000001192092896,
+     0.6809999942779541
+    ],
+    [
+     0.8949999809265137,
+     0.30000001192092896,
+     1.0,
+     0.24799999594688416
+    ],
+    [
+     0.18299999833106995,
+     0.6809999942779541,
+     0.24799999594688416,
+     1.0
+    ]
+   ],
+   "cos_min_over_batches_and_pairs": -0.168,
+   "share_negative_pair_batches": 0.083
+  },
+  "history_encoder": {
+   "grad_norm_mean": {
+    "video_long_view": 0.426,
+    "video_is_like": 0.719,
+    "music_long_view": 0.309,
+    "music_is_like": 0.7
+   },
+   "cos_mean": [
+    [
+     1.0,
+     0.3720000088214874,
+     0.9179999828338623,
+     0.24799999594688416
+    ],
+    [
+     0.3720000088214874,
+     1.0,
+     0.4320000112056732,
+     0.7120000123977661
+    ],
+    [
+     0.9179999828338623,
+     0.4320000112056732,
+     1.0,
+     0.3479999899864197
+    ],
+    [
+     0.24799999594688416,
+     0.7120000123977661,
+     0.3479999899864197,
+     1.0
+    ]
+   ],
+   "cos_min_over_batches_and_pairs": -0.227,
+   "share_negative_pair_batches": 0.125
+  }
+ }
+}

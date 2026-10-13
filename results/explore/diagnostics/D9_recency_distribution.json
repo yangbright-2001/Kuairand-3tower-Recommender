@@ -1,0 +1,106 @@
+{
+ "method": "train: 20,000 base samples (rng 0), rolling history at t_event (Q2a). val: video_long_view val users at T_val. Bucket b (index 0 = stored row 1) covers age_min in [2^b - 1, 2^(b+1) - 1); last row is clipped (>= 8191 min).",
+ "bucket_lower_edge_minutes": [
+  0,
+  1,
+  3,
+  7,
+  15,
+  31,
+  63,
+  127,
+  255,
+  511,
+  1023,
+  2047,
+  4095,
+  8191
+ ],
+ "train_rolling": {
+  "empty_share": 0.0328,
+  "last_token_bucket_share": [
+   0.0257,
+   0.0848,
+   0.1317,
+   0.1434,
+   0.1178,
+   0.1012,
+   0.0848,
+   0.0771,
+   0.0732,
+   0.0895,
+   0.0523,
+   0.0142,
+   0.0039,
+   0.0005
+  ],
+  "all_token_bucket_share": [
+   0.001,
+   0.0034,
+   0.0066,
+   0.0105,
+   0.0144,
+   0.0203,
+   0.0276,
+   0.0409,
+   0.065,
+   0.1217,
+   0.24,
+   0.2343,
+   0.1878,
+   0.0266
+  ],
+  "hidden_token_share": 0.0266,
+  "length_quantiles": [
+   3.0,
+   9.0,
+   22.0,
+   44.0,
+   76.0
+  ]
+ },
+ "val_T_val": {
+  "empty_share": 0.0,
+  "last_token_bucket_share": [
+   0.0021,
+   0.0036,
+   0.0059,
+   0.0129,
+   0.0235,
+   0.0431,
+   0.0909,
+   0.1413,
+   0.1606,
+   0.1494,
+   0.153,
+   0.1291,
+   0.075,
+   0.0095
+  ],
+  "all_token_bucket_share": [
+   0.0001,
+   0.0001,
+   0.0002,
+   0.0004,
+   0.0009,
+   0.0019,
+   0.0046,
+   0.0086,
+   0.0166,
+   0.0283,
+   0.05,
+   0.0918,
+   0.5272,
+   0.2694
+  ],
+  "hidden_token_share": 0.001,
+  "length_quantiles": [
+   7.0,
+   15.0,
+   33.0,
+   59.0,
+   95.0
+  ]
+ },
+ "total_variation_all_tokens": 0.5822
+}

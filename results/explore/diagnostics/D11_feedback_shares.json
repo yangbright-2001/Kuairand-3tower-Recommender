@@ -1,0 +1,45 @@
+{
+ "method": "T_val histories of the val masked frame users, token shares by P1-1 bucket.",
+ "tasks": {
+  "video_long_view": {
+   "1-5": {
+    "users": 1470,
+    "long_view_token_share": 0.4665,
+    "like_token_share": 0.0297,
+    "hidden_token_share": 0.0033
+   },
+   "6-20": {
+    "users": 4758,
+    "long_view_token_share": 0.4546,
+    "like_token_share": 0.0255,
+    "hidden_token_share": 0.0015
+   },
+   ">20": {
+    "users": 12436,
+    "long_view_token_share": 0.3637,
+    "like_token_share": 0.0207,
+    "hidden_token_share": 0.0009
+   }
+  },
+  "video_is_like": {
+   "1-5": {
+    "users": 123,
+    "long_view_token_share": 0.4758,
+    "like_token_share": 0.1959,
+    "hidden_token_share": 0.0025
+   },
+   "6-20": {
+    "users": 419,
+    "long_view_token_share": 0.4672,
+    "like_token_share": 0.1644,
+    "hidden_token_share": 0.0032
+   },
+   ">20": {
+    "users": 1539,
+    "long_view_token_share": 0.3988,
+    "like_token_share": 0.1014,
+    "hidden_token_share": 0.001
+   }
+  }
+ }
+}

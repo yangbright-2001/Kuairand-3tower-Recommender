@@ -1,0 +1,89 @@
+{
+ "method": "U0 best.pt; T_val histories; only recency_bucket replaced at inference (out-of-distribution perturbation of a trained model; says nothing about the value of recency for a model trained differently).",
+ "variants": {
+  "original": {
+   "mean_r20": 0.125246,
+   "tasks": {
+    "video_long_view": {
+     "recall@20": 0.126028,
+     "ndcg@20": 0.078141
+    },
+    "video_is_like": {
+     "recall@20": 0.12232,
+     "ndcg@20": 0.058945
+    },
+    "music_long_view": {
+     "recall@20": 0.130805,
+     "ndcg@20": 0.080313
+    },
+    "music_is_like": {
+     "recall@20": 0.121832,
+     "ndcg@20": 0.059873
+    }
+   }
+  },
+  "shift_minus2_fresher": {
+   "mean_r20": 0.122684,
+   "tasks": {
+    "video_long_view": {
+     "recall@20": 0.123654,
+     "ndcg@20": 0.076012
+    },
+    "video_is_like": {
+     "recall@20": 0.118441,
+     "ndcg@20": 0.05889
+    },
+    "music_long_view": {
+     "recall@20": 0.12934,
+     "ndcg@20": 0.079007
+    },
+    "music_is_like": {
+     "recall@20": 0.119302,
+     "ndcg@20": 0.058588
+    }
+   }
+  },
+  "shift_minus4_fresher": {
+   "mean_r20": 0.114983,
+   "tasks": {
+    "video_long_view": {
+     "recall@20": 0.116306,
+     "ndcg@20": 0.072016
+    },
+    "video_is_like": {
+     "recall@20": 0.109836,
+     "ndcg@20": 0.052896
+    },
+    "music_long_view": {
+     "recall@20": 0.120621,
+     "ndcg@20": 0.074123
+    },
+    "music_is_like": {
+     "recall@20": 0.113167,
+     "ndcg@20": 0.054525
+    }
+   }
+  },
+  "all_max_bucket": {
+   "mean_r20": 0.125465,
+   "tasks": {
+    "video_long_view": {
+     "recall@20": 0.12603,
+     "ndcg@20": 0.078252
+    },
+    "video_is_like": {
+     "recall@20": 0.121927,
+     "ndcg@20": 0.058613
+    },
+    "music_long_view": {
+     "recall@20": 0.130636,
+     "ndcg@20": 0.080499
+    },
+    "music_is_like": {
+     "recall@20": 0.123269,
+     "ndcg@20": 0.060775
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,152 @@
+{
+ "method": "eval mode, train-vocab candidate videos. contrib_k = W_k x_k with W_k the first-layer columns of block k (pre-activation only; GELU, layer 2 and LayerNorm follow, so this does NOT measure influence on v_base). var_share = tr Cov(contrib_k) / tr Cov(sum); cross_term_share = covariance between blocks.",
+ "runs": {
+  "u0": {
+   "epoch": 6,
+   "blocks": {
+    "video_id": {
+     "dim": 64,
+     "mean_input_norm": 0.693,
+     "mean_contrib_norm": 4.207,
+     "contrib_norm_per_sqrt_dim": 0.526,
+     "var_share": 0.064
+    },
+    "author": {
+     "dim": 64,
+     "mean_input_norm": 0.664,
+     "mean_contrib_norm": 3.863,
+     "contrib_norm_per_sqrt_dim": 0.483,
+     "var_share": 0.06
+    },
+    "music_base": {
+     "dim": 128,
+     "mean_input_norm": 9.252,
+     "mean_contrib_norm": 12.134,
+     "contrib_norm_per_sqrt_dim": 1.072,
+     "var_share": 0.575
+    },
+    "video_type": {
+     "dim": 16,
+     "mean_input_norm": 0.018,
+     "mean_contrib_norm": 0.049,
+     "contrib_norm_per_sqrt_dim": 0.012,
+     "var_share": 0.0
+    },
+    "upload_type": {
+     "dim": 16,
+     "mean_input_norm": 0.214,
+     "mean_contrib_norm": 0.474,
+     "contrib_norm_per_sqrt_dim": 0.118,
+     "var_share": 0.002
+    },
+    "upload_dt": {
+     "dim": 16,
+     "mean_input_norm": 0.479,
+     "mean_contrib_norm": 2.054,
+     "contrib_norm_per_sqrt_dim": 0.513,
+     "var_share": 0.038
+    },
+    "music_type": {
+     "dim": 16,
+     "mean_input_norm": 0.077,
+     "mean_contrib_norm": 0.18,
+     "contrib_norm_per_sqrt_dim": 0.045,
+     "var_share": 0.0
+    },
+    "tags": {
+     "dim": 16,
+     "mean_input_norm": 0.356,
+     "mean_contrib_norm": 1.276,
+     "contrib_norm_per_sqrt_dim": 0.319,
+     "var_share": 0.014
+    },
+    "num": {
+     "dim": 3,
+     "mean_input_norm": 1.568,
+     "mean_contrib_norm": 1.033,
+     "contrib_norm_per_sqrt_dim": 0.596,
+     "var_share": 0.009
+    },
+    "num_missing": {
+     "dim": 3,
+     "mean_input_norm": 0.031,
+     "mean_contrib_norm": 0.041,
+     "contrib_norm_per_sqrt_dim": 0.023,
+     "var_share": 0.0
+    }
+   },
+   "var_total": 137.937,
+   "cross_term_share": 0.237
+  },
+  "abl_nomusic": {
+   "epoch": 6,
+   "blocks": {
+    "video_id": {
+     "dim": 64,
+     "mean_input_norm": 0.6,
+     "mean_contrib_norm": 1.526,
+     "contrib_norm_per_sqrt_dim": 0.191,
+     "var_share": 0.248
+    },
+    "author": {
+     "dim": 64,
+     "mean_input_norm": 0.586,
+     "mean_contrib_norm": 1.448,
+     "contrib_norm_per_sqrt_dim": 0.181,
+     "var_share": 0.227
+    },
+    "video_type": {
+     "dim": 16,
+     "mean_input_norm": 0.023,
+     "mean_contrib_norm": 0.021,
+     "contrib_norm_per_sqrt_dim": 0.005,
+     "var_share": 0.0
+    },
+    "upload_type": {
+     "dim": 16,
+     "mean_input_norm": 0.124,
+     "mean_contrib_norm": 0.171,
+     "contrib_norm_per_sqrt_dim": 0.043,
+     "var_share": 0.005
+    },
+    "upload_dt": {
+     "dim": 16,
+     "mean_input_norm": 0.249,
+     "mean_contrib_norm": 0.624,
+     "contrib_norm_per_sqrt_dim": 0.156,
+     "var_share": 0.075
+    },
+    "music_type": {
+     "dim": 16,
+     "mean_input_norm": 0.043,
+     "mean_contrib_norm": 0.058,
+     "contrib_norm_per_sqrt_dim": 0.014,
+     "var_share": 0.001
+    },
+    "tags": {
+     "dim": 16,
+     "mean_input_norm": 0.253,
+     "mean_contrib_norm": 0.52,
+     "contrib_norm_per_sqrt_dim": 0.13,
+     "var_share": 0.05
+    },
+    "num": {
+     "dim": 3,
+     "mean_input_norm": 1.568,
+     "mean_contrib_norm": 0.459,
+     "contrib_norm_per_sqrt_dim": 0.265,
+     "var_share": 0.041
+    },
+    "num_missing": {
+     "dim": 3,
+     "mean_input_norm": 0.031,
+     "mean_contrib_norm": 0.03,
+     "contrib_norm_per_sqrt_dim": 0.018,
+     "var_share": 0.005
+    }
+   },
+   "var_total": 6.302,
+   "cross_term_share": 0.347
+  }
+ }
+}

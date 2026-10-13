@@ -1,0 +1,221 @@
+{
+ "method": "train_log.jsonl (pre-clip total grad norm, per-task loss / valid rows / FN pairs).",
+ "runs": {
+  "u0": {
+   "records": 68,
+   "log_every": "step 1 + every 50 steps",
+   "grad_norm_pre_clip": {
+    "min": 4.186,
+    "median": 6.456,
+    "max": 22.964,
+    "share_gt_clip_1.0": 1.0,
+    "median_after_warmup": 6.359
+   },
+   "lr_after_warmup": [
+    0.001
+   ],
+   "video_long_view": {
+    "loss_first": 9.353,
+    "loss_last": 6.221,
+    "loss_last5_mean": 6.254,
+    "valid_rows_per_batch": [
+     992,
+     1013
+    ],
+    "fn_masked_cols_per_valid_row": 26.24
+   },
+   "video_is_like": {
+    "loss_first": 9.214,
+    "loss_last": 5.072,
+    "loss_last5_mean": 5.11,
+    "valid_rows_per_batch": [
+     37,
+     73
+    ],
+    "fn_masked_cols_per_valid_row": 10.88
+   },
+   "music_long_view": {
+    "loss_first": 8.995,
+    "loss_last": 6.389,
+    "loss_last5_mean": 6.467,
+    "valid_rows_per_batch": [
+     944,
+     981
+    ],
+    "fn_masked_cols_per_valid_row": 25.3
+   },
+   "music_is_like": {
+    "loss_first": 8.881,
+    "loss_last": 5.347,
+    "loss_last5_mean": 5.443,
+    "valid_rows_per_batch": [
+     36,
+     68
+    ],
+    "fn_masked_cols_per_valid_row": 10.58
+   }
+  },
+  "u1": {
+   "records": 82,
+   "log_every": "step 1 + every 50 steps",
+   "grad_norm_pre_clip": {
+    "min": 4.551,
+    "median": 6.247,
+    "max": 19.758,
+    "share_gt_clip_1.0": 1.0,
+    "median_after_warmup": 6.207
+   },
+   "lr_after_warmup": [
+    0.001
+   ],
+   "video_long_view": {
+    "loss_first": 9.27,
+    "loss_last": 6.197,
+    "loss_last5_mean": 6.065,
+    "valid_rows_per_batch": [
+     992,
+     1013
+    ],
+    "fn_masked_cols_per_valid_row": 26.29
+   },
+   "video_is_like": {
+    "loss_first": 9.357,
+    "loss_last": 5.172,
+    "loss_last5_mean": 4.753,
+    "valid_rows_per_batch": [
+     37,
+     73
+    ],
+    "fn_masked_cols_per_valid_row": 10.98
+   },
+   "music_long_view": {
+    "loss_first": 8.979,
+    "loss_last": 6.448,
+    "loss_last5_mean": 6.275,
+    "valid_rows_per_batch": [
+     944,
+     981
+    ],
+    "fn_masked_cols_per_valid_row": 25.35
+   },
+   "music_is_like": {
+    "loss_first": 8.892,
+    "loss_last": 6.069,
+    "loss_last5_mean": 5.395,
+    "valid_rows_per_batch": [
+     36,
+     71
+    ],
+    "fn_masked_cols_per_valid_row": 10.66
+   }
+  },
+  "abl_nohist": {
+   "records": 68,
+   "log_every": "step 1 + every 50 steps",
+   "grad_norm_pre_clip": {
+    "min": 3.358,
+    "median": 4.368,
+    "max": 23.649,
+    "share_gt_clip_1.0": 1.0,
+    "median_after_warmup": 4.322
+   },
+   "lr_after_warmup": [
+    0.001
+   ],
+   "video_long_view": {
+    "loss_first": 9.287,
+    "loss_last": 6.756,
+    "loss_last5_mean": 6.726,
+    "valid_rows_per_batch": [
+     992,
+     1013
+    ],
+    "fn_masked_cols_per_valid_row": 26.24
+   },
+   "video_is_like": {
+    "loss_first": 9.808,
+    "loss_last": 5.944,
+    "loss_last5_mean": 5.941,
+    "valid_rows_per_batch": [
+     37,
+     73
+    ],
+    "fn_masked_cols_per_valid_row": 10.88
+   },
+   "music_long_view": {
+    "loss_first": 8.983,
+    "loss_last": 6.886,
+    "loss_last5_mean": 6.866,
+    "valid_rows_per_batch": [
+     944,
+     981
+    ],
+    "fn_masked_cols_per_valid_row": 25.3
+   },
+   "music_is_like": {
+    "loss_first": 8.934,
+    "loss_last": 6.161,
+    "loss_last5_mean": 6.109,
+    "valid_rows_per_batch": [
+     36,
+     68
+    ],
+    "fn_masked_cols_per_valid_row": 10.58
+   }
+  },
+  "abl_nomusic": {
+   "records": 68,
+   "log_every": "step 1 + every 50 steps",
+   "grad_norm_pre_clip": {
+    "min": 4.526,
+    "median": 6.35,
+    "max": 67.862,
+    "share_gt_clip_1.0": 1.0,
+    "median_after_warmup": 6.222
+   },
+   "lr_after_warmup": [
+    0.001
+   ],
+   "video_long_view": {
+    "loss_first": 10.554,
+    "loss_last": 6.14,
+    "loss_last5_mean": 6.161,
+    "valid_rows_per_batch": [
+     992,
+     1013
+    ],
+    "fn_masked_cols_per_valid_row": 26.24
+   },
+   "video_is_like": {
+    "loss_first": 9.356,
+    "loss_last": 4.772,
+    "loss_last5_mean": 4.881,
+    "valid_rows_per_batch": [
+     37,
+     73
+    ],
+    "fn_masked_cols_per_valid_row": 10.88
+   },
+   "music_long_view": {
+    "loss_first": 8.987,
+    "loss_last": 6.238,
+    "loss_last5_mean": 6.336,
+    "valid_rows_per_batch": [
+     944,
+     981
+    ],
+    "fn_masked_cols_per_valid_row": 25.3
+   },
+   "music_is_like": {
+    "loss_first": 8.951,
+    "loss_last": 4.953,
+    "loss_last5_mean": 5.142,
+    "valid_rows_per_batch": [
+     36,
+     68
+    ],
+    "fn_masked_cols_per_valid_row": 10.58
+   }
+  }
+ }
+}

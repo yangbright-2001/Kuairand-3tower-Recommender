@@ -1,0 +1,21 @@
+{
+ "method": "no user tower: user vector = L2(sum of U0 video_long_view item embeddings of the last N history videos), video_long_view val only. Low-information reference.",
+ "variants": {
+  "last10_all": {
+   "recall@20": 0.036361,
+   "ndcg@20": 0.018806
+  },
+  "last10_lv_or_hidden": {
+   "recall@20": 0.036991,
+   "ndcg@20": 0.01969
+  },
+  "last100_all": {
+   "recall@20": 0.036417,
+   "ndcg@20": 0.018954
+  },
+  "last100_lv_or_hidden": {
+   "recall@20": 0.041235,
+   "ndcg@20": 0.021885
+  }
+ }
+}

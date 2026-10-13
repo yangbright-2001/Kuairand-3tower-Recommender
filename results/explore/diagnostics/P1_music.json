@@ -1,0 +1,68 @@
+{
+ "method": "U0 best.pt, eval mode. The video tower's music input (gathered m_base) is replaced by 0 or by a random permutation over videos (rng 0); m_base / music candidates are unchanged; history tokens use the modified v_base. Measures dependence of the TRAINED U0 on the music path, not negative transfer.",
+ "variants": {
+  "original": {
+   "mean_r20": 0.125246,
+   "tasks": {
+    "video_long_view": {
+     "recall@20": 0.126028,
+     "ndcg@20": 0.078141
+    },
+    "video_is_like": {
+     "recall@20": 0.12232,
+     "ndcg@20": 0.058945
+    },
+    "music_long_view": {
+     "recall@20": 0.130805,
+     "ndcg@20": 0.080313
+    },
+    "music_is_like": {
+     "recall@20": 0.121832,
+     "ndcg@20": 0.059873
+    }
+   }
+  },
+  "music_input_zero": {
+   "mean_r20": 0.109286,
+   "tasks": {
+    "video_long_view": {
+     "recall@20": 0.099796,
+     "ndcg@20": 0.05941
+    },
+    "video_is_like": {
+     "recall@20": 0.092918,
+     "ndcg@20": 0.044483
+    },
+    "music_long_view": {
+     "recall@20": 0.127031,
+     "ndcg@20": 0.076012
+    },
+    "music_is_like": {
+     "recall@20": 0.117397,
+     "ndcg@20": 0.055995
+    }
+   }
+  },
+  "music_input_permuted": {
+   "mean_r20": 0.085544,
+   "tasks": {
+    "video_long_view": {
+     "recall@20": 0.053869,
+     "ndcg@20": 0.030695
+    },
+    "video_is_like": {
+     "recall@20": 0.052756,
+     "ndcg@20": 0.025535
+    },
+    "music_long_view": {
+     "recall@20": 0.123968,
+     "ndcg@20": 0.075043
+    },
+    "music_is_like": {
+     "recall@20": 0.111584,
+     "ndcg@20": 0.052894
+    }
+   }
+  }
+ }
+}
