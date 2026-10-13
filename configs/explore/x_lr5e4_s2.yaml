@@ -1,0 +1,32 @@
+# S9 exploratory config `x_lr5e4_s2` (explore/s9-opt; post-hoc exploratory, NOT part of the approved v1).
+# Wave 2 seed replicate of the approved variant x_lr5e4 (lr 5e-4): identical to configs/explore/x_lr5e4.yaml
+# except `exp` and `train.seed` (2); hence vs threetower_u0.yaml: exp, run_root, train.lr, train.seed.
+# Enforced by tests/test_explore_configs.py. Selection = D1-8 (val masked mean R@20).
+# Server: sbatch -J x_lr5e4_s2 scripts/explore/train_explore.sbatch configs/explore/x_lr5e4_s2.yaml <EXPLORE_SHA>
+exp: x_lr5e4_s2
+processed_dir: data/processed
+run_root: /local-scratch/liang/runs_explore   # S9 explore root (sbatch also passes --out_dir); never the formal runs/
+condition: normal
+user_features: u0
+device: cuda
+require_clean_git: true               # D1-11: refuse to run on a dirty worktree
+history: {}                           # D1-2 defaults: max_len 100, D = 20 min, recency clip 13
+model: {}                             # D1-1 defaults: base 128, heads 64, 2-layer Transformer, id_dropout 0.1
+train:                                # D1-3
+  tau: 0.05
+  lr: 0.0005                        # inherited from x_lr5e4 (approved hyperparameter variant)
+  warmup_steps: 300
+  weight_decay: 0.01
+  clip_grad_norm: 1.0
+  batch_size: 1024                    # initial value; OPEN until the GPU benchmark confirms it
+  max_epochs: 30
+  patience: 3
+  like_oversample: 1                  # v1; k = 4 only as a D1-10 targeted adjustment
+  seed: 2                           # S9 SEED REPLICATE (only change vs x_lr5e4.yaml)
+  max_steps: null
+  log_every: 50
+eval:
+  threads: 1                          # CPU threads for canonical export / parity (recorded in manifest)
+  val_user_batch_size: 256            # validation encoding batch (selection only; on the training device)
+  chunk: 2048
+  parity_users: 2048

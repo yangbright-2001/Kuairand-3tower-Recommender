@@ -4,7 +4,12 @@ Plan: `.cursor/plans/三塔优化研究方案_b178e03c.plan.md` (Revision 1, rev
 Base: `671dde9b4d029f468bc405f05b624a7076fcd0fe` (the formal M5 training SHA). The formal v1
 (U0/U1/ablations/cold, report) lives on `main` and is never modified from here.
 
-## Status (preparation only; no explore GPU job submitted)
+## Status
+
+Wave 1 (jobs 39-43) completed 2026-10-13 01:39 UTC: all rc 0, parity PASS; validation-only analysis in
+`results/explore/wave1/` (post-hoc exploratory). Wave 2 approved 2026-10-12 19:55 PT (see below).
+
+### Preparation (done before Wave 1)
 
 | item | state |
 |---|---|
@@ -39,6 +44,19 @@ Every explore config also changes `exp` (prefix `x_`) and `run_root` (`/local-sc
 Prepared but NOT in Wave 1 (single-variable temperature candidates, D1-10 #1; separate approval):
 `x_tau003` (`train.tau: 0.03`), `x_tau010` (`train.tau: 0.1`). If both run: 3 / 7 of the D1-10 budget.
 The formal v1 used 0 / 7. Diagnostic evidence for tau is weak (plan §1.7), so they are not proposed for Wave 1.
+
+## Wave 2: same-SHA control + seed replicates of x_lr5e4 (post-hoc exploratory)
+
+| exp | kind | diff | purpose |
+|---|---|---|---|
+| `x_u0_repro` | reproduction_control | vs U0: none (only exp / run_root) | same-SHA seed-0 control; tier A/B regression vs job 27 |
+| `x_lr5e4_s1` | seed_replicate of `x_lr5e4` | vs x_lr5e4: `train.seed: 1` | replicate lr 5e-4 |
+| `x_lr5e4_s2` | seed_replicate of `x_lr5e4` | vs x_lr5e4: `train.seed: 2` | replicate lr 5e-4 |
+
+D1-10 count unchanged at 3 / 7 (replicates and the control are not new configurations).
+Planned comparison (val only): lr 1e-3 {x_u0_repro, x_u0_s1 (39), x_u0_s2 (40)} vs lr 5e-4 {x_lr5e4 (41),
+x_lr5e4_s1, x_lr5e4_s2}; same-seed paired differences, means, std, per-task trade-offs; 3 seeds are
+descriptive, not a significance test. Wave 3 (e.g. E2 music fusion) is decided after Wave 2.
 
 ## Selection protocol (pre-registered)
 
