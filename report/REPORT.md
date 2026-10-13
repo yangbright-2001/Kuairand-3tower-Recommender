@@ -111,6 +111,13 @@ An independent pandas recomputation confirms the cleaning:
 **User metadata (U0 / U1 trade-off).** `user_features_pure.csv` is a single snapshot with no date.
 - Evidence of a late snapshot: user 25929's `register_days` together with its first event bounds the snapshot at no later than 2022-05-02, which is inside the test period. There is no lower bound.
 - So the snapshot cannot be shown to precede T_val or T_test.
+- Field-level audit of the 21 U1 fields (`artifacts/final_compliance_review/USER_METADATA_REVIEW.md`):
+  - 2 are time-dependent by definition (`register_days_range`, cumulative `is_video_author`);
+  - for the other 19 (18 encrypted one-hot fields, `is_live_streamer`), historical availability is unknown;
+  - none can be shown to be legally available at the historical prediction time.
+
+  This is not evidence that every field leaks.
+- Data-quality finding: one user has the undocumented `register_days_range` value `8-14`; the documented set starts at `15-30`.
 - We read "usable metadata" in the assignment as "provably time-safe". That is our interpretation.
 - **U0 (main):** user ID + history.
 - **U1 (required companion):** U0 plus 21 snapshot fields (`onehot_feat0–17`, `is_live_streamer`, `is_video_author`, `register_days_range`). It uses the same config, seed and selection rule as U0.
