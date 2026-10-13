@@ -1,5 +1,5 @@
 {
- "report": "report/REPORT.md",
+ "report": "report/REPORT_FULL.md",
  "method": "parses REPORT.md tables + anchored prose numbers",
  "n_checked": 321,
  "n_failed": 0,

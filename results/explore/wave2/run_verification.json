@@ -1,0 +1,495 @@
+{
+ "study": "S9 Wave 2 (post-hoc exploratory; designed after formal test results were analysed)",
+ "files_read": "validation-side files only; metrics.csv and per_user/test_* refused",
+ "frame_check_rebuilt_vs_saved_m3": {
+  "video_long_view": {
+   "frame_id": "1847adc31f527937313435968415fd1632c5b4c06093ac30f5994de56c30d7e9",
+   "n_users": 18664,
+   "gt_pairs": 66867,
+   "mask_pairs": 800415,
+   "n_catalog_items": 7583,
+   "saved_m3_frame_users_equal": true,
+   "saved_m3_frame_gt_equal": true,
+   "saved_m3_frame_seen_mask_size_equal": true,
+   "saved_m3_frame_hist_len_equal": true
+  },
+  "video_is_like": {
+   "frame_id": "a671d311d023fe7972a5b12cf0ef99201d9a589bfa1b6954cf8618f00ec8b577",
+   "n_users": 2081,
+   "gt_pairs": 3807,
+   "mask_pairs": 100975,
+   "n_catalog_items": 7583,
+   "saved_m3_frame_users_equal": true,
+   "saved_m3_frame_gt_equal": true,
+   "saved_m3_frame_seen_mask_size_equal": true,
+   "saved_m3_frame_hist_len_equal": true
+  },
+  "music_long_view": {
+   "frame_id": "9605a046d3c4b2efaf6f05b652c1f992dd77d618d073fc51a4d2b81ac53c6631",
+   "n_users": 18475,
+   "gt_pairs": 64938,
+   "mask_pairs": 761060,
+   "n_catalog_items": 7201,
+   "saved_m3_frame_users_equal": true,
+   "saved_m3_frame_gt_equal": true,
+   "saved_m3_frame_seen_mask_size_equal": true,
+   "saved_m3_frame_hist_len_equal": true
+  },
+  "music_is_like": {
+   "frame_id": "612ac05d7b824b9c17f00903798e1dea26a3cffde552aabc04808d0000f5c3c8",
+   "n_users": 2052,
+   "gt_pairs": 3716,
+   "mask_pairs": 95454,
+   "n_catalog_items": 7201,
+   "saved_m3_frame_users_equal": true,
+   "saved_m3_frame_gt_equal": true,
+   "saved_m3_frame_seen_mask_size_equal": true,
+   "saved_m3_frame_hist_len_equal": true
+  }
+ },
+ "distinct_data_fingerprints_excl_data_git_sha": 1,
+ "distinct_protocol_configs": 1,
+ "selection_vs_per_user_max_abs": {
+  "lr1e-3_s0 (x_u0_repro)": 0.0,
+  "lr1e-3_s1 (x_u0_s1)": 0.0,
+  "lr1e-3_s2 (x_u0_s2)": 0.0,
+  "lr5e-4_s0 (x_lr5e4)": 0.0,
+  "lr5e-4_s1 (x_lr5e4_s1)": 0.0,
+  "lr5e-4_s2 (x_lr5e4_s2)": 0.0,
+  "u0_formal_job27": 0.0
+ },
+ "runs": {
+  "lr1e-3_s0 (x_u0_repro)": {
+   "label": "lr1e-3_s0 (x_u0_repro)",
+   "job": 44,
+   "run_dir": "artifacts/explore/wave2/x_u0_repro/a158e5e_seed0_job44",
+   "missing": [],
+   "git_sha": "a158e5e565534574c91fb56aa88a96ede3c6446a",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 0.0,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 0,
+    "lr": 0.001,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T03:23:26+00:00 job=44 name=x_u0_repro out=/local-scratch/liang/runs_explore/threetower/x_u0_repro/a158e5e_seed0_job44",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true,
+   "expected_sha": "a158e5e565534574c91fb56aa88a96ede3c6446a"
+  },
+  "lr1e-3_s1 (x_u0_s1)": {
+   "label": "lr1e-3_s1 (x_u0_s1)",
+   "job": 39,
+   "run_dir": "artifacts/explore/wave1/x_u0_s1/1051f86_seed1_job39",
+   "missing": [],
+   "git_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 0.0,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 1,
+    "lr": 0.001,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T01:14:27+00:00 job=39 name=x_u0_s1 out=/local-scratch/liang/runs_explore/threetower/x_u0_s1/1051f86_seed1_job39",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true,
+   "expected_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6"
+  },
+  "lr1e-3_s2 (x_u0_s2)": {
+   "label": "lr1e-3_s2 (x_u0_s2)",
+   "job": 40,
+   "run_dir": "artifacts/explore/wave1/x_u0_s2/1051f86_seed2_job40",
+   "missing": [],
+   "git_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 0.0,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 2,
+    "lr": 0.001,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T01:12:01+00:00 job=40 name=x_u0_s2 out=/local-scratch/liang/runs_explore/threetower/x_u0_s2/1051f86_seed2_job40",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true,
+   "expected_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6"
+  },
+  "lr5e-4_s0 (x_lr5e4)": {
+   "label": "lr5e-4_s0 (x_lr5e4)",
+   "job": 41,
+   "run_dir": "artifacts/explore/wave1/x_lr5e4/1051f86_seed0_job41",
+   "missing": [],
+   "git_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 8.083951327786387e-08,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 0,
+    "lr": 0.0005,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T01:13:14+00:00 job=41 name=x_lr5e4 out=/local-scratch/liang/runs_explore/threetower/x_lr5e4/1051f86_seed0_job41",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true,
+   "expected_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6"
+  },
+  "lr5e-4_s1 (x_lr5e4_s1)": {
+   "label": "lr5e-4_s1 (x_lr5e4_s1)",
+   "job": 45,
+   "run_dir": "artifacts/explore/wave2/x_lr5e4_s1/a158e5e_seed1_job45",
+   "missing": [],
+   "git_sha": "a158e5e565534574c91fb56aa88a96ede3c6446a",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 0.0,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 1,
+    "lr": 0.0005,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T03:20:55+00:00 job=45 name=x_lr5e4_s1 out=/local-scratch/liang/runs_explore/threetower/x_lr5e4_s1/a158e5e_seed1_job45",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true,
+   "expected_sha": "a158e5e565534574c91fb56aa88a96ede3c6446a"
+  },
+  "lr5e-4_s2 (x_lr5e4_s2)": {
+   "label": "lr5e-4_s2 (x_lr5e4_s2)",
+   "job": 46,
+   "run_dir": "artifacts/explore/wave2/x_lr5e4_s2/a158e5e_seed2_job46",
+   "missing": [],
+   "git_sha": "a158e5e565534574c91fb56aa88a96ede3c6446a",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 0.0,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 2,
+    "lr": 0.0005,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T03:27:11+00:00 job=46 name=x_lr5e4_s2 out=/local-scratch/liang/runs_explore/threetower/x_lr5e4_s2/a158e5e_seed2_job46",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true,
+   "expected_sha": "a158e5e565534574c91fb56aa88a96ede3c6446a"
+  },
+  "u0_formal_job27": {
+   "label": "u0_s0_formal",
+   "job": 27,
+   "run_dir": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27",
+   "missing": [],
+   "git_sha": "9218a766796b107ab64f6ad3fce642cdacedf062",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 0.0,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 0,
+    "lr": 0.001,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "exit_code": 0,
+   "slurm_rc_line": "formal M4 run (Track A verified; rc file not part of this check)",
+   "valid_completed_run": true
+  }
+ }
+}

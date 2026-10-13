@@ -1,6 +1,7 @@
-"""Check report/REPORT.md against the formal result files (read-only on every input).
+"""Check the extended report (report/REPORT_FULL.md, which carries every formal number of the
+concise report/REPORT.md) against the formal result files (read-only on every input).
 
-Run:  uv run python scripts/check_report_claims.py
+Run:  uv run python scripts/check_report_claims.py [--report report/REPORT.md]
 Output: results/final_audit/report_claims.json (+ printed summary). Exit code 1 on any mismatch,
 missing table, or missing text anchor.
 
@@ -38,7 +39,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT = ROOT / "report/REPORT.md"
+REPORT = ROOT / "report/REPORT_FULL.md"   # override with --report
 MAIN = ROOT / "results/m5/main_formal"
 COLD = ROOT / "results/m5/cold_video/eval_671dde9_job33"
 
@@ -295,6 +296,9 @@ MANUAL_SCOPE = [
 
 
 def main() -> int:
+    global REPORT
+    if "--report" in sys.argv:
+        REPORT = (ROOT / sys.argv[sys.argv.index("--report") + 1]).resolve()
     text = REPORT.read_text()
     try:
         check_tables(text)

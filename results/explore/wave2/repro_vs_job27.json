@@ -1,0 +1,26 @@
+{
+ "tier": "A (same cluster / GPU type / torch; different code SHA 9218a76 vs a158e5e)",
+ "val_history_epochs": 10,
+ "val_history_all_bitwise_equal": true,
+ "val_history_max_abs_diff": 0.0,
+ "best_epoch": [
+  6,
+  6
+ ],
+ "train_log_records": [
+  68,
+  68
+ ],
+ "train_log_bitwise_equal": true,
+ "best_pt_state_dict_bitwise_equal": true,
+ "best_pt_file_sha_equal": false,
+ "export_val_and_item_embeddings_sha_equal": true,
+ "n_embedding_files_compared": 8,
+ "val_per_user_metrics_equal": {
+  "video_long_view": true,
+  "video_is_like": true,
+  "music_long_view": true,
+  "music_is_like": true
+ },
+ "note": "best.pt file sha differs only if pickled metadata (fingerprint data_git_sha, train_config) differs; weights compared tensor by tensor."
+}

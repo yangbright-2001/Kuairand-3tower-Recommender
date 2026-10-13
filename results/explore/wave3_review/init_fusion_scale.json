@@ -1,0 +1,102 @@
+{
+ "U0 (use_music=True)": {
+  "video_id": {
+   "input_norm": 0.15921153128147125,
+   "contrib_norm": 0.07931085372295107,
+   "var_share": 0.006814454940496545
+  },
+  "author": {
+   "input_norm": 0.15912625193595886,
+   "contrib_norm": 0.07925230785283255,
+   "var_share": 0.006803853945159077
+  },
+  "music_base": {
+   "input_norm": 11.277636528015137,
+   "contrib_norm": 5.517009929617824,
+   "var_share": 0.20270609225463762
+  },
+  "video_type": {
+   "input_norm": 0.09075716882944107,
+   "contrib_norm": 0.047262114452116886,
+   "var_share": 2.8424284827415377e-05
+  },
+  "upload_type": {
+   "input_norm": 0.0892379879951477,
+   "contrib_norm": 0.04326888665447038,
+   "var_share": 0.0015731032402625804
+  },
+  "upload_dt": {
+   "input_norm": 0.07911693304777145,
+   "contrib_norm": 0.03901852844305637,
+   "var_share": 0.0011529009701327412
+  },
+  "music_type": {
+   "input_norm": 0.07487217336893082,
+   "contrib_norm": 0.03804190148702501,
+   "var_share": 0.00026564155737822913
+  },
+  "tags": {
+   "input_norm": 0.07756181061267853,
+   "contrib_norm": 0.03868659100078623,
+   "var_share": 0.001615047363417506
+  },
+  "num": {
+   "input_norm": 1.5677660703659058,
+   "contrib_norm": 0.7690248492443301,
+   "var_share": 0.7695812361649775
+  },
+  "num_missing": {
+   "input_norm": 0.031345464289188385,
+   "contrib_norm": 0.01596463752626932,
+   "var_share": 0.00845104504563984
+  }
+ },
+ "no-music": {
+  "video_id": {
+   "input_norm": 0.15921153128147125,
+   "contrib_norm": 0.09989100846010784,
+   "var_share": 0.008137671833487377
+  },
+  "author": {
+   "input_norm": 0.15912625193595886,
+   "contrib_norm": 0.0997567985593969,
+   "var_share": 0.0081154831560888
+  },
+  "video_type": {
+   "input_norm": 0.09075716882944107,
+   "contrib_norm": 0.05696159498037895,
+   "var_share": 3.358599403213205e-05
+  },
+  "upload_type": {
+   "input_norm": 0.0892379879951477,
+   "contrib_norm": 0.055596867660920035,
+   "var_share": 0.0019400986127750272
+  },
+  "upload_dt": {
+   "input_norm": 0.07911693304777145,
+   "contrib_norm": 0.04663997305830749,
+   "var_share": 0.0012840577335714756
+  },
+  "music_type": {
+   "input_norm": 0.07487217336893082,
+   "contrib_norm": 0.0451917313836846,
+   "var_share": 0.0003263186222295081
+  },
+  "tags": {
+   "input_norm": 0.07756181061267853,
+   "contrib_norm": 0.04818796711145508,
+   "var_share": 0.001877260415661232
+  },
+  "num": {
+   "input_norm": 1.5677660703659058,
+   "contrib_norm": 0.9966696078991957,
+   "var_share": 0.96933146467335
+  },
+  "num_missing": {
+   "input_norm": 0.031345464289188385,
+   "contrib_norm": 0.01816939320198669,
+   "var_share": 0.008240959908799052
+  }
+ },
+ "note": "Untrained model built like Trainer (configure_determinism(0)). music_base is a LayerNorm output (RMS ~1 per dim, norm ~sqrt(128)); ID embeddings are N(0, 0.02^2) at init."
+}

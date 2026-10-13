@@ -1,0 +1,417 @@
+{
+ "study": "S9 Wave 1, post-hoc exploratory validation study (designed after the formal test results had been analysed; not a pre-registered test-independent optimisation)",
+ "expected_explore_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6",
+ "condition_id": "133765eb12b75700",
+ "files_read": "selection.json, run_meta.json, config.yaml, parity.json, export/manifest.json, slurm .rc, per_user/val_*_masked.parquet; never metrics.csv or per_user/test_*",
+ "runs": {
+  "u0_s0_formal": {
+   "label": "u0_s0_formal",
+   "job": 27,
+   "run_dir": "/Users/yangliang/Desktop/kuairand-threetower-recsys/artifacts/u0/9218a76_seed0_job27",
+   "missing": [],
+   "git_sha": "9218a766796b107ab64f6ad3fce642cdacedf062",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 0.0,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 0,
+    "lr": 0.001,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "exit_code": 0,
+   "slurm_rc_line": "formal M4 run (Track A verified; rc file not part of this check)",
+   "valid_completed_run": true
+  },
+  "x_u0_s1": {
+   "label": "x_u0_s1",
+   "job": 39,
+   "run_dir": "artifacts/explore/wave1/x_u0_s1/1051f86_seed1_job39",
+   "missing": [],
+   "git_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 0.0,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 1,
+    "lr": 0.001,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T01:14:27+00:00 job=39 name=x_u0_s1 out=/local-scratch/liang/runs_explore/threetower/x_u0_s1/1051f86_seed1_job39",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true
+  },
+  "x_u0_s2": {
+   "label": "x_u0_s2",
+   "job": 40,
+   "run_dir": "artifacts/explore/wave1/x_u0_s2/1051f86_seed2_job40",
+   "missing": [],
+   "git_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 0.0,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 2,
+    "lr": 0.001,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T01:12:01+00:00 job=40 name=x_u0_s2 out=/local-scratch/liang/runs_explore/threetower/x_u0_s2/1051f86_seed2_job40",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true
+  },
+  "x_lr5e4": {
+   "label": "x_lr5e4",
+   "job": 41,
+   "run_dir": "artifacts/explore/wave1/x_lr5e4/1051f86_seed0_job41",
+   "missing": [],
+   "git_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 8.083951327786387e-08,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 0,
+    "lr": 0.0005,
+    "tau": 0.05,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T01:13:14+00:00 job=41 name=x_lr5e4 out=/local-scratch/liang/runs_explore/threetower/x_lr5e4/1051f86_seed0_job41",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true
+  },
+  "x_tau003": {
+   "label": "x_tau003",
+   "job": 42,
+   "run_dir": "artifacts/explore/wave1/x_tau003/1051f86_seed0_job42",
+   "missing": [],
+   "git_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 6.021805985800821e-08,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 0,
+    "lr": 0.001,
+    "tau": 0.03,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T01:36:57+00:00 job=42 name=x_tau003 out=/local-scratch/liang/runs_explore/threetower/x_tau003/1051f86_seed0_job42",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true
+  },
+  "x_tau010": {
+   "label": "x_tau010",
+   "job": 43,
+   "run_dir": "artifacts/explore/wave1/x_tau010/1051f86_seed0_job43",
+   "missing": [],
+   "git_sha": "1051f86f373697de7eca600d1dc3cd674d7d05f6",
+   "condition_id": "133765eb12b75700",
+   "test_used_for_selection": false,
+   "best_pt_sha256_matches_selection": true,
+   "export_checkpoint_matches_selection": true,
+   "export_files_listed": 20,
+   "export_files_present": true,
+   "parity_ok": true,
+   "parity": {
+    "ok": true,
+    "rebuilt_from_raw": true,
+    "check1_max_abs": 0.0,
+    "check1_all_bitwise_equal": true,
+    "check2_top50_mismatch_users": 0,
+    "check3_retrieve_ok": true,
+    "check4_metrics_ok": true,
+    "n_users": 2048,
+    "strata": {
+     "cold": 265,
+     "train_oov_with_history": 328,
+     "1-5": 499,
+     "6-20": 562,
+     ">20": 722
+    }
+   },
+   "selection_vs_export": {
+    "max_abs_diff": 1.8059739939624286e-07,
+    "near_tie_epochs": [],
+    "selection_may_be_sensitive": false
+   },
+   "parity_rc": 0,
+   "data_fingerprint": {
+    "events": "ecfa58f1e9872ab3f0731e1974190f51257168a564fc67413c862ad8e0e8bf9a",
+    "n_events": 1413134,
+    "t_test_ms": 1650902400000,
+    "t_val_ms": 1650124800000
+   },
+   "val_selection_frame_ids_match_m3": true,
+   "export_frame_ids_match_m3": true,
+   "config": {
+    "seed": 0,
+    "lr": 0.001,
+    "tau": 0.1,
+    "batch_size": 1024,
+    "max_epochs": 30,
+    "patience": 3,
+    "condition": "normal",
+    "user_features": "u0",
+    "model": {},
+    "history": {}
+   },
+   "slurm_rc_line": "rc=0 end=2026-10-13T01:39:20+00:00 job=43 name=x_tau010 out=/local-scratch/liang/runs_explore/threetower/x_tau010/1051f86_seed0_job43",
+   "exit_code": 0,
+   "stderr_bytes": 0,
+   "valid_completed_run": true
+  }
+ },
+ "seed_stats_u0_s0_s1_s2": {
+  "mean_val_recall@20": {
+   "mean": 0.121961854539639,
+   "std_ddof1": 0.0036458518013270562,
+   "min": 0.11803885624760443,
+   "max": 0.125246153238786,
+   "range": 0.007207296991181555
+  },
+  "mean_val_ndcg@20": {
+   "mean": 0.06718008566221462,
+   "std_ddof1": 0.0020071131960191263,
+   "min": 0.06533643377023567,
+   "max": 0.06931814109211572,
+   "range": 0.003981707321880051
+  },
+  "video_long_view/val_recall@20": {
+   "mean": 0.1256097984588644,
+   "std_ddof1": 0.0013938948581666154,
+   "min": 0.124054762152275,
+   "max": 0.12674695454051887,
+   "range": 0.0026921923882438775
+  },
+  "video_is_like/val_recall@20": {
+   "mean": 0.11468922668854827,
+   "std_ddof1": 0.0069101744383142484,
+   "min": 0.10885349719832575,
+   "max": 0.12231970289182602,
+   "range": 0.013466205693500266
+  },
+  "music_long_view/val_recall@20": {
+   "mean": 0.12850997157620775,
+   "std_ddof1": 0.007298484613585829,
+   "min": 0.12033975915334676,
+   "max": 0.13438493794383624,
+   "range": 0.014045178790489485
+  },
+  "music_is_like/val_recall@20": {
+   "mean": 0.11903842143493559,
+   "std_ddof1": 0.003681692852202343,
+   "min": 0.11486642370930297,
+   "max": 0.12183201374807842,
+   "range": 0.006965590038775449
+  }
+ }
+}
