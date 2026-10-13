@@ -69,6 +69,20 @@ descriptive, not a significance test. Wave 3 (e.g. E2 music fusion) is decided a
   **No Wave 3 GPU job has been run.** Gated E2 = No-Go (pure reparameterisation of the first Linear).
   Proposed next: no-music seed replicates (E-1, config only); stop-gradient fusion (E-2) is deferred.
 
+## Wave 3: cross-seed replication of the formal no-music ablation (approved 2026-10-12 21:13 PT)
+
+| exp | kind | diff vs configs/threetower_abl_nomusic.yaml | purpose |
+|---|---|---|---|
+| `x_nomusic_repro` | reproduction_control (reference: formal ablation) | none (only exp / run_root) | same-SHA seed-0 control vs job 35 |
+| `x_nomusic_s1` | seed_replicate (base: formal ablation) | `train.seed: 1` | replicate |
+| `x_nomusic_s2` | seed_replicate (base: formal ablation) | `train.seed: 2` | replicate |
+
+All three keep `model.use_music: false`, lr 1e-3, tau 0.05, U0 user tower, D1-8 selection; D1-10
+count unchanged (3 / 7). Planned val-only comparison: U0 {44, 39, 40} vs no-music {repro, s1, s2}
+(primary mean val R@20; per task incl. V-LV / M-LV / likes; long-view vs M3 pure ALS). Same seed
+numbers are not paired initialisations (different first-layer width). Gated E2 and stop-gradient
+fusion are not implemented (see `results/explore/wave3_review/WAVE3_GATE_REVIEW.md`).
+
 ## Selection protocol (pre-registered)
 
 - D1-8 unchanged for every run: normal val masked frames at T_val, mean val R@20 over the 4 tasks,

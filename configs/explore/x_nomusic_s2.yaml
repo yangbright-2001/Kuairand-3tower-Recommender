@@ -1,0 +1,33 @@
+# S9 exploratory config `x_nomusic_s2` (explore/s9-opt; post-hoc exploratory, NOT part of the approved v1).
+# Wave 3 seed replicate of the formal no-music ablation (only train.seed: 2).
+# Reference: configs/threetower_abl_nomusic.yaml (formal ablation, model.use_music = false). Identical except
+# `exp`, `run_root` and `train.seed`. lr 1e-3, tau 0.05, U0 user tower, D1-8 selection. Enforced by tests/test_explore_configs.py.
+# Server: sbatch -J x_nomusic_s2 scripts/explore/train_explore.sbatch configs/explore/x_nomusic_s2.yaml <EXPLORE_SHA>
+exp: x_nomusic_s2
+processed_dir: data/processed
+run_root: /local-scratch/liang/runs_explore   # S9 explore root (sbatch also passes --out_dir); never the formal runs/
+condition: normal
+user_features: u0
+device: cuda
+require_clean_git: true
+history: {}
+model:
+  use_music: false
+train:
+  tau: 0.05
+  lr: 1.0e-3
+  warmup_steps: 300
+  weight_decay: 0.01
+  clip_grad_norm: 1.0
+  batch_size: 1024
+  max_epochs: 30
+  patience: 3
+  like_oversample: 1
+  seed: 2                           # S9 SEED REPLICATE (only change vs threetower_abl_nomusic.yaml)
+  max_steps: null
+  log_every: 50
+eval:
+  threads: 1
+  val_user_batch_size: 256
+  chunk: 2048
+  parity_users: 2048

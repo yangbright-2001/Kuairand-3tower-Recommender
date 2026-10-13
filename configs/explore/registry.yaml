@@ -9,7 +9,10 @@
 #   seed_calibration       U0 with only train.seed changed (vs threetower_u0.yaml).
 #   d1_10_*                hyperparameter variant: exactly one D1-10 knob changed vs threetower_u0.yaml.
 #   seed_replicate         an approved variant (`base`) with only train.seed changed vs that variant.
-#   reproduction_control   no training/model key changed vs threetower_u0.yaml (only exp / run_root).
+#   reproduction_control   no training/model key changed vs its reference (default threetower_u0.yaml;
+#                          `reference: <formal config stem>` for a formal ablation); only exp / run_root.
+#   seed_replicate         `base` may also be a formal ablation config (`base: formal:<config stem>`);
+#                          then exactly {train.seed} vs that formal config.
 #
 # D1-10 budget: "<= 7 extra configs in total", one change at a time, chosen on val only.
 # Counted = hyperparameter variants (d1_10: true). Seed replicates, seed calibrations and the
@@ -27,4 +30,9 @@ runs:
   x_u0_repro: {wave: 2, status: approved, kind: reproduction_control, d1_10: false, change: {}}
   x_lr5e4_s1: {wave: 2, status: approved, kind: seed_replicate, base: x_lr5e4, d1_10: false, change: {train.seed: 1}}
   x_lr5e4_s2: {wave: 2, status: approved, kind: seed_replicate, base: x_lr5e4, d1_10: false, change: {train.seed: 2}}
-  # Not created (separate approval): x_musicgate (E2 gated music fusion, gate_init 1.0; code change).
+  # Wave 3 (approved 2026-10-12 21:13 PT): cross-seed replication of the formal no-music ablation (job 35).
+  x_nomusic_repro: {wave: 3, status: approved, kind: reproduction_control, reference: threetower_abl_nomusic, d1_10: false, change: {}}
+  x_nomusic_s1:    {wave: 3, status: approved, kind: seed_replicate, base: "formal:threetower_abl_nomusic", d1_10: false, change: {train.seed: 1}}
+  x_nomusic_s2:    {wave: 3, status: approved, kind: seed_replicate, base: "formal:threetower_abl_nomusic", d1_10: false, change: {train.seed: 2}}
+  # Not implemented (No-Go / deferred, results/explore/wave3_review/WAVE3_GATE_REVIEW.md):
+  #   gated E2 music fusion (pure reparameterisation) and E-2 stop-gradient fusion.
