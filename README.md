@@ -13,7 +13,7 @@ A three-tower model (user / video / music) trained on [KuaiRand-Pure](https://ku
 
 ### 1.2 Baselines and protocol
 
-The model is compared with Popularity and implicit ALS, under one leakage-controlled temporal protocol, scored by one shared evaluator with paired user-bootstrap confidence intervals.
+The model is compared with Popularity and implicit ALS (§2), under one leakage-controlled temporal protocol, scored by one shared evaluator with paired user-bootstrap confidence intervals.
 
 ### 1.3 Quick links
 
@@ -32,26 +32,36 @@ The model is compared with Popularity and implicit ALS, under one leakage-contro
 - **U0** is the main model. It uses the user ID plus the user's strict-past interaction history, and no user metadata.
 - **U1** is U0 plus 21 user-profile fields. These come from a single, undated snapshot, so their availability at prediction time cannot be verified. U1 is reported with that caveat.
 
+**Baselines.** *Popularity* ranks items by their number of training positives. *Pure ALS* is implicit-feedback matrix factorisation trained on the task's own action. *Aux ALS* (like tasks only) is a stronger like baseline: it also adds the long-view signal with weight 0.3.
+
 ### 2.1 Formal findings (held-out test)
 
-**How to read these numbers.** Each number in this subsection is a difference in **test** Recall@20 between two models, evaluated on the same users:
-- The metric is computed over the full item catalog, with items the user had already interacted with excluded from the ranking.
-- Brackets give the 95% confidence interval from a paired bootstrap over 1,000 user resamples.
-- A star (\*) marks a statistically significant difference, i.e. its 95% interval does not include 0.
+**Metrics.**
+- **Recall@20** is the share of a user's test positives that appear in the model's top 20, averaged over users. **NDCG@20** additionally rewards ranking those hits higher.
+- Both rank the **full catalog** (7,583 videos or 7,201 music IDs), and items the user interacted with before the test period are excluded.
+- A **difference** is model A minus model B on the same users. Its **95% CI** comes from a paired bootstrap over 1,000 user resamples. It is **significant** if the CI excludes 0. A non-significant difference does **not** mean the models are equivalent.
 
-**Findings.**
+**Test Recall@20** (source: `results/m5/main_formal/bootstrap_models.csv`):
 
-- **U0 beats Popularity on all four tasks.** The gains are +.020\* to +.032\*.
-- **U0 vs pure implicit ALS is mixed:**
-  - *better* on both like tasks (+.036\* video, +.044\* music);
-  - *worse* on both long-view tasks (−.012\* each).
-- **Against a stronger like baseline there is no significant edge.** That baseline is ALS with an auxiliary long-view signal: −.009 [−.025, +.005] video, −.003 [−.019, +.014] music.
-- **Controlled cold-video holdout** (750 videos removed from training):
-  - **among held-out videos only**, the content path clearly beats the same-condition baselines (+.078\* over random on long view);
-  - **on the full catalog** it is not distinguishable from random (+.0014 [−.0000, +.0032]).
-- **Ablations:**
-  - removing history hurts long view (−.012\* / −.011\*);
-  - removing the music input to the video tower **improves** long view (+.010\* / +.009\*). This is a negative result for that design choice.
+| model | video / long view | video / like | music / long view | music / like |
+|---|---:|---:|---:|---:|
+| Popularity | 0.0806 | 0.0716 | 0.0856 | 0.0726 |
+| Pure ALS | 0.1244 | 0.0555 | 0.1282 | 0.0586 |
+| Aux ALS | – | 0.1008 | – | 0.1054 |
+| **U0 (main)** | **0.1124** | **0.0913** | **0.1162** | **0.1022** |
+| U1 (snapshot caveat) | 0.1274 | 0.0859 | 0.1321 | 0.0864 |
+
+- **U0 beats Popularity on all four tasks.** The absolute differences are +0.020 to +0.032 Recall@20, all significant.
+- **Against Pure ALS the result is mixed.**
+  - U0 is better on both like tasks (+0.036 video, +0.044 music; significant).
+  - U0 is worse on both long-view tasks (−0.012 each, 95% CI [−0.016, −0.008]).
+- **Against Aux ALS on like, U0 is not statistically significantly different:** −0.009 [−0.025, +0.005] video, −0.003 [−0.019, +0.014] music.
+- **Controlled cold-video holdout.** 750 videos are removed from training and scored from content features only (§4.2).
+  - Ranked among the held-out videos only, the cold model reaches 0.1045 Recall@20 on long view, against 0.0269 for a random ranking (significant).
+  - Ranked against the full catalog, it is not significantly different from random: 0.0041 vs 0.0027.
+- **Ablations** (§4.3):
+  - removing history lowers long view (−0.012 / −0.011, significant);
+  - removing the music input to the video tower **raises** long view (+0.010 / +0.009, significant). This is a negative result for that design choice.
 - **Correctness was prioritised over winning:**
   - chronological split;
   - strict-past histories;
@@ -62,22 +72,24 @@ The model is compared with Popularity and implicit ALS, under one leakage-contro
 
 ### 2.2 Additional exploratory findings (validation only; post-hoc)
 
-**How to read these numbers.** After the formal results were analysed, U0 was retrained under single-setting changes on a separate branch. All numbers here are **validation** Recall@20 values (the 4-task mean unless a task is named). They do not change the formal test results above, and no explore model replaces U0.
+**How to read these numbers.** After the formal results were analysed, U0 was retrained on a separate branch, changing one setting at a time and repeating at three training seeds.
+- All numbers here are **validation** Recall@20 values (the 4-task mean unless a task is named).
+- **mean ± std** is over the three training seeds. It describes training-seed variability, not a bootstrap CI.
+- These numbers do not change the formal test results above, and no exploratory model replaces U0.
 
 **Findings.**
 
-- **Removing the music-to-video input consistently improved long-view validation Recall@20 across three seeds, without systematically harming like retrieval.**
-  - The ablation was repeated at seeds 0/1/2 (seed 0 reproduces the formal ablation bitwise).
-  - Mean val R@20 over 4 tasks: .1286 ± .0018 vs U0 .1220 ± .0036.
-  - Average same-seed gain: +.0068 on video long view, +.0072 on music long view, higher on 3/3 seeds for both.
-  - With the music input removed, the long-view R@20 difference from pure ALS is no longer CI-supported: all six CIs include 0. This is **not** a proof of equivalence, and not a win over ALS.
-  - On the secondary metric, long-view NDCG@20, no-music is above pure ALS on 6/6 seed-task pairs. The nominal 95% CIs exclude 0, uncorrected for multiple comparisons and not confirmed on test.
+- **Removing the music input to the video tower consistently improved long-view validation Recall@20 across three seeds, without systematically harming like retrieval.**
+  - The 4-task mean is 0.1286 ± 0.0018 without the music input, vs 0.1220 ± 0.0036 for U0.
+  - The average same-seed gain is +0.0068 on video long view and +0.0072 on music long view, and both are higher on 3 of 3 seeds. Seed 0 reproduces the formal ablation bitwise.
+  - Against Pure ALS on long-view Recall@20, all six bootstrap CIs (2 tasks × 3 seeds) include 0. The difference is not significant; this is **not** equivalence and not a win over ALS.
+  - On the secondary metric, long-view NDCG@20, it is above Pure ALS on 6 of 6 seed-task pairs (nominal 95% CIs exclude 0; uncorrected for multiple comparisons; not confirmed on test).
   - The mechanism is not identified; a stop-gradient control is future work.
-- **Seed variation is large.** Across three U0 seeds, the 4-task mean val R@20 spans .0072 (.1180–.1252). Single-seed optimisation gains of that size should be read with caution.
-- **Learning rate.** lr 5e-4 raises the 4-task mean val R@20 on all three seeds, by +.0048 on average (about one seed std). The gain comes mainly from the like tasks; long view is seed-dependent.
-- **Temperature.** On seed 0, τ = 0.1 raises long view and lowers like; the 4-task mean does not improve.
+- **Seed variation is large.** Across three U0 seeds, the 4-task mean spans 0.1180–0.1252 (range 0.0072). Single-seed gains of that size should be read with caution.
+- **Learning rate.** lr 5e-4 (formal: 1e-3) raises the 4-task mean on all three seeds, by +0.0048 on average (about one seed std), mainly through the like tasks. Long view depends on the seed.
+- **Temperature.** On seed 0, τ = 0.1 (formal: 0.05) raises long view and lowers like; the 4-task mean does not improve.
 
-Details: §4.4 and [`docs/EXPLORATORY_RESULTS.md`](docs/EXPLORATORY_RESULTS.md).
+Figure and details: §4.4 and [`docs/EXPLORATORY_RESULTS.md`](docs/EXPLORATORY_RESULTS.md).
 
 ## 3. Three-tower architecture (formal U0/U1)
 
@@ -117,57 +129,32 @@ The figures in §4.1–4.3 are generated from the formal **test** result CSVs by
 
 ### 4.1 Main comparison
 
-Each task is evaluated on the same users for every model.
+The numbers behind these figures and their interpretation are in §2.
 
 ![Test Recall@20, four tasks](report/figures/fig1_baselines.png)
 
-- U0 is above Popularity everywhere.
-- U0 is below pure ALS on long view and above it on like.
-- On like, U0 is statistically tied with ALS aux.
-- U1 reaches ALS level on long view, with the snapshot caveat.
-- Source: `results/m5/main_formal/bootstrap_models.csv`. Full R/NDCG@10/20/50 are in [`report/tables/t1_main_metrics.md`](report/tables/t1_main_metrics.md); all paired differences are in [`t2_paired_diffs.md`](report/tables/t2_paired_diffs.md).
+*Figure 1.* Test Recall@20 with 95% CIs, the same users per task, for Popularity, Pure ALS, Aux ALS (like only), U0 and U1. Source: `results/m5/main_formal/bootstrap_models.csv`. All of Recall/NDCG@10/20/50 are in [`report/tables/t1_main_metrics.md`](report/tables/t1_main_metrics.md), and every paired difference is in [`t2_paired_diffs.md`](report/tables/t2_paired_diffs.md).
 
 ### 4.2 Controlled cold-video experiment
 
-Only same-condition baselines are shown; the seen-video reference is context, not a baseline.
-
 ![Cold-video Recall@20](report/figures/fig2_cold_video.png)
 
-- **Left, full catalog (7,583 videos):** cold videos rarely reach the top 20, and the result is not distinguishable from random.
-- **Right, held-out videos only (750):** the cold model ranks clearly better than cold Pop, cold ALS (0 by construction) and the analytical random ranking.
-- Source: `results/m5/cold_video/eval_671dde9_job33/`. Full table: [`report/tables/t5_cold_video.md`](report/tables/t5_cold_video.md).
+*Figure 2.* Test Recall@20 on users' positives on the 750 held-out videos.
+- Left: those videos are ranked against the full catalog (7,583 videos). Right: they are ranked among the held-out videos only.
+- The cold model and the cold Popularity/ALS baselines were all trained without the held-out videos. Cold ALS is 0 by construction, because it cannot score unseen items. "Random" is the analytical expectation of a uniformly random ranking.
+- Source: `results/m5/cold_video/eval_671dde9_job33/`; full table: [`report/tables/t5_cold_video.md`](report/tables/t5_cold_video.md).
 
 ### 4.3 Ablations
 
-Each is a single configuration flag, with the same data, seed and selection rule.
-
 ![Ablation differences vs U0](report/figures/fig4_ablations.png)
 
-- No history: lower long view.
-- No music input: higher long view.
-- Like-task differences are mostly not significant.
-- History-length buckets and the full error analysis are in the [extended report](report/REPORT_FULL.md) §2.3 and §3.
+*Figure 3.* Test difference (ablated model − U0) with 95% CIs, Recall@20 (top) and NDCG@20 (bottom). Each ablation changes one configuration flag, with the same data, seed and selection rule. History-length buckets and the error analysis are in the [extended report](report/REPORT_FULL.md) §2.3 and §3.
 
 ### 4.4 Post-hoc exploratory findings (validation only)
 
-After the formal results were analysed, a separate exploratory study (branch `explore/s9-opt`) retrained U0 under single-setting changes. **These are validation metrics, not test results, and they do not replace the formal model.**
-
 ![No-music minus U0 at the same seed, validation R@20 (post-hoc exploratory)](results/explore/wave3/figures/fig2_nomusic_minus_u0.png)
 
-- **No-music, three seeds.** Removing the music-to-video input raises both long-view tasks on 3/3 seeds (mean +.0068 / +.0072 val R@20).
-  - The no-music seed range lies above the U0 seed range.
-  - Like is not systematically lower.
-  - The lead holds at nearly every epoch, so it is not an early-stopping artefact.
-  - Same seed numbers are not paired initialisations.
-- **Seeds matter.** Across three U0 seeds, the 4-task mean val R@20 is .1220 ± .0036. The observed range of .0072 is larger than the user-bootstrap uncertainty; it is not a statistical threshold. Single-seed differences of that size should be read with caution.
-- **Learning rate.** lr 5e-4 is numerically higher than the formal lr 1e-3 on all three seeds (+.0048 on average, about one seed std). The gain comes mainly from like; long view is seed-dependent.
-- **Temperature.** τ = 0.1 lifts long view and lowers like, leaving the mean unchanged.
-- **Against ALS on validation.**
-  - No-music removes U0's significant long-view R@20 deficit: all six CIs vs pure ALS include 0.
-  - No run has a CI-supported R@20 advantage, so this is not equivalence and not a win.
-  - Long-view NDCG@20 of no-music is above pure ALS (nominal CIs, secondary metric).
-- **Reproduction.** Same-config reruns reproduce the formal U0 (job 27) and the formal no-music ablation (job 35) bitwise.
-- **Details.** Full tables are in [`docs/EXPLORATORY_RESULTS.md`](docs/EXPLORATORY_RESULTS.md) and [`report/REPORT_FULL.md`](report/REPORT_FULL.md) §2.5.
+*Figure 4.* **Validation** Recall@20 of U0 without the music input, minus U0 at the same seed. Dots are seeds 0/1/2; bars are the 3-seed mean. The two architectures have different layer sizes, so the same seed does not give the same initialisation. Source: branch `explore/s9-opt`, copied to `results/explore/wave3/`. Same-config reruns reproduce the formal U0 (job 27) and the formal no-music ablation (job 35) bitwise. Full tables: [`docs/EXPLORATORY_RESULTS.md`](docs/EXPLORATORY_RESULTS.md) and [`report/REPORT_FULL.md`](report/REPORT_FULL.md) §2.5.
 
 ## 5. Quick start
 
@@ -207,7 +194,7 @@ uv run python -m kuairand_rec.models.retrieve --export_dir artifacts/u0/9218a76_
 
 - Setup, tests and the CPU smoke run.
 - M1 dataset audit, M2 data pipeline, M3 Popularity/ALS baselines and the independent M3 oracle.
-- Cold-video H selection and evaluation, bootstrap/bucket analysis, `retrieve()` and parity re-checks.
+- Cold-video held-out set selection and evaluation, bootstrap/bucket analysis, `retrieve()` and parity re-checks.
 - Report tables and figures.
 
 ### 6.2 Remote GPU (Slurm)
@@ -235,7 +222,7 @@ Both are read-only on the formal results, and neither trains or re-scores a mode
 | run | training commit | condition |
 |---|---|---|
 | U0, U1 | `9218a76` | normal |
-| cold U0, no-history, no-music | `671dde9` | normal / cold (H = 750 videos) |
+| cold U0, no-history, no-music | `671dde9` | normal / cold (750 held-out videos) |
 
 - Each run records its git SHA, config, data and condition fingerprints, the selection log (`test_used_for_selection: false`) and per-file sha256 hashes.
 - Post-processing ran at `671dde9`.
@@ -272,7 +259,7 @@ The research report is [`report/REPORT.pdf`](report/REPORT.pdf) (source [`report
 
 - **User metadata.** None of the 21 snapshot fields used by U1 can be shown to be available at the historical prediction time: 2 are time-dependent by definition, and 19 have unknown availability. U0 therefore uses no user metadata. This is a documented deviation from "ID + usable metadata + history".
 - **Cold videos on the full catalog.** The content path ranks new videos sensibly among themselves, but rarely surfaces them against warm videos.
-- **One seed per formal model.** CIs reflect user sampling, not training variance. The exploratory three-seed study shows seed variation of about ±.004 in mean val R@20, so differences of about 0.01 between three-tower variants may not hold across seeds.
+- **One seed per formal model.** CIs reflect user sampling, not training variance. The exploratory three-seed study shows a training-seed std of about 0.004 in the 4-task mean validation Recall@20, so differences of about 0.01 between three-tower variants may not hold across seeds.
 - **Cross-platform numerics.** The formal metrics were scored on Linux. Re-scoring the same exports on macOS changes at most 2 users per frame (test means ≤ 1.1e-7) through exact score ties at the cut-off.
 - **Exploratory study.** It is post-hoc: designed after the test results were seen, with three seeds and settings that are subject to selection bias. It is reported on validation only.
 - **Further caveats.** The 20-minute feedback delay is an assumption, and KuaiRand-Pure keeps candidate-pool videos only. See report §4.

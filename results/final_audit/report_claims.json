@@ -1,9 +1,9 @@
 {
  "report": "report/REPORT_FULL.md",
  "method": "parses REPORT.md tables + anchored prose numbers",
- "n_checked": 321,
+ "n_checked": 363,
  "n_failed": 0,
- "n_table_cells": 283,
+ "n_table_cells": 325,
  "n_prose_numbers": 38,
  "manual_review_scope": [
   "qualitative statements, interpretations and hypotheses (Error analysis, Limitations, Next)",
@@ -15,7 +15,7 @@
  "checks": [
   {
    "where": "T1 Pop video LV R@20",
-   "printed": ".0806",
+   "printed": "0.0806",
    "formal_value": 0.0805960791087946,
    "sig_printed": null,
    "sig_formal": null,
@@ -23,7 +23,7 @@
   },
   {
    "where": "T1 Pop video LV N@20",
-   "printed": ".0457",
+   "printed": "0.0457",
    "formal_value": 0.0456970837180869,
    "sig_printed": null,
    "sig_formal": null,
@@ -31,7 +31,7 @@
   },
   {
    "where": "T1 Pop video like R@20",
-   "printed": ".0716",
+   "printed": "0.0716",
    "formal_value": 0.0715934849701818,
    "sig_printed": null,
    "sig_formal": null,
@@ -39,7 +39,7 @@
   },
   {
    "where": "T1 Pop video like N@20",
-   "printed": ".0403",
+   "printed": "0.0403",
    "formal_value": 0.0402528467890206,
    "sig_printed": null,
    "sig_formal": null,
@@ -47,7 +47,7 @@
   },
   {
    "where": "T1 Pop music LV R@20",
-   "printed": ".0856",
+   "printed": "0.0856",
    "formal_value": 0.0856169687425038,
    "sig_printed": null,
    "sig_formal": null,
@@ -55,7 +55,7 @@
   },
   {
    "where": "T1 Pop music LV N@20",
-   "printed": ".0479",
+   "printed": "0.0479",
    "formal_value": 0.0478519300012716,
    "sig_printed": null,
    "sig_formal": null,
@@ -63,7 +63,7 @@
   },
   {
    "where": "T1 Pop music like R@20",
-   "printed": ".0726",
+   "printed": "0.0726",
    "formal_value": 0.0725852832907,
    "sig_printed": null,
    "sig_formal": null,
@@ -71,231 +71,231 @@
   },
   {
    "where": "T1 Pop music like N@20",
-   "printed": ".0412",
+   "printed": "0.0412",
    "formal_value": 0.0411579120643304,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (pure) video LV R@20",
-   "printed": ".1244",
+   "where": "T1 Pure ALS video LV R@20",
+   "printed": "0.1244",
    "formal_value": 0.1243686863779464,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (pure) video LV N@20",
-   "printed": ".0686",
+   "where": "T1 Pure ALS video LV N@20",
+   "printed": "0.0686",
    "formal_value": 0.0686388205469594,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (pure) video like R@20",
-   "printed": ".0555",
+   "where": "T1 Pure ALS video like R@20",
+   "printed": "0.0555",
    "formal_value": 0.055467203515846,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (pure) video like N@20",
-   "printed": ".0282",
+   "where": "T1 Pure ALS video like N@20",
+   "printed": "0.0282",
    "formal_value": 0.0281564202773583,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (pure) music LV R@20",
-   "printed": ".1282",
+   "where": "T1 Pure ALS music LV R@20",
+   "printed": "0.1282",
    "formal_value": 0.128183804269911,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (pure) music LV N@20",
-   "printed": ".0705",
+   "where": "T1 Pure ALS music LV N@20",
+   "printed": "0.0705",
    "formal_value": 0.0705130296459639,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (pure) music like R@20",
-   "printed": ".0586",
+   "where": "T1 Pure ALS music like R@20",
+   "printed": "0.0586",
    "formal_value": 0.058596015018489,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (pure) music like N@20",
-   "printed": ".0303",
+   "where": "T1 Pure ALS music like N@20",
+   "printed": "0.0303",
    "formal_value": 0.0302758513084038,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (aux, like only) video like R@20",
-   "printed": ".1008",
+   "where": "T1 Aux ALS video like R@20",
+   "printed": "0.1008",
    "formal_value": 0.1007660371913765,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (aux, like only) video like N@20",
-   "printed": ".0469",
+   "where": "T1 Aux ALS video like N@20",
+   "printed": "0.0469",
    "formal_value": 0.0468845454277967,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (aux, like only) music like R@20",
-   "printed": ".1054",
+   "where": "T1 Aux ALS music like R@20",
+   "printed": "0.1054",
    "formal_value": 0.1053718297843705,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 ALS (aux, like only) music like N@20",
-   "printed": ".0463",
+   "where": "T1 Aux ALS music like N@20",
+   "printed": "0.0463",
    "formal_value": 0.0463193188156662,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U0 (main) video LV R@20",
-   "printed": ".1124",
+   "where": "T1 U0 (main) video LV R@20",
+   "printed": "0.1124",
    "formal_value": 0.1124194942479957,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U0 (main) video LV N@20",
-   "printed": ".0676",
+   "where": "T1 U0 (main) video LV N@20",
+   "printed": "0.0676",
    "formal_value": 0.067648559985379,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U0 (main) video like R@20",
-   "printed": ".0913",
+   "where": "T1 U0 (main) video like R@20",
+   "printed": "0.0913",
    "formal_value": 0.0913378061850912,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U0 (main) video like N@20",
-   "printed": ".0417",
+   "where": "T1 U0 (main) video like N@20",
+   "printed": "0.0417",
    "formal_value": 0.0416527629550357,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U0 (main) music LV R@20",
-   "printed": ".1162",
+   "where": "T1 U0 (main) music LV R@20",
+   "printed": "0.1162",
    "formal_value": 0.1161947333567914,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U0 (main) music LV N@20",
-   "printed": ".0691",
+   "where": "T1 U0 (main) music LV N@20",
+   "printed": "0.0691",
    "formal_value": 0.0690639322664849,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U0 (main) music like R@20",
-   "printed": ".1022",
+   "where": "T1 U0 (main) music like R@20",
+   "printed": "0.1022",
    "formal_value": 0.1021573075724868,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U0 (main) music like N@20",
-   "printed": ".0472",
+   "where": "T1 U0 (main) music like N@20",
+   "printed": "0.0472",
    "formal_value": 0.0472421807339789,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U1 (+ snapshot) video LV R@20",
-   "printed": ".1274",
+   "where": "T1 U1 (+ snapshot) video LV R@20",
+   "printed": "0.1274",
    "formal_value": 0.1274241675222105,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U1 (+ snapshot) video LV N@20",
-   "printed": ".0744",
+   "where": "T1 U1 (+ snapshot) video LV N@20",
+   "printed": "0.0744",
    "formal_value": 0.0744383886543768,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U1 (+ snapshot) video like R@20",
-   "printed": ".0859",
+   "where": "T1 U1 (+ snapshot) video like R@20",
+   "printed": "0.0859",
    "formal_value": 0.0859235915797002,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U1 (+ snapshot) video like N@20",
-   "printed": ".0397",
+   "where": "T1 U1 (+ snapshot) video like N@20",
+   "printed": "0.0397",
    "formal_value": 0.0396980998059288,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U1 (+ snapshot) music LV R@20",
-   "printed": ".1321",
+   "where": "T1 U1 (+ snapshot) music LV R@20",
+   "printed": "0.1321",
    "formal_value": 0.1321147328079058,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U1 (+ snapshot) music LV N@20",
-   "printed": ".0768",
+   "where": "T1 U1 (+ snapshot) music LV N@20",
+   "printed": "0.0768",
    "formal_value": 0.0767709903615132,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U1 (+ snapshot) music like R@20",
-   "printed": ".0864",
+   "where": "T1 U1 (+ snapshot) music like R@20",
+   "printed": "0.0864",
    "formal_value": 0.0864480246158035,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T1 3T-U1 (+ snapshot) music like N@20",
-   "printed": ".0407",
+   "where": "T1 U1 (+ snapshot) music like N@20",
+   "printed": "0.0407",
    "formal_value": 0.040738096062427,
    "sig_printed": null,
    "sig_formal": null,
@@ -303,246 +303,438 @@
   },
   {
    "where": "T2 U0 \u2212 Pop video LV",
-   "printed": "+.032",
+   "printed": "+0.032",
    "formal_value": 0.0318234151392011,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
+   "where": "T2 U0 \u2212 Pop video LV ci_lo",
+   "printed": "+0.029",
+   "formal_value": 0.0287113552933722,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U0 \u2212 Pop video LV ci_hi",
+   "printed": "+0.035",
+   "formal_value": 0.0350509360426699,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T2 U0 \u2212 Pop video like",
-   "printed": "+.020",
+   "printed": "+0.020",
    "formal_value": 0.0197443212149094,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
+   "where": "T2 U0 \u2212 Pop video like ci_lo",
+   "printed": "+0.007",
+   "formal_value": 0.0067211460190815,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U0 \u2212 Pop video like ci_hi",
+   "printed": "+0.032",
+   "formal_value": 0.0316666925242999,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T2 U0 \u2212 Pop music LV",
-   "printed": "+.031",
+   "printed": "+0.031",
    "formal_value": 0.0305777646142876,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
+   "where": "T2 U0 \u2212 Pop music LV ci_lo",
+   "printed": "+0.027",
+   "formal_value": 0.0272573093158348,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U0 \u2212 Pop music LV ci_hi",
+   "printed": "+0.034",
+   "formal_value": 0.0336301526762822,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T2 U0 \u2212 Pop music like",
-   "printed": "+.030",
+   "printed": "+0.030",
    "formal_value": 0.0295720242817868,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS pure video LV",
-   "printed": "\u2212.012",
+   "where": "T2 U0 \u2212 Pop music like ci_lo",
+   "printed": "+0.015",
+   "formal_value": 0.0147562369834797,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U0 \u2212 Pop music like ci_hi",
+   "printed": "+0.043",
+   "formal_value": 0.0430644385298079,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U0 \u2212 Pure ALS video LV",
+   "printed": "\u22120.012",
    "formal_value": -0.0119491921299506,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS pure video LV ci_lo",
-   "printed": "\u2212.016",
+   "where": "T2 U0 \u2212 Pure ALS video LV ci_lo",
+   "printed": "\u22120.016",
    "formal_value": -0.0159554524330124,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS pure video LV ci_hi",
-   "printed": "\u2212.008",
+   "where": "T2 U0 \u2212 Pure ALS video LV ci_hi",
+   "printed": "\u22120.008",
    "formal_value": -0.0078646672186465,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS pure video like",
-   "printed": "+.036",
+   "where": "T2 U0 \u2212 Pure ALS video like",
+   "printed": "+0.036",
    "formal_value": 0.0358706026692452,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS pure music LV",
-   "printed": "\u2212.012",
+   "where": "T2 U0 \u2212 Pure ALS video like ci_lo",
+   "printed": "+0.022",
+   "formal_value": 0.0224549414842118,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U0 \u2212 Pure ALS video like ci_hi",
+   "printed": "+0.049",
+   "formal_value": 0.0486351278171131,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U0 \u2212 Pure ALS music LV",
+   "printed": "\u22120.012",
    "formal_value": -0.0119890709131195,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS pure music LV ci_lo",
-   "printed": "\u2212.016",
+   "where": "T2 U0 \u2212 Pure ALS music LV ci_lo",
+   "printed": "\u22120.016",
    "formal_value": -0.0159263509063809,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS pure music LV ci_hi",
-   "printed": "\u2212.008",
+   "where": "T2 U0 \u2212 Pure ALS music LV ci_hi",
+   "printed": "\u22120.008",
    "formal_value": -0.007889597479462,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS pure music like",
-   "printed": "+.044",
+   "where": "T2 U0 \u2212 Pure ALS music like",
+   "printed": "+0.044",
    "formal_value": 0.0435612925539978,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS aux video like",
-   "printed": "\u2212.009",
+   "where": "T2 U0 \u2212 Pure ALS music like ci_lo",
+   "printed": "+0.029",
+   "formal_value": 0.0290243864017921,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U0 \u2212 Pure ALS music like ci_hi",
+   "printed": "+0.058",
+   "formal_value": 0.0579757640203278,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U0 \u2212 Aux ALS video like",
+   "printed": "\u22120.009",
    "formal_value": -0.0094282310062852,
    "sig_printed": false,
    "sig_formal": 0.0,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS aux video like ci_lo",
-   "printed": "\u2212.025",
+   "where": "T2 U0 \u2212 Aux ALS video like ci_lo",
+   "printed": "\u22120.025",
    "formal_value": -0.0251869369212412,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS aux video like ci_hi",
-   "printed": "+.005",
+   "where": "T2 U0 \u2212 Aux ALS video like ci_hi",
+   "printed": "+0.005",
    "formal_value": 0.0050925219399484,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS aux music like",
-   "printed": "\u2212.003",
+   "where": "T2 U0 \u2212 Aux ALS music like",
+   "printed": "\u22120.003",
    "formal_value": -0.0032145222118836,
    "sig_printed": false,
    "sig_formal": 0.0,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS aux music like ci_lo",
-   "printed": "\u2212.019",
+   "where": "T2 U0 \u2212 Aux ALS music like ci_lo",
+   "printed": "\u22120.019",
    "formal_value": -0.0190427194104634,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U0 \u2212 ALS aux music like ci_hi",
-   "printed": "+.014",
+   "where": "T2 U0 \u2212 Aux ALS music like ci_hi",
+   "printed": "+0.014",
    "formal_value": 0.0137279915554981,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U1 \u2212 ALS pure video LV",
-   "printed": "+.003",
+   "where": "T2 U1 \u2212 Pure ALS video LV",
+   "printed": "+0.003",
    "formal_value": 0.0030554811442641,
    "sig_printed": false,
    "sig_formal": 0.0,
    "ok": true
   },
   {
-   "where": "T2 U1 \u2212 ALS pure video LV ci_lo",
-   "printed": "\u2212.001",
+   "where": "T2 U1 \u2212 Pure ALS video LV ci_lo",
+   "printed": "\u22120.001",
    "formal_value": -0.0012808182941099,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U1 \u2212 ALS pure video LV ci_hi",
-   "printed": "+.007",
+   "where": "T2 U1 \u2212 Pure ALS video LV ci_hi",
+   "printed": "+0.007",
    "formal_value": 0.0071233987787158,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U1 \u2212 ALS pure video like",
-   "printed": "+.030",
+   "where": "T2 U1 \u2212 Pure ALS video like",
+   "printed": "+0.030",
    "formal_value": 0.0304563880638541,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
-   "where": "T2 U1 \u2212 ALS pure music LV",
-   "printed": "+.004",
+   "where": "T2 U1 \u2212 Pure ALS video like ci_lo",
+   "printed": "+0.017",
+   "formal_value": 0.0169854232212829,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U1 \u2212 Pure ALS video like ci_hi",
+   "printed": "+0.043",
+   "formal_value": 0.0429077641089801,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U1 \u2212 Pure ALS music LV",
+   "printed": "+0.004",
    "formal_value": 0.0039309285379947,
    "sig_printed": false,
    "sig_formal": 0.0,
    "ok": true
   },
   {
-   "where": "T2 U1 \u2212 ALS pure music LV ci_lo",
-   "printed": "\u2212.000",
+   "where": "T2 U1 \u2212 Pure ALS music LV ci_lo",
+   "printed": "\u22120.000",
    "formal_value": -0.0002372994308645,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U1 \u2212 ALS pure music LV ci_hi",
-   "printed": "+.008",
+   "where": "T2 U1 \u2212 Pure ALS music LV ci_hi",
+   "printed": "+0.008",
    "formal_value": 0.0081876839019986,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T2 U1 \u2212 ALS pure music like",
-   "printed": "+.028",
+   "where": "T2 U1 \u2212 Pure ALS music like",
+   "printed": "+0.028",
    "formal_value": 0.0278520095973145,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
+   "where": "T2 U1 \u2212 Pure ALS music like ci_lo",
+   "printed": "+0.015",
+   "formal_value": 0.0153552174927698,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U1 \u2212 Pure ALS music like ci_hi",
+   "printed": "+0.042",
+   "formal_value": 0.0416041188169272,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T2 U1 \u2212 U0 video LV",
-   "printed": "+.015",
+   "printed": "+0.015",
    "formal_value": 0.0150046732742148,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
+   "where": "T2 U1 \u2212 U0 video LV ci_lo",
+   "printed": "+0.012",
+   "formal_value": 0.0124716911221054,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U1 \u2212 U0 video LV ci_hi",
+   "printed": "+0.018",
+   "formal_value": 0.0178314031890483,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T2 U1 \u2212 U0 video like",
-   "printed": "\u2212.005",
+   "printed": "\u22120.005",
    "formal_value": -0.005414214605391,
    "sig_printed": false,
    "sig_formal": 0.0,
    "ok": true
   },
   {
+   "where": "T2 U1 \u2212 U0 video like ci_lo",
+   "printed": "\u22120.016",
+   "formal_value": -0.0156469914833885,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U1 \u2212 U0 video like ci_hi",
+   "printed": "+0.005",
+   "formal_value": 0.0048601632976633,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T2 U1 \u2212 U0 music LV",
-   "printed": "+.016",
+   "printed": "+0.016",
    "formal_value": 0.0159199994511143,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
+   "where": "T2 U1 \u2212 U0 music LV ci_lo",
+   "printed": "+0.013",
+   "formal_value": 0.013178421976787,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U1 \u2212 U0 music LV ci_hi",
+   "printed": "+0.019",
+   "formal_value": 0.018607071282478,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T2 U1 \u2212 U0 music like",
-   "printed": "\u2212.016",
+   "printed": "\u22120.016",
    "formal_value": -0.0157092829566832,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
-   "where": "T3 video LV full catalog cold3T",
+   "where": "T2 U1 \u2212 U0 music like ci_lo",
+   "printed": "\u22120.027",
+   "formal_value": -0.0271779300316666,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T2 U1 \u2212 U0 music like ci_hi",
+   "printed": "\u22120.004",
+   "formal_value": -0.0043780999210147,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video LV full catalog cold_threetower",
    "printed": "0.0041",
    "formal_value": 0.0040992812219227,
    "sig_printed": null,
@@ -550,16 +742,48 @@
    "ok": true
   },
   {
+   "where": "T3 video LV full catalog cold_pop",
+   "printed": "0.0000",
+   "formal_value": 0.0,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video LV full catalog random_expected",
+   "printed": "0.0027",
+   "formal_value": 0.0026563023708023,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T3 video LV full catalog - cold_pop",
-   "printed": "+.0041",
+   "printed": "+0.0041",
    "formal_value": 0.0040992812219227,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
+   "where": "T3 video LV full catalog - cold_pop ci_lo",
+   "printed": "+0.0026",
+   "formal_value": 0.0026104840521114,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video LV full catalog - cold_pop ci_hi",
+   "printed": "+0.0058",
+   "formal_value": 0.0058119946091644,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T3 video LV full catalog - random_expected",
-   "printed": "+.0014",
+   "printed": "+0.0014",
    "formal_value": 0.0014429788511204,
    "sig_printed": false,
    "sig_formal": 0.0,
@@ -567,7 +791,7 @@
   },
   {
    "where": "T3 video LV full catalog - random_expected ci_lo",
-   "printed": "\u2212.0000",
+   "printed": "\u22120.0000",
    "formal_value": -4.608262644966576e-05,
    "sig_printed": null,
    "sig_formal": null,
@@ -575,14 +799,14 @@
   },
   {
    "where": "T3 video LV full catalog - random_expected ci_hi",
-   "printed": "+.0032",
+   "printed": "+0.0032",
    "formal_value": 0.0031556307276196,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T3 video LV H only cold3T",
+   "where": "T3 video LV H only cold_threetower",
    "printed": "0.1045",
    "formal_value": 0.1045031927865486,
    "sig_printed": null,
@@ -590,23 +814,71 @@
    "ok": true
   },
   {
+   "where": "T3 video LV H only cold_pop",
+   "printed": "0.0207",
+   "formal_value": 0.0206805127711461,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video LV H only random_expected",
+   "printed": "0.0269",
+   "formal_value": 0.0268643343233179,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T3 video LV H only - cold_pop",
-   "printed": "+.084",
+   "printed": "+0.0838",
    "formal_value": 0.0838226800154024,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
+   "where": "T3 video LV H only - cold_pop ci_lo",
+   "printed": "+0.0756",
+   "formal_value": 0.0756453159093826,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video LV H only - cold_pop ci_hi",
+   "printed": "+0.0923",
+   "formal_value": 0.0922697864523167,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T3 video LV H only - random_expected",
-   "printed": "+.078",
+   "printed": "+0.0776",
    "formal_value": 0.0776388584632307,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
-   "where": "T3 video like full catalog cold3T",
+   "where": "T3 video LV H only - random_expected ci_lo",
+   "printed": "+0.0703",
+   "formal_value": 0.0702715300828882,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video LV H only - random_expected ci_hi",
+   "printed": "+0.0848",
+   "formal_value": 0.0847881450418313,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video like full catalog cold_threetower",
    "printed": "0.0066",
    "formal_value": 0.0065573770491803,
    "sig_printed": null,
@@ -614,8 +886,24 @@
    "ok": true
   },
   {
+   "where": "T3 video like full catalog cold_pop",
+   "printed": "0.0000",
+   "formal_value": 0.0,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video like full catalog random_expected",
+   "printed": "0.0027",
+   "formal_value": 0.0026554974984174,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T3 video like full catalog - cold_pop",
-   "printed": "+.0066",
+   "printed": "+0.0066",
    "formal_value": 0.0065573770491803,
    "sig_printed": false,
    "sig_formal": 0.0,
@@ -623,7 +911,7 @@
   },
   {
    "where": "T3 video like full catalog - cold_pop ci_lo",
-   "printed": ".0000",
+   "printed": "+0.0000",
    "formal_value": 0.0,
    "sig_printed": null,
    "sig_formal": null,
@@ -631,7 +919,7 @@
   },
   {
    "where": "T3 video like full catalog - cold_pop ci_hi",
-   "printed": ".0164",
+   "printed": "+0.0164",
    "formal_value": 0.0163934426229508,
    "sig_printed": null,
    "sig_formal": null,
@@ -639,7 +927,7 @@
   },
   {
    "where": "T3 video like full catalog - random_expected",
-   "printed": "+.0039",
+   "printed": "+0.0039",
    "formal_value": 0.0039018795507629,
    "sig_printed": false,
    "sig_formal": 0.0,
@@ -647,7 +935,7 @@
   },
   {
    "where": "T3 video like full catalog - random_expected ci_lo",
-   "printed": "\u2212.0027",
+   "printed": "\u22120.0027",
    "formal_value": -0.0026564473645193,
    "sig_printed": null,
    "sig_formal": null,
@@ -655,14 +943,14 @@
   },
   {
    "where": "T3 video like full catalog - random_expected ci_hi",
-   "printed": "+.0137",
+   "printed": "+0.0137",
    "formal_value": 0.0137387841110941,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "T3 video like H only cold3T",
+   "where": "T3 video like H only cold_threetower",
    "printed": "0.0672",
    "formal_value": 0.0672131147540983,
    "sig_printed": null,
@@ -670,24 +958,72 @@
    "ok": true
   },
   {
+   "where": "T3 video like H only cold_pop",
+   "printed": "0.0082",
+   "formal_value": 0.0081967213114754,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video like H only random_expected",
+   "printed": "0.0268",
+   "formal_value": 0.0268463010900643,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T3 video like H only - cold_pop",
-   "printed": "+.059",
+   "printed": "+0.0590",
    "formal_value": 0.0590163934426229,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
+   "where": "T3 video like H only - cold_pop ci_lo",
+   "printed": "+0.0328",
+   "formal_value": 0.0327868852459016,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video like H only - cold_pop ci_hi",
+   "printed": "+0.0869",
+   "formal_value": 0.0868852459016393,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "T3 video like H only - random_expected",
-   "printed": "+.040",
+   "printed": "+0.0404",
    "formal_value": 0.0403668136640339,
    "sig_printed": true,
    "sig_formal": 1.0,
    "ok": true
   },
   {
+   "where": "T3 video like H only - random_expected ci_lo",
+   "printed": "+0.0158",
+   "formal_value": 0.0157900785423289,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
+   "where": "T3 video like H only - random_expected ci_hi",
+   "printed": "+0.0682",
+   "formal_value": 0.0682211058803174,
+   "sig_printed": null,
+   "sig_formal": null,
+   "ok": true
+  },
+  {
    "where": "bucket video LV 1\u20135",
-   "printed": "+.028",
+   "printed": "+0.028",
    "formal_value": 0.0284449154789668,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -695,7 +1031,7 @@
   },
   {
    "where": "bucket video LV 6\u201320",
-   "printed": "\u2212.006",
+   "printed": "\u22120.006",
    "formal_value": -0.0059636565299585,
    "sig_printed": false,
    "sig_formal": 0.0,
@@ -703,7 +1039,7 @@
   },
   {
    "where": "bucket video LV >20",
-   "printed": "\u2212.017",
+   "printed": "\u22120.017",
    "formal_value": -0.0172086535193517,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -711,7 +1047,7 @@
   },
   {
    "where": "bucket music LV 1\u20135",
-   "printed": "+.037",
+   "printed": "+0.037",
    "formal_value": 0.0373909848235774,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -719,7 +1055,7 @@
   },
   {
    "where": "bucket music LV 6\u201320",
-   "printed": "\u2212.012",
+   "printed": "\u22120.012",
    "formal_value": -0.0121069919265363,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -727,7 +1063,7 @@
   },
   {
    "where": "bucket music LV >20",
-   "printed": "\u2212.016",
+   "printed": "\u22120.016",
    "formal_value": -0.0161451121547136,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -735,7 +1071,7 @@
   },
   {
    "where": "bucket video like 1\u20135",
-   "printed": "+.118",
+   "printed": "+0.118",
    "formal_value": 0.1182890855457227,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -743,7 +1079,7 @@
   },
   {
    "where": "bucket video like 6\u201320",
-   "printed": "+.062",
+   "printed": "+0.062",
    "formal_value": 0.0615806878306878,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -751,7 +1087,7 @@
   },
   {
    "where": "bucket video like >20",
-   "printed": "+.023",
+   "printed": "+0.023",
    "formal_value": 0.0230732772225455,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -759,7 +1095,7 @@
   },
   {
    "where": "bucket music like 1\u20135",
-   "printed": "+.122",
+   "printed": "+0.122",
    "formal_value": 0.1217496061532758,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -767,7 +1103,7 @@
   },
   {
    "where": "bucket music like 6\u201320",
-   "printed": "+.069",
+   "printed": "+0.069",
    "formal_value": 0.0689830477645604,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -775,7 +1111,7 @@
   },
   {
    "where": "bucket music like >20",
-   "printed": "+.031",
+   "printed": "+0.031",
    "formal_value": 0.0312463220903923,
    "sig_printed": true,
    "sig_formal": 1.0,
@@ -1031,7 +1367,7 @@
   },
   {
    "where": "B1 video LV Pop R@10",
-   "printed": ".0479",
+   "printed": "0.0479",
    "formal_value": 0.0478853552951415,
    "sig_printed": null,
    "sig_formal": null,
@@ -1039,7 +1375,7 @@
   },
   {
    "where": "B1 video LV Pop R@20",
-   "printed": ".0806",
+   "printed": "0.0806",
    "formal_value": 0.0805960791087946,
    "sig_printed": null,
    "sig_formal": null,
@@ -1047,7 +1383,7 @@
   },
   {
    "where": "B1 video LV Pop R@50",
-   "printed": ".1388",
+   "printed": "0.1388",
    "formal_value": 0.1388414904154035,
    "sig_printed": null,
    "sig_formal": null,
@@ -1055,7 +1391,7 @@
   },
   {
    "where": "B1 video LV Pop N@10",
-   "printed": ".0348",
+   "printed": "0.0348",
    "formal_value": 0.0347985634977573,
    "sig_printed": null,
    "sig_formal": null,
@@ -1063,7 +1399,7 @@
   },
   {
    "where": "B1 video LV Pop N@20",
-   "printed": ".0457",
+   "printed": "0.0457",
    "formal_value": 0.0456970837180869,
    "sig_printed": null,
    "sig_formal": null,
@@ -1071,151 +1407,151 @@
   },
   {
    "where": "B1 video LV Pop N@50",
-   "printed": ".0621",
+   "printed": "0.0621",
    "formal_value": 0.0621226603786993,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV ALS (pure) R@10",
-   "printed": ".0759",
+   "where": "B1 video LV Pure ALS R@10",
+   "printed": "0.0759",
    "formal_value": 0.0759213101053892,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV ALS (pure) R@20",
-   "printed": ".1244",
+   "where": "B1 video LV Pure ALS R@20",
+   "printed": "0.1244",
    "formal_value": 0.1243686863779464,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV ALS (pure) R@50",
-   "printed": ".2282",
+   "where": "B1 video LV Pure ALS R@50",
+   "printed": "0.2282",
    "formal_value": 0.2282203566458553,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV ALS (pure) N@10",
-   "printed": ".0524",
+   "where": "B1 video LV Pure ALS N@10",
+   "printed": "0.0524",
    "formal_value": 0.0523764762747201,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV ALS (pure) N@20",
-   "printed": ".0686",
+   "where": "B1 video LV Pure ALS N@20",
+   "printed": "0.0686",
    "formal_value": 0.0686388205469594,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV ALS (pure) N@50",
-   "printed": ".0969",
+   "where": "B1 video LV Pure ALS N@50",
+   "printed": "0.0969",
    "formal_value": 0.0969261579232081,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U0 R@10",
-   "printed": ".0740",
+   "where": "B1 video LV U0 R@10",
+   "printed": "0.0740",
    "formal_value": 0.0740173454924184,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U0 R@20",
-   "printed": ".1124",
+   "where": "B1 video LV U0 R@20",
+   "printed": "0.1124",
    "formal_value": 0.1124194942479957,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U0 R@50",
-   "printed": ".1950",
+   "where": "B1 video LV U0 R@50",
+   "printed": "0.1950",
    "formal_value": 0.1949548120502463,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U0 N@10",
-   "printed": ".0549",
+   "where": "B1 video LV U0 N@10",
+   "printed": "0.0549",
    "formal_value": 0.0548733051957237,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U0 N@20",
-   "printed": ".0676",
+   "where": "B1 video LV U0 N@20",
+   "printed": "0.0676",
    "formal_value": 0.067648559985379,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U0 N@50",
-   "printed": ".0902",
+   "where": "B1 video LV U0 N@50",
+   "printed": "0.0902",
    "formal_value": 0.0902392449112072,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U1 R@10",
-   "printed": ".0829",
+   "where": "B1 video LV U1 R@10",
+   "printed": "0.0829",
    "formal_value": 0.0829160802455997,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U1 R@20",
-   "printed": ".1274",
+   "where": "B1 video LV U1 R@20",
+   "printed": "0.1274",
    "formal_value": 0.1274241675222105,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U1 R@50",
-   "printed": ".2184",
+   "where": "B1 video LV U1 R@50",
+   "printed": "0.2184",
    "formal_value": 0.2183626319643297,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U1 N@10",
-   "printed": ".0597",
+   "where": "B1 video LV U1 N@10",
+   "printed": "0.0597",
    "formal_value": 0.0597265523882942,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U1 N@20",
-   "printed": ".0744",
+   "where": "B1 video LV U1 N@20",
+   "printed": "0.0744",
    "formal_value": 0.0744383886543768,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video LV 3T-U1 N@50",
-   "printed": ".0994",
+   "where": "B1 video LV U1 N@50",
+   "printed": "0.0994",
    "formal_value": 0.0993664638904801,
    "sig_printed": null,
    "sig_formal": null,
@@ -1223,7 +1559,7 @@
   },
   {
    "where": "B1 video LV no-history R@10",
-   "printed": ".0642",
+   "printed": "0.0642",
    "formal_value": 0.0642308427113553,
    "sig_printed": null,
    "sig_formal": null,
@@ -1231,7 +1567,7 @@
   },
   {
    "where": "B1 video LV no-history R@20",
-   "printed": ".1003",
+   "printed": "0.1003",
    "formal_value": 0.1002859026189762,
    "sig_printed": null,
    "sig_formal": null,
@@ -1239,7 +1575,7 @@
   },
   {
    "where": "B1 video LV no-history R@50",
-   "printed": ".1739",
+   "printed": "0.1739",
    "formal_value": 0.1738634373891016,
    "sig_printed": null,
    "sig_formal": null,
@@ -1247,7 +1583,7 @@
   },
   {
    "where": "B1 video LV no-history N@10",
-   "printed": ".0456",
+   "printed": "0.0456",
    "formal_value": 0.0456486127851493,
    "sig_printed": null,
    "sig_formal": null,
@@ -1255,7 +1591,7 @@
   },
   {
    "where": "B1 video LV no-history N@20",
-   "printed": ".0578",
+   "printed": "0.0578",
    "formal_value": 0.0577557165887336,
    "sig_printed": null,
    "sig_formal": null,
@@ -1263,7 +1599,7 @@
   },
   {
    "where": "B1 video LV no-history N@50",
-   "printed": ".0780",
+   "printed": "0.0780",
    "formal_value": 0.0779809655515385,
    "sig_printed": null,
    "sig_formal": null,
@@ -1271,7 +1607,7 @@
   },
   {
    "where": "B1 video LV no-music R@10",
-   "printed": ".0801",
+   "printed": "0.0801",
    "formal_value": 0.0801334905866312,
    "sig_printed": null,
    "sig_formal": null,
@@ -1279,7 +1615,7 @@
   },
   {
    "where": "B1 video LV no-music R@20",
-   "printed": ".1221",
+   "printed": "0.1221",
    "formal_value": 0.1221065251514709,
    "sig_printed": null,
    "sig_formal": null,
@@ -1287,7 +1623,7 @@
   },
   {
    "where": "B1 video LV no-music R@50",
-   "printed": ".2131",
+   "printed": "0.2131",
    "formal_value": 0.2131039003375152,
    "sig_printed": null,
    "sig_formal": null,
@@ -1295,7 +1631,7 @@
   },
   {
    "where": "B1 video LV no-music N@10",
-   "printed": ".0581",
+   "printed": "0.0581",
    "formal_value": 0.0581495955274509,
    "sig_printed": null,
    "sig_formal": null,
@@ -1303,7 +1639,7 @@
   },
   {
    "where": "B1 video LV no-music N@20",
-   "printed": ".0721",
+   "printed": "0.0721",
    "formal_value": 0.0721334660629218,
    "sig_printed": null,
    "sig_formal": null,
@@ -1311,7 +1647,7 @@
   },
   {
    "where": "B1 video LV no-music N@50",
-   "printed": ".0970",
+   "printed": "0.0970",
    "formal_value": 0.0969826759764886,
    "sig_printed": null,
    "sig_formal": null,
@@ -1319,7 +1655,7 @@
   },
   {
    "where": "B1 video like Pop R@10",
-   "printed": ".0466",
+   "printed": "0.0466",
    "formal_value": 0.046602730680785,
    "sig_printed": null,
    "sig_formal": null,
@@ -1327,7 +1663,7 @@
   },
   {
    "where": "B1 video like Pop R@20",
-   "printed": ".0716",
+   "printed": "0.0716",
    "formal_value": 0.0715934849701818,
    "sig_printed": null,
    "sig_formal": null,
@@ -1335,7 +1671,7 @@
   },
   {
    "where": "B1 video like Pop R@50",
-   "printed": ".1304",
+   "printed": "0.1304",
    "formal_value": 0.1303945245404522,
    "sig_printed": null,
    "sig_formal": null,
@@ -1343,7 +1679,7 @@
   },
   {
    "where": "B1 video like Pop N@10",
-   "printed": ".0332",
+   "printed": "0.0332",
    "formal_value": 0.0332016276298961,
    "sig_printed": null,
    "sig_formal": null,
@@ -1351,7 +1687,7 @@
   },
   {
    "where": "B1 video like Pop N@20",
-   "printed": ".0403",
+   "printed": "0.0403",
    "formal_value": 0.0402528467890206,
    "sig_printed": null,
    "sig_formal": null,
@@ -1359,199 +1695,199 @@
   },
   {
    "where": "B1 video like Pop N@50",
-   "printed": ".0532",
+   "printed": "0.0532",
    "formal_value": 0.0532432307004681,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (pure) R@10",
-   "printed": ".0388",
+   "where": "B1 video like Pure ALS R@10",
+   "printed": "0.0388",
    "formal_value": 0.0388296311090428,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (pure) R@20",
-   "printed": ".0555",
+   "where": "B1 video like Pure ALS R@20",
+   "printed": "0.0555",
    "formal_value": 0.055467203515846,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (pure) R@50",
-   "printed": ".1004",
+   "where": "B1 video like Pure ALS R@50",
+   "printed": "0.1004",
    "formal_value": 0.100441206606365,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (pure) N@10",
-   "printed": ".0234",
+   "where": "B1 video like Pure ALS N@10",
+   "printed": "0.0234",
    "formal_value": 0.0233505264185224,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (pure) N@20",
-   "printed": ".0282",
+   "where": "B1 video like Pure ALS N@20",
+   "printed": "0.0282",
    "formal_value": 0.0281564202773583,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (pure) N@50",
-   "printed": ".0387",
+   "where": "B1 video like Pure ALS N@50",
+   "printed": "0.0387",
    "formal_value": 0.0387325276674849,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (aux) R@10",
-   "printed": ".0610",
+   "where": "B1 video like Aux ALS R@10",
+   "printed": "0.0610",
    "formal_value": 0.0610326888607431,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (aux) R@20",
-   "printed": ".1008",
+   "where": "B1 video like Aux ALS R@20",
+   "printed": "0.1008",
    "formal_value": 0.1007660371913765,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (aux) R@50",
-   "printed": ".1795",
+   "where": "B1 video like Aux ALS R@50",
+   "printed": "0.1795",
    "formal_value": 0.179477027921598,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (aux) N@10",
-   "printed": ".0356",
+   "where": "B1 video like Aux ALS N@10",
+   "printed": "0.0356",
    "formal_value": 0.0356157047258524,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (aux) N@20",
-   "printed": ".0469",
+   "where": "B1 video like Aux ALS N@20",
+   "printed": "0.0469",
    "formal_value": 0.0468845454277967,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like ALS (aux) N@50",
-   "printed": ".0648",
+   "where": "B1 video like Aux ALS N@50",
+   "printed": "0.0648",
    "formal_value": 0.0648268232230371,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U0 R@10",
-   "printed": ".0533",
+   "where": "B1 video like U0 R@10",
+   "printed": "0.0533",
    "formal_value": 0.0532530623311166,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U0 R@20",
-   "printed": ".0913",
+   "where": "B1 video like U0 R@20",
+   "printed": "0.0913",
    "formal_value": 0.0913378061850912,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U0 R@50",
-   "printed": ".1757",
+   "where": "B1 video like U0 R@50",
+   "printed": "0.1757",
    "formal_value": 0.1756648096580222,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U0 N@10",
-   "printed": ".0310",
+   "where": "B1 video like U0 N@10",
+   "printed": "0.0310",
    "formal_value": 0.0309721071479548,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U0 N@20",
-   "printed": ".0417",
+   "where": "B1 video like U0 N@20",
+   "printed": "0.0417",
    "formal_value": 0.0416527629550357,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U0 N@50",
-   "printed": ".0606",
+   "where": "B1 video like U0 N@50",
+   "printed": "0.0606",
    "formal_value": 0.0605873093472165,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U1 R@10",
-   "printed": ".0601",
+   "where": "B1 video like U1 R@10",
+   "printed": "0.0601",
    "formal_value": 0.0600708691489234,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U1 R@20",
-   "printed": ".0859",
+   "where": "B1 video like U1 R@20",
+   "printed": "0.0859",
    "formal_value": 0.0859235915797002,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U1 R@50",
-   "printed": ".1616",
+   "where": "B1 video like U1 R@50",
+   "printed": "0.1616",
    "formal_value": 0.1615696498615049,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U1 N@10",
-   "printed": ".0324",
+   "where": "B1 video like U1 N@10",
+   "printed": "0.0324",
    "formal_value": 0.0324034136598546,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U1 N@20",
-   "printed": ".0397",
+   "where": "B1 video like U1 N@20",
+   "printed": "0.0397",
    "formal_value": 0.0396980998059288,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 video like 3T-U1 N@50",
-   "printed": ".0570",
+   "where": "B1 video like U1 N@50",
+   "printed": "0.0570",
    "formal_value": 0.0570249329445361,
    "sig_printed": null,
    "sig_formal": null,
@@ -1559,7 +1895,7 @@
   },
   {
    "where": "B1 video like no-history R@10",
-   "printed": ".0571",
+   "printed": "0.0571",
    "formal_value": 0.0570509348789891,
    "sig_printed": null,
    "sig_formal": null,
@@ -1567,7 +1903,7 @@
   },
   {
    "where": "B1 video like no-history R@20",
-   "printed": ".0888",
+   "printed": "0.0888",
    "formal_value": 0.0888382579841856,
    "sig_printed": null,
    "sig_formal": null,
@@ -1575,7 +1911,7 @@
   },
   {
    "where": "B1 video like no-history R@50",
-   "printed": ".1588",
+   "printed": "0.1588",
    "formal_value": 0.1587717894561784,
    "sig_printed": null,
    "sig_formal": null,
@@ -1583,7 +1919,7 @@
   },
   {
    "where": "B1 video like no-history N@10",
-   "printed": ".0343",
+   "printed": "0.0343",
    "formal_value": 0.0342615936963498,
    "sig_printed": null,
    "sig_formal": null,
@@ -1591,7 +1927,7 @@
   },
   {
    "where": "B1 video like no-history N@20",
-   "printed": ".0431",
+   "printed": "0.0431",
    "formal_value": 0.0431376246297285,
    "sig_printed": null,
    "sig_formal": null,
@@ -1599,7 +1935,7 @@
   },
   {
    "where": "B1 video like no-history N@50",
-   "printed": ".0586",
+   "printed": "0.0586",
    "formal_value": 0.0586364205296108,
    "sig_printed": null,
    "sig_formal": null,
@@ -1607,7 +1943,7 @@
   },
   {
    "where": "B1 video like no-music R@10",
-   "printed": ".0562",
+   "printed": "0.0562",
    "formal_value": 0.0562362840643383,
    "sig_printed": null,
    "sig_formal": null,
@@ -1615,7 +1951,7 @@
   },
   {
    "where": "B1 video like no-music R@20",
-   "printed": ".0987",
+   "printed": "0.0987",
    "formal_value": 0.0986984635457486,
    "sig_printed": null,
    "sig_formal": null,
@@ -1623,7 +1959,7 @@
   },
   {
    "where": "B1 video like no-music R@50",
-   "printed": ".1680",
+   "printed": "0.1680",
    "formal_value": 0.1680011765136198,
    "sig_printed": null,
    "sig_formal": null,
@@ -1631,7 +1967,7 @@
   },
   {
    "where": "B1 video like no-music N@10",
-   "printed": ".0311",
+   "printed": "0.0311",
    "formal_value": 0.0311354632572811,
    "sig_printed": null,
    "sig_formal": null,
@@ -1639,7 +1975,7 @@
   },
   {
    "where": "B1 video like no-music N@20",
-   "printed": ".0431",
+   "printed": "0.0431",
    "formal_value": 0.0430669669883418,
    "sig_printed": null,
    "sig_formal": null,
@@ -1647,7 +1983,7 @@
   },
   {
    "where": "B1 video like no-music N@50",
-   "printed": ".0588",
+   "printed": "0.0588",
    "formal_value": 0.058814603931452,
    "sig_printed": null,
    "sig_formal": null,
@@ -1655,7 +1991,7 @@
   },
   {
    "where": "B1 music LV Pop R@10",
-   "printed": ".0507",
+   "printed": "0.0507",
    "formal_value": 0.0507324604657546,
    "sig_printed": null,
    "sig_formal": null,
@@ -1663,7 +1999,7 @@
   },
   {
    "where": "B1 music LV Pop R@20",
-   "printed": ".0856",
+   "printed": "0.0856",
    "formal_value": 0.0856169687425038,
    "sig_printed": null,
    "sig_formal": null,
@@ -1671,7 +2007,7 @@
   },
   {
    "where": "B1 music LV Pop R@50",
-   "printed": ".1472",
+   "printed": "0.1472",
    "formal_value": 0.14716296957218,
    "sig_printed": null,
    "sig_formal": null,
@@ -1679,7 +2015,7 @@
   },
   {
    "where": "B1 music LV Pop N@10",
-   "printed": ".0362",
+   "printed": "0.0362",
    "formal_value": 0.0361673132781777,
    "sig_printed": null,
    "sig_formal": null,
@@ -1687,7 +2023,7 @@
   },
   {
    "where": "B1 music LV Pop N@20",
-   "printed": ".0479",
+   "printed": "0.0479",
    "formal_value": 0.0478519300012716,
    "sig_printed": null,
    "sig_formal": null,
@@ -1695,151 +2031,151 @@
   },
   {
    "where": "B1 music LV Pop N@50",
-   "printed": ".0651",
+   "printed": "0.0651",
    "formal_value": 0.065110296474861,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV ALS (pure) R@10",
-   "printed": ".0772",
+   "where": "B1 music LV Pure ALS R@10",
+   "printed": "0.0772",
    "formal_value": 0.0771959306796831,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV ALS (pure) R@20",
-   "printed": ".1282",
+   "where": "B1 music LV Pure ALS R@20",
+   "printed": "0.1282",
    "formal_value": 0.128183804269911,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV ALS (pure) R@50",
-   "printed": ".2297",
+   "where": "B1 music LV Pure ALS R@50",
+   "printed": "0.2297",
    "formal_value": 0.2296778826356416,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV ALS (pure) N@10",
-   "printed": ".0536",
+   "where": "B1 music LV Pure ALS N@10",
+   "printed": "0.0536",
    "formal_value": 0.0535754066744666,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV ALS (pure) N@20",
-   "printed": ".0705",
+   "where": "B1 music LV Pure ALS N@20",
+   "printed": "0.0705",
    "formal_value": 0.0705130296459639,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV ALS (pure) N@50",
-   "printed": ".0982",
+   "where": "B1 music LV Pure ALS N@50",
+   "printed": "0.0982",
    "formal_value": 0.0982334950728109,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U0 R@10",
-   "printed": ".0755",
+   "where": "B1 music LV U0 R@10",
+   "printed": "0.0755",
    "formal_value": 0.0754519198149073,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U0 R@20",
-   "printed": ".1162",
+   "where": "B1 music LV U0 R@20",
+   "printed": "0.1162",
    "formal_value": 0.1161947333567914,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U0 R@50",
-   "printed": ".2036",
+   "where": "B1 music LV U0 R@50",
+   "printed": "0.2036",
    "formal_value": 0.2035889987594182,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U0 N@10",
-   "printed": ".0557",
+   "where": "B1 music LV U0 N@10",
+   "printed": "0.0557",
    "formal_value": 0.0557061041669339,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U0 N@20",
-   "printed": ".0691",
+   "where": "B1 music LV U0 N@20",
+   "printed": "0.0691",
    "formal_value": 0.0690639322664849,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U0 N@50",
-   "printed": ".0928",
+   "where": "B1 music LV U0 N@50",
+   "printed": "0.0928",
    "formal_value": 0.0927955440393915,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U1 R@10",
-   "printed": ".0875",
+   "where": "B1 music LV U1 R@10",
+   "printed": "0.0875",
    "formal_value": 0.0875047881705692,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U1 R@20",
-   "printed": ".1321",
+   "where": "B1 music LV U1 R@20",
+   "printed": "0.1321",
    "formal_value": 0.1321147328079058,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U1 R@50",
-   "printed": ".2258",
+   "where": "B1 music LV U1 R@50",
+   "printed": "0.2258",
    "formal_value": 0.2257734014467584,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U1 N@10",
-   "printed": ".0621",
+   "where": "B1 music LV U1 N@10",
+   "printed": "0.0621",
    "formal_value": 0.0620844784278748,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U1 N@20",
-   "printed": ".0768",
+   "where": "B1 music LV U1 N@20",
+   "printed": "0.0768",
    "formal_value": 0.0767709903615132,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music LV 3T-U1 N@50",
-   "printed": ".1022",
+   "where": "B1 music LV U1 N@50",
+   "printed": "0.1022",
    "formal_value": 0.1021845894893283,
    "sig_printed": null,
    "sig_formal": null,
@@ -1847,7 +2183,7 @@
   },
   {
    "where": "B1 music LV no-history R@10",
-   "printed": ".0690",
+   "printed": "0.0690",
    "formal_value": 0.0689556640296608,
    "sig_printed": null,
    "sig_formal": null,
@@ -1855,7 +2191,7 @@
   },
   {
    "where": "B1 music LV no-history R@20",
-   "printed": ".1052",
+   "printed": "0.1052",
    "formal_value": 0.1051883647014686,
    "sig_printed": null,
    "sig_formal": null,
@@ -1863,7 +2199,7 @@
   },
   {
    "where": "B1 music LV no-history R@50",
-   "printed": ".1846",
+   "printed": "0.1846",
    "formal_value": 0.1845955684989203,
    "sig_printed": null,
    "sig_formal": null,
@@ -1871,7 +2207,7 @@
   },
   {
    "where": "B1 music LV no-history N@10",
-   "printed": ".0481",
+   "printed": "0.0481",
    "formal_value": 0.0480708523497964,
    "sig_printed": null,
    "sig_formal": null,
@@ -1879,7 +2215,7 @@
   },
   {
    "where": "B1 music LV no-history N@20",
-   "printed": ".0603",
+   "printed": "0.0603",
    "formal_value": 0.06029933244628,
    "sig_printed": null,
    "sig_formal": null,
@@ -1887,7 +2223,7 @@
   },
   {
    "where": "B1 music LV no-history N@50",
-   "printed": ".0819",
+   "printed": "0.0819",
    "formal_value": 0.0819189472890637,
    "sig_printed": null,
    "sig_formal": null,
@@ -1895,7 +2231,7 @@
   },
   {
    "where": "B1 music LV no-music R@10",
-   "printed": ".0819",
+   "printed": "0.0819",
    "formal_value": 0.0818704650073227,
    "sig_printed": null,
    "sig_formal": null,
@@ -1903,7 +2239,7 @@
   },
   {
    "where": "B1 music LV no-music R@20",
-   "printed": ".1250",
+   "printed": "0.1250",
    "formal_value": 0.1249929847091664,
    "sig_printed": null,
    "sig_formal": null,
@@ -1911,7 +2247,7 @@
   },
   {
    "where": "B1 music LV no-music R@50",
-   "printed": ".2162",
+   "printed": "0.2162",
    "formal_value": 0.2161625287216332,
    "sig_printed": null,
    "sig_formal": null,
@@ -1919,7 +2255,7 @@
   },
   {
    "where": "B1 music LV no-music N@10",
-   "printed": ".0585",
+   "printed": "0.0585",
    "formal_value": 0.0585438616652299,
    "sig_printed": null,
    "sig_formal": null,
@@ -1927,7 +2263,7 @@
   },
   {
    "where": "B1 music LV no-music N@20",
-   "printed": ".0728",
+   "printed": "0.0728",
    "formal_value": 0.0727947337483856,
    "sig_printed": null,
    "sig_formal": null,
@@ -1935,7 +2271,7 @@
   },
   {
    "where": "B1 music LV no-music N@50",
-   "printed": ".0975",
+   "printed": "0.0975",
    "formal_value": 0.0974875573086069,
    "sig_printed": null,
    "sig_formal": null,
@@ -1943,7 +2279,7 @@
   },
   {
    "where": "B1 music like Pop R@10",
-   "printed": ".0480",
+   "printed": "0.0480",
    "formal_value": 0.0479996437073885,
    "sig_printed": null,
    "sig_formal": null,
@@ -1951,7 +2287,7 @@
   },
   {
    "where": "B1 music like Pop R@20",
-   "printed": ".0726",
+   "printed": "0.0726",
    "formal_value": 0.0725852832907,
    "sig_printed": null,
    "sig_formal": null,
@@ -1959,7 +2295,7 @@
   },
   {
    "where": "B1 music like Pop R@50",
-   "printed": ".1358",
+   "printed": "0.1358",
    "formal_value": 0.1357930795987602,
    "sig_printed": null,
    "sig_formal": null,
@@ -1967,7 +2303,7 @@
   },
   {
    "where": "B1 music like Pop N@10",
-   "printed": ".0342",
+   "printed": "0.0342",
    "formal_value": 0.0341962022614812,
    "sig_printed": null,
    "sig_formal": null,
@@ -1975,7 +2311,7 @@
   },
   {
    "where": "B1 music like Pop N@20",
-   "printed": ".0412",
+   "printed": "0.0412",
    "formal_value": 0.0411579120643304,
    "sig_printed": null,
    "sig_formal": null,
@@ -1983,199 +2319,199 @@
   },
   {
    "where": "B1 music like Pop N@50",
-   "printed": ".0552",
+   "printed": "0.0552",
    "formal_value": 0.0552130508743797,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (pure) R@10",
-   "printed": ".0433",
+   "where": "B1 music like Pure ALS R@10",
+   "printed": "0.0433",
    "formal_value": 0.0432647089747819,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (pure) R@20",
-   "printed": ".0586",
+   "where": "B1 music like Pure ALS R@20",
+   "printed": "0.0586",
    "formal_value": 0.058596015018489,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (pure) R@50",
-   "printed": ".0951",
+   "where": "B1 music like Pure ALS R@50",
+   "printed": "0.0951",
    "formal_value": 0.0951147795932833,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (pure) N@10",
-   "printed": ".0256",
+   "where": "B1 music like Pure ALS N@10",
+   "printed": "0.0256",
    "formal_value": 0.0255629353532392,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (pure) N@20",
-   "printed": ".0303",
+   "where": "B1 music like Pure ALS N@20",
+   "printed": "0.0303",
    "formal_value": 0.0302758513084038,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (pure) N@50",
-   "printed": ".0389",
+   "where": "B1 music like Pure ALS N@50",
+   "printed": "0.0389",
    "formal_value": 0.0389292422265127,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (aux) R@10",
-   "printed": ".0617",
+   "where": "B1 music like Aux ALS R@10",
+   "printed": "0.0617",
    "formal_value": 0.061674860311365,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (aux) R@20",
-   "printed": ".1054",
+   "where": "B1 music like Aux ALS R@20",
+   "printed": "0.1054",
    "formal_value": 0.1053718297843705,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (aux) R@50",
-   "printed": ".2017",
+   "where": "B1 music like Aux ALS R@50",
+   "printed": "0.2017",
    "formal_value": 0.2016656995719543,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (aux) N@10",
-   "printed": ".0338",
+   "where": "B1 music like Aux ALS N@10",
+   "printed": "0.0338",
    "formal_value": 0.0338361837021009,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (aux) N@20",
-   "printed": ".0463",
+   "where": "B1 music like Aux ALS N@20",
+   "printed": "0.0463",
    "formal_value": 0.0463193188156662,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like ALS (aux) N@50",
-   "printed": ".0677",
+   "where": "B1 music like Aux ALS N@50",
+   "printed": "0.0677",
    "formal_value": 0.0677266262680583,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U0 R@10",
-   "printed": ".0621",
+   "where": "B1 music like U0 R@10",
+   "printed": "0.0621",
    "formal_value": 0.0621253713951215,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U0 R@20",
-   "printed": ".1022",
+   "where": "B1 music like U0 R@20",
+   "printed": "0.1022",
    "formal_value": 0.1021573075724868,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U0 R@50",
-   "printed": ".1793",
+   "where": "B1 music like U0 R@50",
+   "printed": "0.1793",
    "formal_value": 0.1792694468171729,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U0 N@10",
-   "printed": ".0361",
+   "where": "B1 music like U0 N@10",
+   "printed": "0.0361",
    "formal_value": 0.0361472647973216,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U0 N@20",
-   "printed": ".0472",
+   "where": "B1 music like U0 N@20",
+   "printed": "0.0472",
    "formal_value": 0.0472421807339789,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U0 N@50",
-   "printed": ".0646",
+   "where": "B1 music like U0 N@50",
+   "printed": "0.0646",
    "formal_value": 0.0646137935192865,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U1 R@10",
-   "printed": ".0573",
+   "where": "B1 music like U1 R@10",
+   "printed": "0.0573",
    "formal_value": 0.0573446180632274,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U1 R@20",
-   "printed": ".0864",
+   "where": "B1 music like U1 R@20",
+   "printed": "0.0864",
    "formal_value": 0.0864480246158035,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U1 R@50",
-   "printed": ".1633",
+   "where": "B1 music like U1 R@50",
+   "printed": "0.1633",
    "formal_value": 0.1632502119433671,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U1 N@10",
-   "printed": ".0325",
+   "where": "B1 music like U1 N@10",
+   "printed": "0.0325",
    "formal_value": 0.032541268672037,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U1 N@20",
-   "printed": ".0407",
+   "where": "B1 music like U1 N@20",
+   "printed": "0.0407",
    "formal_value": 0.040738096062427,
    "sig_printed": null,
    "sig_formal": null,
    "ok": true
   },
   {
-   "where": "B1 music like 3T-U1 N@50",
-   "printed": ".0581",
+   "where": "B1 music like U1 N@50",
+   "printed": "0.0581",
    "formal_value": 0.0581190130186985,
    "sig_printed": null,
    "sig_formal": null,
@@ -2183,7 +2519,7 @@
   },
   {
    "where": "B1 music like no-history R@10",
-   "printed": ".0560",
+   "printed": "0.0560",
    "formal_value": 0.0560431774237454,
    "sig_printed": null,
    "sig_formal": null,
@@ -2191,7 +2527,7 @@
   },
   {
    "where": "B1 music like no-history R@20",
-   "printed": ".0852",
+   "printed": "0.0852",
    "formal_value": 0.085239307659764,
    "sig_printed": null,
    "sig_formal": null,
@@ -2199,7 +2535,7 @@
   },
   {
    "where": "B1 music like no-history R@50",
-   "printed": ".1617",
+   "printed": "0.1617",
    "formal_value": 0.1617417771150504,
    "sig_printed": null,
    "sig_formal": null,
@@ -2207,7 +2543,7 @@
   },
   {
    "where": "B1 music like no-history N@10",
-   "printed": ".0342",
+   "printed": "0.0342",
    "formal_value": 0.0341511206647756,
    "sig_printed": null,
    "sig_formal": null,
@@ -2215,7 +2551,7 @@
   },
   {
    "where": "B1 music like no-history N@20",
-   "printed": ".0425",
+   "printed": "0.0425",
    "formal_value": 0.0424514127773105,
    "sig_printed": null,
    "sig_formal": null,
@@ -2223,7 +2559,7 @@
   },
   {
    "where": "B1 music like no-history N@50",
-   "printed": ".0591",
+   "printed": "0.0591",
    "formal_value": 0.0590626705106563,
    "sig_printed": null,
    "sig_formal": null,
@@ -2231,7 +2567,7 @@
   },
   {
    "where": "B1 music like no-music R@10",
-   "printed": ".0649",
+   "printed": "0.0649",
    "formal_value": 0.0649295724710903,
    "sig_printed": null,
    "sig_formal": null,
@@ -2239,7 +2575,7 @@
   },
   {
    "where": "B1 music like no-music R@20",
-   "printed": ".0940",
+   "printed": "0.0940",
    "formal_value": 0.0940195789862094,
    "sig_printed": null,
    "sig_formal": null,
@@ -2247,7 +2583,7 @@
   },
   {
    "where": "B1 music like no-music R@50",
-   "printed": ".1817",
+   "printed": "0.1817",
    "formal_value": 0.1816831486240145,
    "sig_printed": null,
    "sig_formal": null,
@@ -2255,7 +2591,7 @@
   },
   {
    "where": "B1 music like no-music N@10",
-   "printed": ".0354",
+   "printed": "0.0354",
    "formal_value": 0.0353759755741363,
    "sig_printed": null,
    "sig_formal": null,
@@ -2263,7 +2599,7 @@
   },
   {
    "where": "B1 music like no-music N@20",
-   "printed": ".0437",
+   "printed": "0.0437",
    "formal_value": 0.0437111003349551,
    "sig_printed": null,
    "sig_formal": null,
@@ -2271,7 +2607,7 @@
   },
   {
    "where": "B1 music like no-music N@50",
-   "printed": ".0632",
+   "printed": "0.0632",
    "formal_value": 0.0631967599079756,
    "sig_printed": null,
    "sig_formal": null,
@@ -2279,7 +2615,7 @@
   },
   {
    "where": "prose: The NDCG@20 differences include 0 ( #0",
-   "printed": "\u2212.001",
+   "printed": "\u22120.001",
    "formal_value": -0.0009902605615804,
    "sig_printed": false,
    "sig_formal": false,
@@ -2287,7 +2623,7 @@
   },
   {
    "where": "prose: The NDCG@20 differences include 0 ( #1",
-   "printed": "\u2212.001",
+   "printed": "\u22120.001",
    "formal_value": -0.001449097379479,
    "sig_printed": false,
    "sig_formal": false,
@@ -2295,7 +2631,7 @@
   },
   {
    "where": "prose: U0's NDCG@10 is slightly *higher* on video LV ( #0",
-   "printed": "+.0025",
+   "printed": "+0.0025",
    "formal_value": 0.0024968289210035,
    "sig_printed": true,
    "sig_formal": true,
@@ -2303,7 +2639,7 @@
   },
   {
    "where": "prose: U0 is clearly behind at R@50 ( #0",
-   "printed": "\u2212.033",
+   "printed": "\u22120.033",
    "formal_value": -0.033265544595609,
    "sig_printed": true,
    "sig_formal": true,
@@ -2311,7 +2647,7 @@
   },
   {
    "where": "prose: **U0 vs Pop on like.** NDCG@20 is not significant  #0",
-   "printed": "+.001",
+   "printed": "+0.001",
    "formal_value": 0.0013999161660151,
    "sig_printed": false,
    "sig_formal": false,
@@ -2319,23 +2655,23 @@
   },
   {
    "where": "prose: **U0 vs Pop on like.** NDCG@20 is not significant  #1",
-   "printed": "+.006",
+   "printed": "+0.006",
    "formal_value": 0.0060842686696484,
    "sig_printed": false,
    "sig_formal": false,
    "ok": true
   },
   {
-   "where": "prose: **U1 vs pure ALS on LV.** NDCG@20 is  #0",
-   "printed": "+.006",
+   "where": "prose: **U1 vs Pure ALS on LV.** NDCG@20 is  #0",
+   "printed": "+0.006",
    "formal_value": 0.0057995681074173,
    "sig_printed": true,
    "sig_formal": true,
    "ok": true
   },
   {
-   "where": "prose: **U1 vs pure ALS on LV.** NDCG@20 is  #0",
-   "printed": "+.006",
+   "where": "prose: **U1 vs Pure ALS on LV.** NDCG@20 is  #0",
+   "printed": "+0.006",
    "formal_value": 0.0062579607155493,
    "sig_printed": true,
    "sig_formal": true,
@@ -2343,7 +2679,7 @@
   },
   {
    "where": "prose: video-LV R@50 is lower ( #0",
-   "printed": "\u2212.010",
+   "printed": "\u22120.010",
    "formal_value": -0.0098577246815255,
    "sig_printed": true,
    "sig_formal": true,
@@ -2351,7 +2687,7 @@
   },
   {
    "where": "prose: R@20 drops significantly on video LV ( #0",
-   "printed": "\u2212.012",
+   "printed": "\u22120.012",
    "formal_value": -0.0121335916290195,
    "sig_printed": true,
    "sig_formal": true,
@@ -2359,7 +2695,7 @@
   },
   {
    "where": "prose: R@20 drops significantly on video LV ( #1",
-   "printed": "\u2212.011",
+   "printed": "\u22120.011",
    "formal_value": -0.0110063686553228,
    "sig_printed": true,
    "sig_formal": true,
@@ -2367,7 +2703,7 @@
   },
   {
    "where": "prose: R@20 drops significantly on video LV ( #2",
-   "printed": "\u2212.017",
+   "printed": "\u22120.017",
    "formal_value": -0.0169179999127228,
    "sig_printed": true,
    "sig_formal": true,
@@ -2375,7 +2711,7 @@
   },
   {
    "where": "prose: NDCG@20 on LV drops by  #0",
-   "printed": "\u2212.010",
+   "printed": "\u22120.010",
    "formal_value": -0.0098928433966453,
    "sig_printed": true,
    "sig_formal": true,
@@ -2383,7 +2719,7 @@
   },
   {
    "where": "prose: NDCG@20 on LV drops by  #1",
-   "printed": "\u2212.009",
+   "printed": "\u22120.009",
    "formal_value": -0.0087645998202048,
    "sig_printed": true,
    "sig_formal": true,
@@ -2391,7 +2727,7 @@
   },
   {
    "where": "prose: LV *improves*: R@20  #0",
-   "printed": "+.010",
+   "printed": "+0.010",
    "formal_value": 0.0096870309034751,
    "sig_printed": true,
    "sig_formal": true,
@@ -2399,7 +2735,7 @@
   },
   {
    "where": "prose: LV *improves*: R@20  #1",
-   "printed": "+.009",
+   "printed": "+0.009",
    "formal_value": 0.0087982513523749,
    "sig_printed": true,
    "sig_formal": true,
@@ -2407,7 +2743,7 @@
   },
   {
    "where": "prose: LV *improves*: R@20  #2",
-   "printed": "+.004",
+   "printed": "+0.004",
    "formal_value": 0.0044849060775428,
    "sig_printed": true,
    "sig_formal": true,
@@ -2415,7 +2751,7 @@
   },
   {
    "where": "prose: LV *improves*: R@20  #3",
-   "printed": "+.004",
+   "printed": "+0.004",
    "formal_value": 0.0037308014819007,
    "sig_printed": true,
    "sig_formal": true,
@@ -2423,7 +2759,7 @@
   },
   {
    "where": "prose: NDCG@10 is even slightly *below* random ( #0",
-   "printed": "\u2212.0003",
+   "printed": "\u22120.0003",
    "formal_value": -0.0003134128143999,
    "sig_printed": true,
    "sig_formal": true,
@@ -2431,7 +2767,7 @@
   },
   {
    "where": "prose: while R@50 is above it ( #0",
-   "printed": "+.0032",
+   "printed": "+0.0032",
    "formal_value": 0.0032284040011164,
    "sig_printed": true,
    "sig_formal": true,
@@ -2439,7 +2775,7 @@
   },
   {
    "where": "prose: On those users U0 reaches R@20  #0",
-   "printed": ".0865",
+   "printed": "0.0865",
    "formal_value": 0.08647203947368422,
    "sig_printed": null,
    "sig_formal": null,
@@ -2447,7 +2783,7 @@
   },
   {
    "where": "prose: On those users U0 reaches R@20  #1",
-   "printed": "+.086",
+   "printed": "+0.086",
    "formal_value": 0.08647203947368422,
    "sig_printed": true,
    "sig_formal": true,
@@ -2455,23 +2791,23 @@
   },
   {
    "where": "prose: On those users U0 reaches R@20  #2",
-   "printed": "+.018",
+   "printed": "+0.018",
    "formal_value": 0.018336857769423565,
    "sig_printed": false,
    "sig_formal": false,
    "ok": true
   },
   {
-   "where": "prose: On users that do have a prior like, U0 \u2212 pure ALS  #0",
-   "printed": "+.012",
+   "where": "prose: On users that do have a prior like, U0 \u2212 Pure ALS  #0",
+   "printed": "+0.012",
    "formal_value": 0.012492431258075781,
    "sig_printed": false,
    "sig_formal": false,
    "ok": true
   },
   {
-   "where": "prose: Also on those users, U0 is *below* ALS aux:  #0",
-   "printed": "\u2212.022",
+   "where": "prose: Also on those users, U0 is *below* Aux ALS:  #0",
+   "printed": "\u22120.022",
    "formal_value": -0.022255870805397038,
    "sig_printed": true,
    "sig_formal": true,
@@ -2479,7 +2815,7 @@
   },
   {
    "where": "prose: U0 \u2212 ALS on video LV is  #0",
-   "printed": "\u2212.016",
+   "printed": "\u22120.016",
    "formal_value": -0.01644820073602396,
    "sig_printed": true,
    "sig_formal": true,
@@ -2487,7 +2823,7 @@
   },
   {
    "where": "prose: U0 \u2212 ALS on video LV is  #1",
-   "printed": "\u2212.021",
+   "printed": "\u22120.021",
    "formal_value": -0.020995130651177654,
    "sig_printed": true,
    "sig_formal": true,
@@ -2549,7 +2885,7 @@
   },
   {
    "where": "prose: U0 was below ALS on validation LV R@20 (video  #0",
-   "printed": ".1260",
+   "printed": "0.1260",
    "formal_value": 0.1260276786837993,
    "sig_printed": null,
    "sig_formal": null,
@@ -2557,7 +2893,7 @@
   },
   {
    "where": "prose: U0 was below ALS on validation LV R@20 (video  #1",
-   "printed": ".1339",
+   "printed": "0.1339",
    "formal_value": 0.1339050814859709,
    "sig_printed": null,
    "sig_formal": null,
@@ -2565,7 +2901,7 @@
   },
   {
    "where": "prose: U0 was below ALS on validation LV R@20 (video  #2",
-   "printed": ".1308",
+   "printed": "0.1308",
    "formal_value": 0.1308052176314402,
    "sig_printed": null,
    "sig_formal": null,
@@ -2573,7 +2909,7 @@
   },
   {
    "where": "prose: U0 was below ALS on validation LV R@20 (video  #3",
-   "printed": ".1361",
+   "printed": "0.1361",
    "formal_value": 0.1360922142529383,
    "sig_printed": null,
    "sig_formal": null,

@@ -52,9 +52,11 @@ EA = json.loads((ROOT / "results/final_analysis/error_analysis.json").read_text(
 
 TASK = {"video LV": "video_long_view", "video like": "video_is_like", "music LV": "music_long_view",
         "music like": "music_is_like"}
-MODEL = {"Pop": "pop", "ALS (pure)": "als", "ALS pure": "als", "ALS (aux, like only)": "als_like_aux",
-         "ALS (aux)": "als_like_aux", "ALS aux": "als_like_aux", "3T-U0 (main)": "u0", "3T-U0": "u0", "U0": "u0",
-         "3T-U1 (+ snapshot)": "u1", "3T-U1": "u1", "U1": "u1", "no-history": "abl_nohist",
+# Report labels -> formal model keys. The older labels are kept as aliases so earlier report versions still parse.
+MODEL = {"Pop": "pop", "ALS (pure)": "als", "ALS pure": "als", "Pure ALS": "als", "ALS (aux, like only)": "als_like_aux",
+         "ALS (aux)": "als_like_aux", "ALS aux": "als_like_aux", "Aux ALS": "als_like_aux",
+         "3T-U0 (main)": "u0", "3T-U0": "u0", "U0 (main)": "u0", "U0": "u0",
+         "3T-U1 (+ snapshot)": "u1", "3T-U1": "u1", "U1 (+ snapshot)": "u1", "U1": "u1", "no-history": "abl_nohist",
          "no-music": "abl_nomusic", "no-history ablation": "abl_nohist"}
 NUM = re.compile(r"[+−-]?\d*\.\d+|[+−-]?\d[\d,]*")
 
@@ -123,7 +125,7 @@ def diff_cell(where, cell, row):
 
 def check_tables(text: str):
     # Table 1
-    rows = table_after(text, "**Table 1. Test R@20 / NDCG@20.**")
+    rows = table_after(text, "**Table 1. Absolute test R@20 / NDCG@20 per model.**")
     hdr = rows[0]
     for r in rows[1:]:
         mod = MODEL[r[0]]
@@ -134,7 +136,7 @@ def check_tables(text: str):
             record(f"T1 {r[0]} {h} R@20", r20, m(TASK[h], mod)["mean"])
             record(f"T1 {r[0]} {h} N@20", n20, m(TASK[h], mod, "ndcg@20")["mean"])
     # Table 2
-    rows = table_after(text, "**Table 2. Paired differences in R@20")
+    rows = table_after(text, "**Table 2. Paired test differences in R@20")
     hdr = rows[0]
     for r in rows[1:]:
         a, b = [MODEL[x.strip()] for x in r[0].split("−")]
@@ -143,23 +145,26 @@ def check_tables(text: str):
                 continue
             diff_cell(f"T2 {r[0]} {h}", c, d(TASK[h], a, b))
     # Table 3 (cold video)
-    rows = table_after(text, "**Table 3. Cold 3T-U0 minus each cold-condition baseline")
+    # Columns: task | candidates | cold U0 | cold Pop | random | cold U0 − cold Pop | cold U0 − random.
+    # Every absolute value (cols 2-4) and every difference/star/CI (cols 5-6) is checked.
+    rows = table_after(text, "**Table 3. Cold-video test R@20: absolute values")
     for r in rows[1:]:
         task, frame = TASK[r[0]], {"full catalog": "cold_video_full", "H only": "cold_video_h"}[r[1]]
-        cm = cb[(cb.task == task) & (cb.frame == frame) & (cb.model == "cold_threetower") & (cb.metric == "recall@20")]
-        record(f"T3 {r[0]} {r[1]} cold3T", r[2], cm.iloc[0]["mean"])
-        for col, bname in ((3, "cold_pop"), (4, "random_expected")):
+        for col, mname in ((2, "cold_threetower"), (3, "cold_pop"), (4, "random_expected")):
+            cm = cb[(cb.task == task) & (cb.frame == frame) & (cb.model == mname) & (cb.metric == "recall@20")]
+            record(f"T3 {r[0]} {r[1]} {mname}", r[col], cm.iloc[0]["mean"])
+        for col, bname in ((5, "cold_pop"), (6, "random_expected")):
             x = cd[(cd.task == task) & (cd.frame == frame) & (cd.model_a == "cold_threetower") & (cd.model_b == bname)
                    & (cd.metric == "recall@20")]
             diff_cell(f"T3 {r[0]} {r[1]} - {bname}", r[col], x.iloc[0] if len(x) == 1 else None)
     # Bucket table
-    rows = table_after(text, "**U0 − ALS (pure) by bucket**")
+    rows = table_after(text, "**U0 − Pure ALS by bucket**")
     hdr = rows[0]
     for r in rows[1:]:
         for h, c in zip(hdr[1:], r[1:]):
             diff_cell(f"bucket {r[0]} {h}", c, d(TASK[r[0]], "u0", "als", stratum=h.replace("–", "-")))
     # Cold users
-    rows = table_after(text, "**Cold users** (no history")
+    rows = table_after(text, "**Cold users** (test positives but no history")
     for r in rows[1:]:
         record(f"cold users {r[0]}", r[1], m("video_long_view", MODEL[r[0]], kind="cold")["mean"])
     # §1.5 population table
@@ -212,7 +217,7 @@ def prose_specs():
         ("U0 is clearly behind at R@50 (", [(0, d(VL, "u0", "als", "recall@50"), True)]),
         ("**U0 vs Pop on like.** NDCG@20 is not significant (", [(0, d(VK, "u0", "pop", "ndcg@20"), False),
                                                                  (1, d(MK, "u0", "pop", "ndcg@20"), False)]),
-        ("**U1 vs pure ALS on LV.** NDCG@20 is ", [(0, d(VL, "u1", "als", "ndcg@20"), True),
+        ("**U1 vs Pure ALS on LV.** NDCG@20 is ", [(0, d(VL, "u1", "als", "ndcg@20"), True),
                                                   (0, d(ML, "u1", "als", "ndcg@20"), True)]),
         ("video-LV R@50 is lower (", [(0, d(VL, "u1", "als", "recall@50"), True)]),
         ("R@20 drops significantly on video LV (", [(0, d(VL, "abl_nohist", "u0"), True),
@@ -232,8 +237,8 @@ def prose_specs():
         ("On those users U0 reaches R@20 ", [(0, {"diff": e1[("als", "als_no_signal")]["mean_a"]}, None),
                                              (1, e1[("als", "als_no_signal")], True),
                                              (2, e1[("als_like_aux", "als_no_signal")], False)]),
-        ("On users that do have a prior like, U0 − pure ALS is ", [(0, e1[("als", "als_signal")], False)]),
-        ("Also on those users, U0 is *below* ALS aux: ", [(0, e1[("als_like_aux", "als_signal")], True)]),
+        ("On users that do have a prior like, U0 − Pure ALS is ", [(0, e1[("als", "als_signal")], False)]),
+        ("Also on those users, U0 is *below* Aux ALS: ", [(0, e1[("als_like_aux", "als_signal")], True)]),
         ("U0 − ALS on video LV is ", [(0, e2["21-100 (input not truncated)"][0], True),
                                       (1, e2[">100 (input truncated to last 100)"][0], True)]),
         ("correlate only weakly with train LV popularity (Spearman ", [

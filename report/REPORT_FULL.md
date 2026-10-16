@@ -14,17 +14,17 @@ We retrieve both videos and their background-music IDs for two actions, long vie
 - explicit handling of unseen items and users;
 - bitwise export/direct score parity.
 
-**Findings (test, Recall@20, 95% paired CI).**
+**Findings (formal test, Recall@20).** Differences are absolute (model A − model B on the same users), with 95% paired-bootstrap CIs; "significant" means the CI excludes 0. Recall@20 is the share of a user's test positives in the top 20 of the full catalog, averaged over users.
 - The main model **U0** (user ID + history) beats Popularity on all four tasks.
-- Against pure ALS it is **worse on both LV tasks** (−0.012 each, significant) and **better on both like tasks** (+0.036 / +0.044).
-- The like-task gain disappears against ALS with an auxiliary LV signal (CIs include 0).
+- Against Pure ALS it is **worse on both LV tasks** (0.1124 vs 0.1244 on video LV; −0.012 each, significant) and **better on both like tasks** (+0.036 / +0.044).
+- Against Aux ALS (ALS with an auxiliary LV signal), the like-task difference is not significant (CIs include 0). This does not mean the two are equivalent.
 - **U1** adds a user-metadata snapshot. It reaches ALS level on LV, but it carries an unresolvable snapshot-leakage risk, so U0 is the main model.
 - **Controlled cold-video holdout:** among held-out videos only, the content path ranks clearly better than random and the cold baselines. On the full catalog it is **not significantly better than random**.
 - **Ablations:** removing history hurts long view. Removing the music input to the video tower **improves** long view, which is a negative result for that design choice.
 - **Post-hoc exploratory study** (§2.5; validation only, three seeds; designed after the test results were analysed):
-  - **Removing the music-to-video input consistently improved long-view validation Recall@20 across three seeds, without systematically harming like retrieval.** Mean val R@20 .1286 ± .0018 vs U0 .1220 ± .0036 (+.0066); video LV +.0068, music LV +.0072, higher on 3/3 seeds for both. Its long-view R@20 difference from pure ALS is no longer CI-supported (6/6 CIs include 0; not an equivalence claim). Its long-view NDCG@20 is above pure ALS (6/6 nominal CIs exclude 0; secondary metric, uncorrected). The mechanism is not identified.
-  - Training-seed variation (mean val R@20 .1220 ± .0036) is larger than user-bootstrap uncertainty.
-  - lr 5e-4 raises mean val R@20 on 3/3 seeds (+.0048 on average, about one seed std), mainly through like; long view is seed-dependent.
+  - **Removing the music-to-video input consistently improved long-view validation Recall@20 across three seeds, without systematically harming like retrieval.** The 4-task mean val R@20 is 0.1286 ± 0.0018 vs U0 0.1220 ± 0.0036 (mean ± std over training seeds; +0.0066). Video LV +0.0068, music LV +0.0072, higher on 3/3 seeds for both. Its long-view R@20 difference from Pure ALS is no longer CI-supported (6/6 CIs include 0; not an equivalence claim). Its long-view NDCG@20 is above Pure ALS (6/6 nominal CIs exclude 0; secondary metric, uncorrected). The mechanism is not identified.
+  - Training-seed variation (std 0.0036 of the 4-task mean) is larger than user-bootstrap uncertainty.
+  - lr 5e-4 raises mean val R@20 on 3/3 seeds (+0.0048 on average, about one seed std), mainly through like; long view is seed-dependent.
   - τ = 0.1 trades like for long view without changing the mean.
   - Reproduction: same-config reruns reproduce the formal U0 (job 27) and no-music (job 35) runs bitwise.
   - None of this changes the formal test results.
@@ -210,7 +210,7 @@ These batches exercise the duplicate-positive cases: 2,031 LV rows shared a labe
 - At most 30 epochs, with patience 3 on the mean validation-masked R@20 over the 4 tasks (tie-break NDCG@20).
 - Any non-finite loss or gradient fails the run immediately (no step is ever skipped).
 - One seed (0) per model.
-- The formal v1 runs were not tuned: every hyperparameter stayed at its design value. U0 was below ALS on validation LV R@20 (video .1260 vs .1339, music .1308 vs .1361), which is the condition under which the design allows targeted adjustments. Those adjustments are left to separate, clearly labelled exploration runs and are not part of the reported v1.
+- The formal v1 runs were not tuned: every hyperparameter stayed at its design value. U0 was below ALS on validation LV R@20 (video 0.1260 vs 0.1339, music 0.1308 vs 0.1361), which is the condition under which the design allows targeted adjustments. Those adjustments are left to separate, clearly labelled exploration runs and are not part of the reported v1.
 
 ## 1.5 Evaluation protocol
 
@@ -242,7 +242,7 @@ Source: `results/baselines/frames_summary.json` (test masked frames). The label-
 **Frame identity.** Every model on a task must match one `frame_id`, a hash of users, GT and mask, so every comparison is on the same users.
 
 **ALS conventions.**
-- Users with no usable signal score −inf, which gives them a metric of 0. They are never given random or zero vectors: 466 such users on video LV, and 608 on video like for pure ALS.
+- Users with no usable signal score −inf, which gives them a metric of 0. They are never given random or zero vectors: 466 such users on video LV, and 608 on video like for Pure ALS.
 - Items with no train signal for that ALS configuration are unscorable.
 
 **Bootstrap.** 1,000 user resamples, shared by all models on a frame (paired), with 95% percentile CIs.
@@ -254,40 +254,42 @@ Source: `results/baselines/frames_summary.json` (test masked frames). The label-
 
 # 2. Results
 
-**Scope.** §2.1–2.4 report the formal v1 **test** results; their numbers come from `results/m5/main_formal/` (bootstrap) and `results/m5/cold_video/eval_671dde9_job33/`. Full R/NDCG@10/20/50 are in `report/tables/t1_main_metrics.md`, and every paired difference is in `t2_paired_diffs.md`. §2.5 is a separate post-hoc exploratory study that reports **validation** metrics only (`results/explore/`); its numbers must not be compared with the test tables. A star (\*) marks a 95% CI that excludes 0.
+**Scope.** §2.1–2.4 report the formal v1 **test** results; their numbers come from `results/m5/main_formal/` (bootstrap) and `results/m5/cold_video/eval_671dde9_job33/`. Full R/NDCG@10/20/50 are in `report/tables/t1_main_metrics.md`, and every paired difference is in `t2_paired_diffs.md`. §2.5 is a separate post-hoc exploratory study that reports **validation** metrics only (`results/explore/`); its numbers must not be compared with the test tables. A *difference* is model A − model B on the same users (absolute, in metric units). In difference tables, a star (\*) marks a 95% CI that excludes 0 (significant). A non-significant difference does not imply equivalence.
 
 ## 2.1 Main comparison
 
-![Figure 1: test Recall@20 with 95% paired-bootstrap CIs on the full-catalog, seen-masked frames. Popularity, pure ALS, U0 and U1 on all four tasks; ALS with the auxiliary long-view signal exists for the like tasks only. Each task's bars use the same users. Source: results/m5/main_formal/bootstrap_models.csv.](figures/fig1_baselines.png)
+![Figure 1: test Recall@20 with 95% paired-bootstrap CIs on the full-catalog, seen-masked frames. Popularity, Pure ALS, U0 and U1 on all four tasks; Aux ALS exists for the like tasks only. Each task's bars use the same users. Source: results/m5/main_formal/bootstrap_models.csv.](figures/fig1_baselines.png)
 
-**Table 1. Test R@20 / NDCG@20.**
+*Figure 1. Test Recall@20 with 95% paired-bootstrap CIs (full catalog, previously seen items excluded; the same users per task). Aux ALS exists for the like tasks only. Source: `results/m5/main_formal/bootstrap_models.csv`.*
+
+**Table 1. Absolute test R@20 / NDCG@20 per model.** Bold marks the best value per column.
 
 | model | video LV | video like | music LV | music like |
 |---|---|---|---|---|
-| Pop | .0806 / .0457 | .0716 / .0403 | .0856 / .0479 | .0726 / .0412 |
-| ALS (pure) | **.1244** / .0686 | .0555 / .0282 | **.1282** / .0705 | .0586 / .0303 |
-| ALS (aux, like only) | – | **.1008 / .0469** | – | **.1054** / .0463 |
-| 3T-U0 (main) | .1124 / .0676 | .0913 / .0417 | .1162 / .0691 | .1022 / **.0472** |
-| 3T-U1 (+ snapshot) | .1274 / .0744 | .0859 / .0397 | .1321 / .0768 | .0864 / .0407 |
+| Pop | 0.0806 / 0.0457 | 0.0716 / 0.0403 | 0.0856 / 0.0479 | 0.0726 / 0.0412 |
+| Pure ALS | **0.1244** / 0.0686 | 0.0555 / 0.0282 | **0.1282** / 0.0705 | 0.0586 / 0.0303 |
+| Aux ALS | – | **0.1008 / 0.0469** | – | **0.1054** / 0.0463 |
+| U0 (main) | 0.1124 / 0.0676 | 0.0913 / 0.0417 | 0.1162 / 0.0691 | 0.1022 / **0.0472** |
+| U1 (+ snapshot) | 0.1274 / 0.0744 | 0.0859 / 0.0397 | 0.1321 / 0.0768 | 0.0864 / 0.0407 |
 
-**Table 2. Paired differences in R@20 [95% CI].**
+**Table 2. Paired test differences in R@20, A − B [95% CI].** These are absolute differences of the values in Table 1, on the same users.
 
-| comparison | video LV | video like | music LV | music like |
+| comparison (A − B) | video LV | video like | music LV | music like |
 |---|---|---|---|---|
-| U0 − Pop | +.032\* | +.020\* | +.031\* | +.030\* |
-| U0 − ALS pure | **−.012\*** [−.016, −.008] | +.036\* | **−.012\*** [−.016, −.008] | +.044\* |
-| U0 − ALS aux | – | −.009 [−.025, +.005] | – | −.003 [−.019, +.014] |
-| U1 − ALS pure | +.003 [−.001, +.007] | +.030\* | +.004 [−.000, +.008] | +.028\* |
-| U1 − U0 | +.015\* | −.005 | +.016\* | −.016\* |
+| U0 − Pop | +0.032\* [+0.029, +0.035] | +0.020\* [+0.007, +0.032] | +0.031\* [+0.027, +0.034] | +0.030\* [+0.015, +0.043] |
+| U0 − Pure ALS | **−0.012\*** [−0.016, −0.008] | +0.036\* [+0.022, +0.049] | **−0.012\*** [−0.016, −0.008] | +0.044\* [+0.029, +0.058] |
+| U0 − Aux ALS | – | −0.009 [−0.025, +0.005] | – | −0.003 [−0.019, +0.014] |
+| U1 − Pure ALS | +0.003 [−0.001, +0.007] | +0.030\* [+0.017, +0.043] | +0.004 [−0.000, +0.008] | +0.028\* [+0.015, +0.042] |
+| U1 − U0 | +0.015\* [+0.012, +0.018] | −0.005 [−0.016, +0.005] | +0.016\* [+0.013, +0.019] | −0.016\* [−0.027, −0.004] |
 
 Other differences (`t2_paired_diffs.md`):
-- **U0 vs pure ALS on LV.** The NDCG@20 differences include 0 (−.001 / −.001). U0's NDCG@10 is slightly *higher* on video LV (+.0025\*). U0 is clearly behind at R@50 (−.033\*).
-- **U0 vs Pop on like.** NDCG@20 is not significant (+.001 / +.006).
-- **U1 vs pure ALS on LV.** NDCG@20 is +.006\* on both tasks. R@20 is not significant, and video-LV R@50 is lower (−.010\*).
+- **U0 vs Pure ALS on LV.** The NDCG@20 differences include 0 (−0.001 / −0.001). U0's NDCG@10 is slightly *higher* on video LV (+0.0025\*). U0 is clearly behind at R@50 (−0.033\*).
+- **U0 vs Pop on like.** NDCG@20 is not significant (+0.001 / +0.006).
+- **U1 vs Pure ALS on LV.** NDCG@20 is +0.006\* on both tasks. R@20 is not significant, and video-LV R@50 is lower (−0.010\*).
 
 **Conclusions.**
 - We do not claim that the three-tower model beats ALS.
-- U0 is a strong, Pop-beating retriever. It is worse than pure ALS at recall depth on LV, and on like it is statistically tied with the auxiliary-signal ALS.
+- U0 is a strong, Pop-beating retriever. It is worse than Pure ALS at recall depth on LV, and on like it is not significantly different from Aux ALS (which is not evidence of equivalence).
 
 ## 2.2 Controlled cold-video experiment
 
@@ -310,14 +312,16 @@ Other differences (`t2_paired_diffs.md`):
 
 ![Figure 2: controlled cold-video experiment, test Recall@20 on GT_H with 95% paired CIs. Left: full-catalog candidates. Right: H-only candidates (note the roughly 10× larger y-scale). Only the cold-trained three-tower model and cold-condition baselines (Pop/ALS refit on H-removed data, analytical random ranking) are shown. Cold ALS is 0 by construction because H has no factors. Source: results/m5/cold_video/eval_671dde9_job33/cold_bootstrap_models.csv.](figures/fig2_cold_video.png)
 
-**Table 3. Cold 3T-U0 minus each cold-condition baseline, R@20 [95% CI]** (`t5_cold_video.md`):
+*Figure 2. Controlled cold-video experiment: test Recall@20 on GT_H with 95% paired CIs. Left: full-catalog candidates; right: H-only candidates (note the roughly 10× larger y-scale). All models shown were trained without H. Cold Pure ALS is 0 by construction because H has no factors. Source: `results/m5/cold_video/eval_671dde9_job33/cold_bootstrap_models.csv`.*
 
-| task | candidates | cold 3T-U0 | − cold Pop | − random |
-|---|---|---:|---|---|
-| video LV | full catalog | 0.0041 | +.0041\* | +.0014 [−.0000, +.0032] |
-| video LV | H only | 0.1045 | +.084\* | +.078\* |
-| video like | full catalog | 0.0066 | +.0066 [.0000, .0164] | +.0039 [−.0027, +.0137] |
-| video like | H only | 0.0672 | +.059\* | +.040\* |
+**Table 3. Cold-video test R@20: absolute values for the cold U0 and two cold-condition baselines, then the paired differences cold U0 − baseline [95% CI]** (`t5_cold_video.md`):
+
+| task | candidates | cold U0 | cold Pop | random | cold U0 − cold Pop | cold U0 − random |
+|---|---|---:|---:|---:|---|---|
+| video LV | full catalog | 0.0041 | 0.0000 | 0.0027 | +0.0041\* [+0.0026, +0.0058] | +0.0014 [−0.0000, +0.0032] |
+| video LV | H only | 0.1045 | 0.0207 | 0.0269 | +0.0838\* [+0.0756, +0.0923] | +0.0776\* [+0.0703, +0.0848] |
+| video like | full catalog | 0.0066 | 0.0000 | 0.0027 | +0.0066 [+0.0000, +0.0164] | +0.0039 [−0.0027, +0.0137] |
+| video like | H only | 0.0672 | 0.0082 | 0.0268 | +0.0590\* [+0.0328, +0.0869] | +0.0404\* [+0.0158, +0.0682] |
 
 Notes on the baselines:
 - On the full catalog, cold Pop gives every H video a score of 0, and cold ALS cannot score H at all (all GT_H is unscorable). Both are 0 by construction, so "beating" them carries no information.
@@ -325,7 +329,7 @@ Notes on the baselines:
 
 **What the results show.**
 - **H only.** Metadata, author and music carry a real relative-ranking signal among new videos.
-- **Full catalog.** R@20 is not distinguishable from random. For video LV, NDCG@10 is even slightly *below* random (−.0003\*), while R@50 is above it (+.0032\*).
+- **Full catalog.** R@20 is not significantly different from random. For video LV, NDCG@10 is even slightly *below* random (−0.0003\*), while R@50 is above it (+0.0032\*).
 
 **Seen-video reference.** The normally trained U0 scores R@20 0.111 (full) and 0.433 (H only) on the same LV frame. It saw H in training, so it is context only: it is neither a cold baseline nor a guaranteed upper bound.
 
@@ -335,18 +339,20 @@ The bucket is the number of events actually fed to the model at T_test, capped a
 
 ![Figure 3: test Recall@20 by history-length bucket (1–5, 6–20, >20 events) with 95% CIs, all four tasks. The same bucket definition and users apply to every model. Source: results/m5/main_formal/bootstrap_models.csv, strata 1-5 / 6-20 / >20.](figures/fig3_buckets.png)
 
-**U0 − ALS (pure) by bucket** (`t3b_bucket_diffs.md`):
+*Figure 3. Absolute test Recall@20 by history-length bucket (1–5, 6–20, >20 events fed to the model at T_test), with 95% CIs. The bucket definition and users are the same for every model. The values are in `t3_history_buckets.md`.*
+
+**U0 − Pure ALS by bucket**: the paired test R@20 difference U0 − Pure ALS; \* = CI excludes 0 (CIs in `t3b_bucket_diffs.md`):
 
 | task | 1–5 | 6–20 | >20 |
 |---|---|---|---|
-| video LV | +.028\* | −.006 | −.017\* |
-| music LV | +.037\* | −.012\* | −.016\* |
-| video like | +.118\* | +.062\* | +.023\* |
-| music like | +.122\* | +.069\* | +.031\* |
+| video LV | +0.028\* | −0.006 | −0.017\* |
+| music LV | +0.037\* | −0.012\* | −0.016\* |
+| video like | +0.118\* | +0.062\* | +0.023\* |
+| music like | +0.122\* | +0.069\* | +0.031\* |
 
 The LV deficit is a heavy-user effect: U0 wins in the 1–5 bucket and loses in the >20 bucket.
 
-**Cold users** (no history; separate frame, `t4_cold_users.md`):
+**Cold users** (test positives but no history before T_test; a separate frame; absolute test R@20; `t4_cold_users.md`):
 
 | model | video-LV R@20 (437 users) |
 |---|---:|
@@ -360,13 +366,17 @@ Each ablation is a single configuration flag change from U0, with the same data,
 
 ![Figure 4: paired test differences vs U0 (95% CI) for the two ablations. Top: Recall@20; bottom: NDCG@20. Source: results/m5/main_formal/bootstrap_diffs.csv.](figures/fig4_ablations.png)
 
+*Figure 4. Paired test difference, ablation − U0, with 95% CIs. Top: Recall@20; bottom: NDCG@20. U0's absolute values are in Table 1. Source: `results/m5/main_formal/bootstrap_diffs.csv`.*
+
+The numbers below are paired differences, ablation − U0.
+
 **No history** (user ID only):
-- R@20 drops significantly on video LV (−.012\*), music LV (−.011\*) and music like (−.017\*).
-- NDCG@20 on LV drops by −.010\* / −.009\*.
+- R@20 drops significantly on video LV (−0.012\*), music LV (−0.011\*) and music like (−0.017\*).
+- NDCG@20 on LV drops by −0.010\* / −0.009\*.
 - The video-like difference is not significant.
 
 **No music input to the video tower** (the music tower and heads are still trained by the music tasks):
-- LV *improves*: R@20 +.010\* / +.009\* and NDCG@20 +.004\* / +.004\*.
+- LV *improves*: R@20 +0.010\* / +0.009\* and NDCG@20 +0.004\* / +0.004\*.
 - The like differences are not significant.
 - This is a negative result for the music-input design choice. We report it as is and did not tune it away.
 
@@ -374,11 +384,11 @@ Each ablation is a single configuration flag change from U0, with the same data,
 
 **Nature of this study.**
 - **Post-hoc and exploratory.** It was designed *after* the formal v1 test results above had been analysed, and it runs on a separate branch (`explore/s9-opt`). It does not replace U0 or change any formal result.
-- **Validation only.** Every number in this section is a **validation** metric on the M3 val masked frames (T_val, train-only history, frame ids asserted), never a test number. The analysis scripts refuse `metrics.csv` and test per-user files.
-- **Same protocol.** Each run changes one setting relative to `configs/threetower_u0.yaml`. Selection is the D1-8 rule: mean val R@20 over the 4 tasks.
+- **Validation only.** Every number in this section is a **validation** metric on the same validation frames as the baselines (users frozen at T_val, train-only history, seen items masked, frame ids asserted), never a test number. The analysis scripts refuse `metrics.csv` and test per-user files.
+- **Same protocol.** Each run changes one setting relative to `configs/threetower_u0.yaml`. Selection is the formal rule (D1-8 in `PLAN.md`): the epoch with the best mean val R@20 over the 4 tasks.
 - **Two kinds of uncertainty, reported separately:**
   - a paired user-level bootstrap on validation (1,000 resamples), which covers user sampling for a fixed pair of trained models;
-  - training-seed variation over three seeds, which is descriptive only.
+  - training-seed variation over three seeds, reported as mean ± std (n = 3), which is descriptive only and is not a CI.
 - **Sources:** `results/explore/` (copied from the explore branch; see `results/explore/PROVENANCE.md`). Full write-up: [`docs/EXPLORATORY_RESULTS.md`](../docs/EXPLORATORY_RESULTS.md).
 
 **Reproduction and correctness.**
@@ -401,11 +411,11 @@ U0 at seeds 0, 1 and 2 (lr 1e-3, τ 0.05):
 
 | | mean | std (n = 3) | min | max |
 |---|---:|---:|---:|---:|
-| mean val R@20 | .1220 | .0036 | .1180 | .1252 |
-| mean val NDCG@20 | .0672 | .0020 | .0653 | .0693 |
+| mean val R@20 | 0.1220 | 0.0036 | 0.1180 | 0.1252 |
+| mean val NDCG@20 | 0.0672 | 0.0020 | 0.0653 | 0.0693 |
 
-- **Seed variation is larger than user-sampling uncertainty.** Under the user bootstrap, seed 2 alone "differs significantly" from seed 0 (−.0072 [−.0105, −.0038] mean val R@20).
-- **Reading guide, not a threshold.** The observed three-seed range (.0072) is a rough scale for training noise, not a statistical threshold; three seeds cannot estimate it precisely. Single-seed differences of that order should therefore be treated as inconclusive, and a CI from the user bootstrap is never evidence of a cross-seed effect.
+- **Seed variation is larger than user-sampling uncertainty.** Under the user bootstrap, seed 2 alone "differs significantly" from seed 0 (−0.0072 [−0.0105, −0.0038] mean val R@20).
+- **Reading guide, not a threshold.** The observed three-seed range (0.0072) is a rough scale for training noise, not a statistical threshold; three seeds cannot estimate it precisely. Single-seed differences of that order should therefore be treated as inconclusive, and a CI from the user bootstrap is never evidence of a cross-seed effect.
 - **The formal seed is favourable.** Formal seed 0 is the best of the three seeds.
 
 ### 2.5.2 Learning-rate sensitivity
@@ -414,34 +424,38 @@ The table compares lr 5e-4 with the formal lr 1e-3, three seeds each, at the bes
 
 | lr | seed (job) | best ep | video LV | video like | music LV | music like | mean R@20 | mean N@20 |
 |---|---|---:|---|---|---|---|---:|---:|
-| 1e-3 | 0 (44 = 27) | 6 | .1260 / .0781 | .1223 / .0589 | .1308 / .0803 | .1218 / .0599 | .1252 | .0693 |
-| 1e-3 | 1 (39) | 7 | .1267 / .0770 | .1089 / .0515 | .1344 / .0805 | .1204 / .0586 | .1226 | .0669 |
-| 1e-3 | 2 (40) | 5 | .1241 / .0747 | .1129 / .0564 | .1203 / .0728 | .1149 / .0575 | .1180 | .0653 |
-| 5e-4 | 0 (41) | 6 | .1304 / .0803 | .1277 / .0635 | .1370 / .0831 | .1277 / .0629 | .1307 | .0724 |
-| 5e-4 | 1 (45) | 4 | .1214 / .0727 | .1250 / .0624 | .1242 / .0747 | .1314 / .0631 | .1255 | .0682 |
-| 5e-4 | 2 (46) | 9 | .1281 / .0771 | .1160 / .0536 | .1349 / .0793 | .1168 / .0537 | .1239 | .0659 |
+| 1e-3 | 0 (44 = 27) | 6 | 0.1260 / 0.0781 | 0.1223 / 0.0589 | 0.1308 / 0.0803 | 0.1218 / 0.0599 | 0.1252 | 0.0693 |
+| 1e-3 | 1 (39) | 7 | 0.1267 / 0.0770 | 0.1089 / 0.0515 | 0.1344 / 0.0805 | 0.1204 / 0.0586 | 0.1226 | 0.0669 |
+| 1e-3 | 2 (40) | 5 | 0.1241 / 0.0747 | 0.1129 / 0.0564 | 0.1203 / 0.0728 | 0.1149 / 0.0575 | 0.1180 | 0.0653 |
+| 5e-4 | 0 (41) | 6 | 0.1304 / 0.0803 | 0.1277 / 0.0635 | 0.1370 / 0.0831 | 0.1277 / 0.0629 | 0.1307 | 0.0724 |
+| 5e-4 | 1 (45) | 4 | 0.1214 / 0.0727 | 0.1250 / 0.0624 | 0.1242 / 0.0747 | 0.1314 / 0.0631 | 0.1255 | 0.0682 |
+| 5e-4 | 2 (46) | 9 | 0.1281 / 0.0771 | 0.1160 / 0.0536 | 0.1349 / 0.0793 | 0.1168 / 0.0537 | 0.1239 | 0.0659 |
 
 Same-seed differences (lr 5e-4 − lr 1e-3) in validation R@20. Brackets give the paired user-bootstrap CI.
 
 | seed | mean R@20 | mean N@20 | video LV | video like | music LV | music like |
 |---:|---|---|---:|---:|---:|---:|
-| 0 | +.0055 [+.0026, +.0085] | +.0031 [+.0020, +.0043] | +.0044 | +.0054 | +.0062 | +.0059 |
-| 1 | +.0029 [−.0014, +.0073] | +.0014 [−.0006, +.0034] | −.0053 | +.0161 | −.0101 | +.0110 |
-| 2 | +.0059 [+.0023, +.0099] | +.0006 [−.0013, +.0024] | +.0040 | +.0031 | +.0145 | +.0020 |
-| mean | +.0048 | +.0017 | +.0010 | +.0082 | +.0035 | +.0063 |
+| 0 | +0.0055 [+0.0026, +0.0085] | +0.0031 [+0.0020, +0.0043] | +0.0044 | +0.0054 | +0.0062 | +0.0059 |
+| 1 | +0.0029 [−0.0014, +0.0073] | +0.0014 [−0.0006, +0.0034] | −0.0053 | +0.0161 | −0.0101 | +0.0110 |
+| 2 | +0.0059 [+0.0023, +0.0099] | +0.0006 [−0.0013, +0.0024] | +0.0040 | +0.0031 | +0.0145 | +0.0020 |
+| mean | +0.0048 | +0.0017 | +0.0010 | +0.0082 | +0.0035 | +0.0063 |
 
 ![Figure 5: mean validation R@20 per seed at lr 1e-3 vs lr 5e-4 (post-hoc exploratory; validation). Dashed lines are the 3-seed means. Source: results/explore/wave2/validation_comparison.csv.](figures/explore_fig_a_lr_mean.png)
 
+*Figure 5. Mean validation R@20 per seed at lr 1e-3 vs lr 5e-4 (post-hoc exploratory; validation). Dashed lines are the 3-seed means. Source: results/explore/wave2/validation_comparison.csv.*
+
 ![Figure 6: same-seed per-task differences lr 5e-4 − lr 1e-3 in validation R@20 (dots = seeds, bars = 3-seed mean). Source: results/explore/wave2/paired_lr_diffs.csv.](figures/explore_fig_b_lr_task_deltas.png)
 
+*Figure 6. Same-seed per-task differences lr 5e-4 − lr 1e-3 in validation R@20 (dots = seeds, bars = 3-seed mean). Source: results/explore/wave2/paired_lr_diffs.csv.*
+
 **Overall effect.**
-- The 3-seed mean val R@20 moves from .1220 ± .0036 to .1267 ± .0035, a mean gain of +.0048.
-- The gain is positive on all three seeds (+.0029 to +.0059), but its size is about one seed standard deviation, and the two groups overlap: the lr 5e-4 minimum (.1239) is below the lr 1e-3 maximum (.1252).
+- The 3-seed mean val R@20 moves from 0.1220 ± 0.0036 to 0.1267 ± 0.0035, a mean gain of +0.0048.
+- The gain is positive on all three seeds (+0.0029 to +0.0059), but its size is about one seed standard deviation, and the two groups overlap: the lr 5e-4 minimum (0.1239) is below the lr 1e-3 maximum (0.1252).
 - Seed 1's own CI includes 0.
 
 **Per-task pattern.**
 - **Like tasks:** numerically higher on all three seeds.
-- **Long-view tasks:** seed-dependent. They rise on seeds 0 and 2, but fall clearly on seed 1 (video LV −.0053, music LV −.0101; both CIs exclude 0), where the run stopped early at epoch 4.
+- **Long-view tasks:** seed-dependent. They rise on seeds 0 and 2, but fall clearly on seed 1 (video LV −0.0053, music LV −0.0101; both CIs exclude 0), where the run stopped early at epoch 4.
 - **Source of the gain:** mostly the like tasks.
 
 **Conclusion.** "lr 5e-4 tends to improve validation like retrieval on 3/3 seeds; long view is seed-dependent." This is suggestive, not a demonstrated improvement, and it does not justify replacing the formal U0.
@@ -452,10 +466,12 @@ Same-seed differences (lr 5e-4 − lr 1e-3) in validation R@20. Brackets give th
 
 | Δ val R@20 vs τ 0.05 | video LV | video like | music LV | music like | 4-task mean |
 |---|---|---|---|---|---|
-| τ 0.03 | +.0005 | −.0028 | −.0002 | −.0003 | −.0007 [−.0030, +.0015] |
-| τ 0.10 | **+.0085** [+.0057, +.0114] | **−.0114** [−.0222, −.0004] | **+.0094** [+.0065, +.0122] | −.0083 [−.0188, +.0026] | −.0005 [−.0045, +.0034] |
+| τ 0.03 | +0.0005 | −0.0028 | −0.0002 | −0.0003 | −0.0007 [−0.0030, +0.0015] |
+| τ 0.10 | **+0.0085** [+0.0057, +0.0114] | **−0.0114** [−0.0222, −0.0004] | **+0.0094** [+0.0065, +0.0122] | −0.0083 [−0.0188, +0.0026] | −0.0005 [−0.0045, +0.0034] |
 
 ![Figure 7: temperature, seed 0: per-task validation R@20 difference vs τ = 0.05 with paired user CIs (one seed per setting). Source: results/explore/wave1/validation_bootstrap.csv.](figures/explore_fig_c_tau_tradeoff.png)
+
+*Figure 7. Temperature, seed 0: per-task validation R@20 difference vs τ = 0.05 with paired user CIs (one seed per setting). Source: results/explore/wave1/validation_bootstrap.csv.*
 
 **Neither temperature improves the four-task mean.**
 - τ = 0.03 changes nothing noticeable.
@@ -469,29 +485,29 @@ Same-seed differences (lr 5e-4 − lr 1e-3) in validation R@20. Brackets give th
 ### 2.5.4 Comparison with the ALS baselines on validation
 
 - **Same frames, validation only.** These baselines use the same validation split, catalog, seen mask and frame ids as the models above. They are validation numbers and must not be compared with the test tables in §2.1.
-- **Baselines.** Validation R@20: pure ALS .1339 (video LV) / .1361 (music LV); ALS aux .1077 (video like) / .1166 (music like).
+- **Baselines.** Validation R@20: Pure ALS 0.1339 (video LV) / 0.1361 (music LV); Aux ALS 0.1077 (video like) / 0.1166 (music like).
 - **Source.** `results/explore/wave3_review/longview_vs_als.csv`.
 
-**Long view vs pure ALS (val R@20, paired CI).**
+**Long view vs Pure ALS (val R@20, paired CI).**
 
 | run | video LV | music LV |
 |---|---|---|
-| U0 lr 1e-3, seeds 0 / 1 / 2 | −.0079\* / −.0072\* / −.0099\* | −.0053\* / −.0017 [−.0061, +.0024] / −.0158\* |
-| lr 5e-4, seeds 0 / 1 / 2 | −.0035 [−.0076, +.0005] / −.0125\* / −.0058\* | +.0009 [−.0035, +.0052] / −.0118\* / −.0012 [−.0053, +.0028] |
-| τ 0.10, seed 0 | +.0006 [−.0035, +.0048] | +.0041 [−.0001, +.0081] |
-| no-music, seeds 0 / 1 / 2 (Wave 3; seed 0 = formal ablation) | −.0005 / −.0036 / −.0005 (all CIs include 0) | −.0008 / −.0003 / +.0001 (all CIs include 0) |
+| U0 lr 1e-3, seeds 0 / 1 / 2 | −0.0079\* / −0.0072\* / −0.0099\* | −0.0053\* / −0.0017 [−0.0061, +0.0024] / −0.0158\* |
+| lr 5e-4, seeds 0 / 1 / 2 | −0.0035 [−0.0076, +0.0005] / −0.0125\* / −0.0058\* | +0.0009 [−0.0035, +0.0052] / −0.0118\* / −0.0012 [−0.0053, +0.0028] |
+| τ 0.10, seed 0 | +0.0006 [−0.0035, +0.0048] | +0.0041 [−0.0001, +0.0081] |
+| no-music, seeds 0 / 1 / 2 (Wave 3; seed 0 = formal ablation) | −0.0005 / −0.0036 / −0.0005 (all CIs include 0) | −0.0008 / −0.0003 / +0.0001 (all CIs include 0) |
 
 **Reading the long-view comparison.** Here "tie" means the paired 95% CI includes 0: no significant difference detected. It is **not** a demonstration of equivalence, since no equivalence margin was specified.
-- **The best runs tie pure ALS.** A few explore runs tie, or are *numerically* slightly above pure ALS on long view: lr 5e-4 seed 0 on music LV, τ 0.1 on both long-view tasks, and no-music seed 2 on music LV. Every such CI includes 0.
-- **No-music at all three seeds.** It shows no significant R@20 difference from pure ALS on both long-view tasks (6/6 CIs include 0), while every U0 seed is significantly below ALS on video LV. On long-view NDCG@20, no-music is above pure ALS on 6/6 seed-task pairs (+.0030 to +.0043; nominal 95% CIs exclude 0, uncorrected for multiple comparisons, secondary metric, validation only).
+- **The best runs tie Pure ALS.** A few explore runs tie, or are *numerically* slightly above Pure ALS on long view: lr 5e-4 seed 0 on music LV, τ 0.1 on both long-view tasks, and no-music seed 2 on music LV. Every such CI includes 0.
+- **No-music at all three seeds.** It shows no significant R@20 difference from Pure ALS on both long-view tasks (6/6 CIs include 0), while every U0 seed is significantly below ALS on video LV. On long-view NDCG@20, no-music is above Pure ALS on 6/6 seed-task pairs (+0.0030 to +0.0043; nominal 95% CIs exclude 0, uncorrected for multiple comparisons, secondary metric, validation only).
 - **No run has a CI-supported long-view advantage.** Nor are all explore runs below ALS.
-- **The deficit shrinks but does not close.** The mean long-view gap to ALS shrinks from .0083 / .0076 (video / music, lr 1e-3 seed mean) to .0073 / .0041 (lr 5e-4), with a large seed spread.
+- **The deficit shrinks but does not close.** The mean long-view gap to ALS shrinks from 0.0083 / 0.0076 (video / music, lr 1e-3 seed mean) to 0.0073 / 0.0041 (lr 5e-4), with a large seed spread.
 
 **Like.**
-- **Vs pure ALS:** every run is +.053 to +.068 above it, and every CI excludes 0. Pure ALS has no signal for users without a train like.
-- **Vs ALS aux:** lr 5e-4 seeds 0 and 1 are above on video like (+.0200, +.0173, CIs exclude 0), and seed 2 ties. On music like all three tie (CIs include 0).
+- **Vs Pure ALS:** every run is +0.053 to +0.068 above it, and every CI excludes 0. Pure ALS has no signal for users without a train like.
+- **Vs Aux ALS:** lr 5e-4 seeds 0 and 1 are above on video like (+0.0200, +0.0173, CIs exclude 0), and seed 2 ties. On music like all three tie (CIs include 0).
 
-**Conclusion.** These are validation statements. They do not change the formal test result (§2.1): U0 is below pure ALS on long view, and tied with ALS aux on like.
+**Conclusion.** These are validation statements. They do not change the formal test result (§2.1): U0 is below Pure ALS on long view, and not significantly different from Aux ALS on like.
 
 ### 2.5.5 No-music ablation at three seeds (Wave 3)
 
@@ -505,12 +521,12 @@ Source: `results/explore/wave3/`.
 
 | arch | seed (job) | best ep | video LV | video like | music LV | music like | mean R@20 | mean N@20 |
 |---|---|---:|---|---|---|---|---:|---:|
-| U0 | 0 (44 = 27) | 6 | .1260 / .0781 | .1223 / .0589 | .1308 / .0803 | .1218 / .0599 | .1252 | .0693 |
-| U0 | 1 (39) | 7 | .1267 / .0770 | .1089 / .0515 | .1344 / .0805 | .1204 / .0586 | .1226 | .0669 |
-| U0 | 2 (40) | 5 | .1241 / .0747 | .1129 / .0564 | .1203 / .0728 | .1149 / .0575 | .1180 | .0653 |
-| no-music | 0 (47 = 35) | 6 | .1334 / .0802 | .1177 / .0558 | .1352 / .0812 | .1248 / .0595 | .1278 | .0692 |
-| no-music | 1 (48) | 4 | .1303 / .0792 | .1254 / .0608 | .1358 / .0807 | .1311 / .0629 | .1306 | .0709 |
-| no-music | 2 (49) | 5 | .1334 / .0801 | .1221 / .0569 | .1362 / .0810 | .1179 / .0583 | .1274 | .0691 |
+| U0 | 0 (44 = 27) | 6 | 0.1260 / 0.0781 | 0.1223 / 0.0589 | 0.1308 / 0.0803 | 0.1218 / 0.0599 | 0.1252 | 0.0693 |
+| U0 | 1 (39) | 7 | 0.1267 / 0.0770 | 0.1089 / 0.0515 | 0.1344 / 0.0805 | 0.1204 / 0.0586 | 0.1226 | 0.0669 |
+| U0 | 2 (40) | 5 | 0.1241 / 0.0747 | 0.1129 / 0.0564 | 0.1203 / 0.0728 | 0.1149 / 0.0575 | 0.1180 | 0.0653 |
+| no-music | 0 (47 = 35) | 6 | 0.1334 / 0.0802 | 0.1177 / 0.0558 | 0.1352 / 0.0812 | 0.1248 / 0.0595 | 0.1278 | 0.0692 |
+| no-music | 1 (48) | 4 | 0.1303 / 0.0792 | 0.1254 / 0.0608 | 0.1358 / 0.0807 | 0.1311 / 0.0629 | 0.1306 | 0.0709 |
+| no-music | 2 (49) | 5 | 0.1334 / 0.0801 | 0.1221 / 0.0569 | 0.1362 / 0.0810 | 0.1179 / 0.0583 | 0.1274 | 0.0691 |
 
 Cells are validation R@20 / NDCG@20.
 
@@ -518,21 +534,23 @@ Same-seed differences (no-music − U0) in val R@20; brackets give the paired us
 
 | seed | 4-task mean | video LV | music LV | video like | music like |
 |---:|---:|---|---|---|---|
-| 0 | +.0025 | +.0073 [+.0050, +.0097] | +.0045 [+.0022, +.0070] | −.0047 [−.0131, +.0050] | +.0030 [−.0065, +.0118] |
-| 1 | +.0080 | +.0036 [+.0009, +.0062] | +.0014 [−.0013, +.0039] | +.0166 [+.0070, +.0273] | +.0106 [+.0004, +.0226] |
-| 2 | +.0094 | +.0094 [+.0069, +.0119] | +.0158 [+.0133, +.0187] | +.0093 [−.0008, +.0197] | +.0031 [−.0060, +.0128] |
-| mean | **+.0066** | **+.0068** | **+.0072** | +.0071 | +.0056 |
+| 0 | +0.0025 | +0.0073 [+0.0050, +0.0097] | +0.0045 [+0.0022, +0.0070] | −0.0047 [−0.0131, +0.0050] | +0.0030 [−0.0065, +0.0118] |
+| 1 | +0.0080 | +0.0036 [+0.0009, +0.0062] | +0.0014 [−0.0013, +0.0039] | +0.0166 [+0.0070, +0.0273] | +0.0106 [+0.0004, +0.0226] |
+| 2 | +0.0094 | +0.0094 [+0.0069, +0.0119] | +0.0158 [+0.0133, +0.0187] | +0.0093 [−0.0008, +0.0197] | +0.0031 [−0.0060, +0.0128] |
+| mean | **+0.0066** | **+0.0068** | **+0.0072** | +0.0071 | +0.0056 |
 
 ![Figure 8: same-seed differences no-music − U0 in validation R@20 (dots = seeds, bars = 3-seed mean; post-hoc exploratory). Source: results/explore/wave3/paired_nomusic_minus_u0.csv.](../results/explore/wave3/figures/fig2_nomusic_minus_u0.png)
 
+*Figure 8. Same-seed differences no-music − U0 in validation R@20 (dots = seeds, bars = 3-seed mean; post-hoc exploratory). Source: results/explore/wave3/paired_nomusic_minus_u0.csv.*
+
 **Observed.**
-- **4-task mean:** .1286 ± .0018 vs U0 .1220 ± .0036, higher on 3/3 seeds. The ranges do not overlap: .1274–.1306 vs .1180–.1252.
-- **Both long-view tasks:** higher on 3/3 seeds. On video LV every paired CI excludes 0; on music LV, seed 1's CI includes 0. The no-music ranges lie above the U0 ranges (video LV .1303–.1334 vs .1241–.1267; music LV .1352–.1362 vs .1203–.1344).
+- **4-task mean:** 0.1286 ± 0.0018 vs U0 0.1220 ± 0.0036, higher on 3/3 seeds. The ranges do not overlap: 0.1274–0.1306 vs 0.1180–0.1252.
+- **Both long-view tasks:** higher on 3/3 seeds. On video LV every paired CI excludes 0; on music LV, seed 1's CI includes 0. The no-music ranges lie above the U0 ranges (video LV 0.1303–0.1334 vs 0.1241–0.1267; music LV 0.1352–0.1362 vs 0.1203–0.1344).
 - **Like:** 5/6 seed-task differences are positive. The single negative one (video like, seed 0) has a CI including 0, so like is not systematically harmed.
 - **Not a selection artefact.**
   - On common epochs, no-music is above U0 on video LV at 10/10, 8/8 and 9/9 epochs, and on music LV at 9/10, 8/8 and 9/9.
-  - At each task's own best epoch, the lowest no-music seed is above the highest U0 seed on both LV tasks (video .1343 vs .1304, music .1393 vs .1372).
-- **Vs pure ALS:** see §2.5.4.
+  - At each task's own best epoch, the lowest no-music seed is above the highest U0 seed on both LV tasks (video 0.1343 vs 0.1304, music 0.1393 vs 0.1372).
+- **Vs Pure ALS:** see §2.5.4.
 
 **Interpretation and limits.**
 - **Supported:** a descriptive, cross-seed-consistent architecture-level statement. In the current concatenation fusion, removing the music-tower input from the video tower improves validation long-view retrieval, without a systematic cost on like.
@@ -550,22 +568,22 @@ Same-seed differences (no-music − U0) in val R@20; brackets give the paired us
 **Scope.** E1–E5 are post-hoc breakdowns of the formal **test** results (`results/final_analysis/ERROR_ANALYSIS.md`, from `scripts/error_analysis.py`). E6–E8 draw on the exploratory **validation** runs of §2.5 and the read-only diagnostics in `results/explore/wave3_review/`, plus the formal no-music ablation. None of these numbers was used for any model, configuration or epoch choice of the formal v1. We separate **observed** facts from **hypotheses**.
 
 **The thread through E2 and E5–E8.**
-- *The gap.* The formal test result shows a long-view gap to pure ALS concentrated in long histories (E2).
+- *The gap.* The formal test result shows a long-view gap to Pure ALS concentrated in long histories (E2).
 - *Not an optimisation setting.* The exploratory runs then ask whether that gap is an optimisation setting. Learning rate and temperature move it only partly and at a cost to like (E6).
 - *Hard to measure.* Seed variation of the same size makes small effects hard to read (§2.5.1).
 - *Partly a selection compromise.* Part of the remaining gap is the single four-task checkpoint, which stops before long view peaks (E7).
-- *Pointing at fusion.* What is left points at the music-to-video fusion (E5, E8). Removing the music input removes U0's significant validation long-view R@20 deficit to pure ALS on 3/3 seeds, but why it does so is not yet established.
+- *Pointing at fusion.* What is left points at the music-to-video fusion (E5, E8). Removing the music input removes U0's significant validation long-view R@20 deficit to Pure ALS on 3/3 seeds, but why it does so is not yet established.
 
-**E1. The like-task gain over pure ALS is mostly a coverage effect.**
-- *Observed.* 608 of the 1,924 video-like users have no like before T_test, so pure ALS has no signal for them and scores 0.
-  - On those users U0 reaches R@20 .0865: +.086\* over pure ALS, and +.018 [−.008, +.047] over ALS aux.
-  - On users that do have a prior like, U0 − pure ALS is +.012 [−.005, +.029], which is not significant.
-  - Also on those users, U0 is *below* ALS aux: −.022\* (video) and −.015 [−.037, +.005] (music).
+**E1. The like-task gain over Pure ALS is mostly a coverage effect.**
+- *Observed.* 608 of the 1,924 video-like users have no like before T_test, so Pure ALS has no signal for them and scores 0.
+  - On those users U0 reaches R@20 0.0865: +0.086\* over Pure ALS, and +0.018 [−0.008, +0.047] over Aux ALS.
+  - On users that do have a prior like, U0 − Pure ALS is +0.012 [−0.005, +0.029], which is not significant.
+  - Also on those users, U0 is *below* Aux ALS: −0.022\* (video) and −0.015 [−0.037, +0.005] (music).
   - The music-like numbers are similar.
-- *Interpretation (supported).* The three-tower advantage comes from transferring LV behaviour to like through shared towers and history, which is what ALS aux does explicitly. Among users with a prior like, a dedicated like factorisation still ranks better.
+- *Interpretation (supported).* The three-tower advantage comes from transferring LV behaviour to like through shared towers and history, which is what Aux ALS does explicitly. Among users with a prior like, a dedicated like factorisation still ranks better.
 
 **E2. The long-view deficit concentrates in long histories and grows with truncation.**
-- *Observed.* In the >20 bucket, U0 − ALS on video LV is −.016\* for users whose full history is ≤ 100 events. It is −.021\* for users whose input was truncated to the last 100 (2,264 users); music is similar.
+- *Observed.* In the >20 bucket, U0 − ALS on video LV is −0.016\* for users whose full history is ≤ 100 events. It is −0.021\* for users whose input was truncated to the last 100 (2,264 users); music is similar.
 - ALS fold-in uses all train + val interactions; U0 sees at most 100.
 - *Hypothesis.*
   - The capped, attention-pooled representation under-uses long-range preferences.
@@ -576,7 +594,7 @@ Same-seed differences (no-music − U0) in val R@20; brackets give the paired us
 - *Observed.*
   - All 437 cold users receive the identical U0 embedding.
   - Its scores correlate only weakly with train LV popularity (Spearman 0.48).
-  - The no-history ablation's embedding correlates at 0.92 and matches Pop (R@20 .147 vs .142).
+  - The no-history ablation's embedding correlates at 0.92 and matches Pop (R@20 0.147 vs 0.142).
   - In U0 training, the exact cold path (empty history *and* dropped user ID) is seen for only about 1,100 rows per epoch (11,338 empty-history samples × 0.1 ID dropout). In the no-history model it is about 34,500.
 - *Hypothesis (supported by the exposure count).* The fallback is under-trained. A popularity prior or a Pop fallback for empty histories is the obvious fix.
 
@@ -596,14 +614,14 @@ Same-seed differences (no-music − U0) in val R@20; brackets give the paired us
 - *Hypothesis for the no-music gain (unverified).* With near one-to-one music, the music input mostly duplicates the video ID, while the video-task gradients flow into a tower that the music tasks also optimise. It acts as a second, competing ID path rather than a source of collaborative signal. The absence of a cold-video benefit is consistent with this, since only 4% of H have an in-vocabulary music ID.
 
 **E6. Optimisation hyperparameters do not reliably close the long-view gap** (post-hoc exploratory, validation; §2.5). This picks up the formal long-view gap of E2 and asks whether it is an optimisation setting.
-- *Observed.* A lower learning rate moves the 4-task mean by about one seed std and is driven by the like tasks; its long-view effect changes sign across seeds. τ = 0.1 lifts long view to a tie with pure ALS but costs like by a similar amount. No run has a CI-supported long-view advantage over ALS.
+- *Observed.* A lower learning rate moves the 4-task mean by about one seed std and is driven by the like tasks; its long-view effect changes sign across seeds. τ = 0.1 lifts long view to no significant difference from Pure ALS but costs like by a similar amount. No run has a CI-supported long-view advantage over ALS.
 - *Interpretation.* Within the explored range, lr and τ mostly shift the balance between long view and like. Their effects are of the same order as seed-to-seed variation (§2.5.1). This makes an optimisation-hyperparameter explanation of the gap unlikely, but it does not by itself show what the remaining cause is. E7 and E8 examine two candidates.
 
 **E7. Four-task selection versus per-task optimum** (validation epoch curves, `results/explore/wave3_review/selection_vs_task_best.csv`). This is the first candidate for the remaining gap: the checkpoint choice rather than the model.
 - *Observed.* The single D1-8 checkpoint (mean val R@20 over 4 tasks) is a compromise between tasks.
   - In 9 of the 10 runs analysed (U0 seeds, lr, τ and the two formal ablations), the long-view tasks peak 2–3 epochs *after* the selected epoch.
   - Likes peak earlier, at epochs 3–7.
-  - The validation R@20 left on the table for long view is 0–.011 per task. For example, formal U0 selects epoch 6 while video LV and music LV peak at epoch 8 (+.0040, +.0064).
+  - The validation R@20 left on the table for long view is 0–0.011 per task. For example, formal U0 selects epoch 6 while video LV and music LV peak at epoch 8 (+0.0040, +0.0064).
   - τ = 0.1 is the exception: it selects epoch 8, where long view already peaks.
 - *Interpretation.* Part of the U0 long-view gap is plausibly a multi-task selection trade-off, not only model capacity. E6 and E7 are linked: the τ = 0.1 run, the one with the largest long-view gain, is also the only run whose selected epoch coincides with the long-view peak. Whether that coincidence contributes to its gain is not established.
 - *Protocol status.* The single checkpoint is a protocol-level choice (one model for four tasks, chosen on validation), not a correctness issue. It was fixed before any test result was seen.
@@ -611,7 +629,7 @@ Same-seed differences (no-music − U0) in val R@20; brackets give the paired us
 
 **E8. The no-music long-view advantage replicates across seeds; its mechanism is open** (validation; `results/explore/wave3_review/nomusic_vs_u0_epochwise.json`, `init_fusion_scale.json`). This is the second candidate: the music-to-video fusion itself, already suggested by the formal ablation (§2.4) and E5.
 - *Observed.*
-  - On validation video LV, the formal no-music run (one seed) is above U0 at every epoch, against each of the three U0 seeds (10/10, 10/10, 9/9 epochs; mean +.007 to +.010).
+  - On validation video LV, the formal no-music run (one seed) is above U0 at every epoch, against each of the three U0 seeds (10/10, 10/10, 9/9 epochs; mean +0.007 to +0.010).
   - It is above the per-epoch maximum of the three U0 seeds at 9/9 epochs. On music LV it is above at 9/10, 9/10 and 9/9 epochs (8/9 for the envelope).
   - Likes are mixed.
   - Its training loss is lower on all four tasks, including the music tasks.
@@ -628,8 +646,8 @@ Same-seed differences (no-music − U0) in val R@20; brackets give the paired us
 
 # 4. Limitations
 
-- **The main LV comparison is negative for our model.** U0 is significantly below pure ALS on LV R@20, and on like it is not significantly above ALS aux. v1 was not tuned at all, on validation or on test, although the validation LV gap to ALS would have allowed targeted adjustments.
-- **U1 leakage risk.** The snapshot date is unknown and provably no later than 2022-05-02, inside the test period. U1's LV gain (+.015\*) may partly be future information, and offline data cannot separate the two.
+- **The main LV comparison is negative for our model.** U0 is significantly below Pure ALS on LV R@20, and on like it is not significantly above Aux ALS. v1 was not tuned at all, on validation or on test, although the validation LV gap to ALS would have allowed targeted adjustments.
+- **U1 leakage risk.** The snapshot date is unknown and provably no later than 2022-05-02, inside the test period. U1's LV gain (+0.015\*) may partly be future information, and offline data cannot separate the two.
   - U1's `onehot_feat3` (644 kept values) and `feat8` (349) may act as ID proxies.
   - U1 is therefore not the headline, and U0 alone does not use any user metadata.
 - **Cold-video full-catalog result.** It is not better than random at R@20. The positive cold-video claim holds only for the H-only candidate set.
@@ -656,14 +674,14 @@ The items are ordered by expected value per hour, and each targets a measured fa
 
 1. **Variance first (cheap, decisive).** Seeds 1 and 2 for U0 and no-music are done (§2.5.1, §2.5.5); U1 replicates are still to do. Report seed-level CIs before acting on any difference of about 0.01.
    - **Music fusion (E5, E8).** The no-music gain replicates on 3 seeds, so next test a stop-gradient fusion: the video tower still consumes the music output, but video losses no longer update the music tower. This separates gradient interference from the input-competition and scale explanations. Normalising the music input to the ID-embedding scale is a second single-variable test. A per-dimension gate before the first Linear is not worth running: it is a pure re-parameterisation.
-   - **Multi-task selection (E7).** Report per-task-selected checkpoints as a diagnostic, or select with task-weighted criteria fixed in advance on validation. A single four-task checkpoint leaves 0–.011 long-view validation R@20 unused.
+   - **Multi-task selection (E7).** Report per-task-selected checkpoints as a diagnostic, or select with task-weighted criteria fixed in advance on validation. A single four-task checkpoint leaves 0–0.011 long-view validation R@20 unused.
    - **Learning rate (E6).** lr 5e-4 is a candidate default worth a pre-registered, test-independent confirmation (more seeds, and a new held-out period if available), not a v1 change.
 2. **Fix the empty-history path (E3).** Add a learned popularity bias, or a Pop/no-history fallback, for users with an empty history. Expected to close most of the 0.10 R@20 cold-user gap at no cost elsewhere.
 3. **Close the heavy-user LV gap (E2).**
    - Train with histories frozen at a per-epoch cut, matching the frozen-T_test regime.
    - Compare a longer cap (200), or a mean-pooled long-term summary concatenated with the attention summary.
    - Validate on the >20 bucket. Ensembling with ALS fold-in is a strong, cheap baseline to report alongside.
-4. **Like tasks (E1).** Add an explicit LV → like auxiliary target, or score-level mixing with ALS aux. Tune the like/LV task weight and the like oversampling on validation; the design allowed this, but v1 deliberately shipped untuned.
+4. **Like tasks (E1).** Add an explicit LV → like auxiliary target, or score-level mixing with Aux ALS. Tune the like/LV task weight and the like oversampling on validation; the design allowed this, but v1 deliberately shipped untuned.
 5. **Cold-video calibration (E4).** Train with whole-item ID dropout (all three IDs together, for example p = 0.1 per item). Add a content-only auxiliary loss so ID-free embeddings share the warm distribution. Measure the share of H in the top 20 and the full-catalog R@20 against random.
 6. **Music input (E5).** Keep music as a separate retrieval target, but drop or heavily regularise it as a video-tower input. Revisit only on a dataset with real music sharing.
 7. **Evaluation extensions.** A rolling per-event protocol as a robustness check, and a sensitivity row with recent (train + val) popularity.
@@ -703,29 +721,29 @@ The full tables are in `report/tables/`:
 
 | task | model | R@10 | R@20 | R@50 | N@10 | N@20 | N@50 |
 |---|---|---:|---:|---:|---:|---:|---:|
-| video LV | Pop | .0479 | .0806 | .1388 | .0348 | .0457 | .0621 |
-| video LV | ALS (pure) | .0759 | .1244 | .2282 | .0524 | .0686 | .0969 |
-| video LV | 3T-U0 | .0740 | .1124 | .1950 | .0549 | .0676 | .0902 |
-| video LV | 3T-U1 | .0829 | .1274 | .2184 | .0597 | .0744 | .0994 |
-| video LV | no-history | .0642 | .1003 | .1739 | .0456 | .0578 | .0780 |
-| video LV | no-music | .0801 | .1221 | .2131 | .0581 | .0721 | .0970 |
-| video like | Pop | .0466 | .0716 | .1304 | .0332 | .0403 | .0532 |
-| video like | ALS (pure) | .0388 | .0555 | .1004 | .0234 | .0282 | .0387 |
-| video like | ALS (aux) | .0610 | .1008 | .1795 | .0356 | .0469 | .0648 |
-| video like | 3T-U0 | .0533 | .0913 | .1757 | .0310 | .0417 | .0606 |
-| video like | 3T-U1 | .0601 | .0859 | .1616 | .0324 | .0397 | .0570 |
-| video like | no-history | .0571 | .0888 | .1588 | .0343 | .0431 | .0586 |
-| video like | no-music | .0562 | .0987 | .1680 | .0311 | .0431 | .0588 |
-| music LV | Pop | .0507 | .0856 | .1472 | .0362 | .0479 | .0651 |
-| music LV | ALS (pure) | .0772 | .1282 | .2297 | .0536 | .0705 | .0982 |
-| music LV | 3T-U0 | .0755 | .1162 | .2036 | .0557 | .0691 | .0928 |
-| music LV | 3T-U1 | .0875 | .1321 | .2258 | .0621 | .0768 | .1022 |
-| music LV | no-history | .0690 | .1052 | .1846 | .0481 | .0603 | .0819 |
-| music LV | no-music | .0819 | .1250 | .2162 | .0585 | .0728 | .0975 |
-| music like | Pop | .0480 | .0726 | .1358 | .0342 | .0412 | .0552 |
-| music like | ALS (pure) | .0433 | .0586 | .0951 | .0256 | .0303 | .0389 |
-| music like | ALS (aux) | .0617 | .1054 | .2017 | .0338 | .0463 | .0677 |
-| music like | 3T-U0 | .0621 | .1022 | .1793 | .0361 | .0472 | .0646 |
-| music like | 3T-U1 | .0573 | .0864 | .1633 | .0325 | .0407 | .0581 |
-| music like | no-history | .0560 | .0852 | .1617 | .0342 | .0425 | .0591 |
-| music like | no-music | .0649 | .0940 | .1817 | .0354 | .0437 | .0632 |
+| video LV | Pop | 0.0479 | 0.0806 | 0.1388 | 0.0348 | 0.0457 | 0.0621 |
+| video LV | Pure ALS | 0.0759 | 0.1244 | 0.2282 | 0.0524 | 0.0686 | 0.0969 |
+| video LV | U0 | 0.0740 | 0.1124 | 0.1950 | 0.0549 | 0.0676 | 0.0902 |
+| video LV | U1 | 0.0829 | 0.1274 | 0.2184 | 0.0597 | 0.0744 | 0.0994 |
+| video LV | no-history | 0.0642 | 0.1003 | 0.1739 | 0.0456 | 0.0578 | 0.0780 |
+| video LV | no-music | 0.0801 | 0.1221 | 0.2131 | 0.0581 | 0.0721 | 0.0970 |
+| video like | Pop | 0.0466 | 0.0716 | 0.1304 | 0.0332 | 0.0403 | 0.0532 |
+| video like | Pure ALS | 0.0388 | 0.0555 | 0.1004 | 0.0234 | 0.0282 | 0.0387 |
+| video like | Aux ALS | 0.0610 | 0.1008 | 0.1795 | 0.0356 | 0.0469 | 0.0648 |
+| video like | U0 | 0.0533 | 0.0913 | 0.1757 | 0.0310 | 0.0417 | 0.0606 |
+| video like | U1 | 0.0601 | 0.0859 | 0.1616 | 0.0324 | 0.0397 | 0.0570 |
+| video like | no-history | 0.0571 | 0.0888 | 0.1588 | 0.0343 | 0.0431 | 0.0586 |
+| video like | no-music | 0.0562 | 0.0987 | 0.1680 | 0.0311 | 0.0431 | 0.0588 |
+| music LV | Pop | 0.0507 | 0.0856 | 0.1472 | 0.0362 | 0.0479 | 0.0651 |
+| music LV | Pure ALS | 0.0772 | 0.1282 | 0.2297 | 0.0536 | 0.0705 | 0.0982 |
+| music LV | U0 | 0.0755 | 0.1162 | 0.2036 | 0.0557 | 0.0691 | 0.0928 |
+| music LV | U1 | 0.0875 | 0.1321 | 0.2258 | 0.0621 | 0.0768 | 0.1022 |
+| music LV | no-history | 0.0690 | 0.1052 | 0.1846 | 0.0481 | 0.0603 | 0.0819 |
+| music LV | no-music | 0.0819 | 0.1250 | 0.2162 | 0.0585 | 0.0728 | 0.0975 |
+| music like | Pop | 0.0480 | 0.0726 | 0.1358 | 0.0342 | 0.0412 | 0.0552 |
+| music like | Pure ALS | 0.0433 | 0.0586 | 0.0951 | 0.0256 | 0.0303 | 0.0389 |
+| music like | Aux ALS | 0.0617 | 0.1054 | 0.2017 | 0.0338 | 0.0463 | 0.0677 |
+| music like | U0 | 0.0621 | 0.1022 | 0.1793 | 0.0361 | 0.0472 | 0.0646 |
+| music like | U1 | 0.0573 | 0.0864 | 0.1633 | 0.0325 | 0.0407 | 0.0581 |
+| music like | no-history | 0.0560 | 0.0852 | 0.1617 | 0.0342 | 0.0425 | 0.0591 |
+| music like | no-music | 0.0649 | 0.0940 | 0.1817 | 0.0354 | 0.0437 | 0.0632 |

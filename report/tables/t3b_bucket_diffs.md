@@ -1,4 +1,6 @@
-| task | bucket | 3T-U0 − ALS (pure) | no-history − U0 | no-music − U0 |
+Formal **test** split, full catalog, items seen before T_test excluded. Values are means over users; 95% CIs come from a paired bootstrap over 1,000 user resamples. R@K = Recall@K, N@K = NDCG@K. U0 = three-tower model (user ID + history); U1 = U0 + 21 undated user-snapshot fields. Pure ALS = ALS on the task's action; Aux ALS = like ALS + 0.3 × long-view signal (like tasks only). Paired R@20 **difference** A − B [95% CI] per history-length bucket; **bold** = the CI excludes 0.
+
+| task | bucket | U0 − Pure ALS | U0 no-history − U0 | U0 no-music − U0 |
 |---|---|---|---|---|
 | video / long view | 1-5 | **+0.0284 [+0.0074, +0.0497]** | **-0.0182 [-0.0329, -0.0034]** | **+0.0196 [+0.0066, +0.0330]** |
 | video / long view | 6-20 | -0.0060 [-0.0157, +0.0039] | **-0.0177 [-0.0249, -0.0102]** | **+0.0173 [+0.0111, +0.0231]** |

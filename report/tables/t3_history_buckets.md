@@ -1,4 +1,6 @@
-| task | bucket | users | Pop | ALS (pure) | ALS (aux) | 3T-U0 | 3T-U1 | no-history | no-music |
+Formal **test** split, full catalog, items seen before T_test excluded. Values are means over users; 95% CIs come from a paired bootstrap over 1,000 user resamples. R@K = Recall@K, N@K = NDCG@K. U0 = three-tower model (user ID + history); U1 = U0 + 21 undated user-snapshot fields. Pure ALS = ALS on the task's action; Aux ALS = like ALS + 0.3 × long-view signal (like tasks only). Absolute test R@20 by history-length bucket: the number of events fed to the model at T_test (capped at 100).
+
+| task | bucket | users | Pop | Pure ALS | Aux ALS | U0 | U1 | U0 no-history | U0 no-music |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | video / long view | 1-5 | 1,162 | 0.1243 | 0.1285 | – | 0.1569 | 0.1919 | 0.1387 | 0.1765 |
 | video / long view | 6-20 | 4,053 | 0.0951 | 0.1417 | – | 0.1358 | 0.1531 | 0.1181 | 0.1531 |

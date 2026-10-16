@@ -29,8 +29,13 @@ TASKS = ["video_long_view", "video_is_like", "music_long_view", "music_is_like"]
 TASK_NAME = {"video_long_view": "video / long view", "video_is_like": "video / like",
              "music_long_view": "music / long view", "music_is_like": "music / like"}
 ORDER = ["pop", "als", "als_like_aux", "u0", "u1", "abl_nohist", "abl_nomusic"]
-NAME = {"pop": "Pop", "als": "ALS (pure)", "als_like_aux": "ALS (aux)", "u0": "3T-U0", "u1": "3T-U1",
+NAME = {"pop": "Pop", "als": "Pure ALS", "als_like_aux": "Aux ALS", "u0": "U0", "u1": "U1",
         "abl_nohist": "U0 no-history", "abl_nomusic": "U0 no-music"}
+# One-line legend shared by every Markdown table written below (prepended to each file).
+SCOPE = ("Formal **test** split, full catalog, items seen before T_test excluded. Values are means over users; "
+         "95% CIs come from a paired bootstrap over 1,000 user resamples. R@K = Recall@K, N@K = NDCG@K. "
+         "U0 = three-tower model (user ID + history); U1 = U0 + 21 undated user-snapshot fields. "
+         "Pure ALS = ALS on the task's action; Aux ALS = like ALS + 0.3 × long-view signal (like tasks only).")
 
 
 def ci(r, k="mean"):
@@ -50,7 +55,7 @@ def main():
     fs = json.loads((ROOT / "results/baselines/frames_summary.json").read_text())
 
     # Table 1: full-catalog test metrics, all six metrics.
-    L = []
+    L = [SCOPE + " Absolute metric values; GT pairs = distinct (user, item) test positives.", ""]
     for task in TASKS:
         L += [f"**{TASK_NAME[task]}** (users {fs[f'test/{task}/masked']['n_users']:,}, GT pairs "
               f"{fs[f'test/{task}/masked']['gt_pairs_effective']:,})", "",
@@ -70,7 +75,10 @@ def main():
     d = di[(di.stratum == "all") & (di.frame_kind == "masked")]
     pairs = [("u0", "pop"), ("u0", "als"), ("u0", "als_like_aux"), ("u1", "als"), ("u1", "u0"),
              ("abl_nohist", "u0"), ("abl_nomusic", "u0")]
-    L = ["| comparison | metric | " + " | ".join(TASK_NAME[t] for t in TASKS) + " |", "|---|---|" + "---|" * 4]
+    L = [SCOPE + " Each cell is the paired **difference** A − B [95% CI]; **bold** = the CI excludes 0 "
+         "(significant). A non-significant difference does not mean the models are equivalent. The absolute "
+         "values are in `t1_main_metrics.md`.", "",
+         "| comparison (A − B) | metric | " + " | ".join(TASK_NAME[t] for t in TASKS) + " |", "|---|---|" + "---|" * 4]
     for a, b in pairs:
         for met in ("recall@20", "ndcg@20"):
             cells = []
@@ -84,7 +92,9 @@ def main():
     # Table 3: history buckets (R@20, users) for U0 / ALS / Pop / no-history.
     bc = pd.read_csv(MAIN / "bucket_counts.csv")
     b = mo[(mo.frame_kind == "masked") & (mo.stratum != "all") & (mo.metric == "recall@20")]
-    L = ["| task | bucket | users | Pop | ALS (pure) | ALS (aux) | 3T-U0 | 3T-U1 | no-history | no-music |",
+    L = [SCOPE + " Absolute test R@20 by history-length bucket: the number of events fed to the model at T_test "
+         "(capped at 100).", "",
+         "| task | bucket | users | Pop | Pure ALS | Aux ALS | U0 | U1 | U0 no-history | U0 no-music |",
          "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|"]
     for t in TASKS:
         for k in ("1-5", "6-20", ">20"):
@@ -94,7 +104,9 @@ def main():
             L.append(f"| {TASK_NAME[t]} | {k} | {n:,} | " + " | ".join(cells) + " |")
     (OUT_T / "t3_history_buckets.md").write_text("\n".join(L) + "\n")
     bd = di[(di.frame_kind == "masked") & (di.stratum != "all") & (di.metric == "recall@20")]
-    L = ["| task | bucket | 3T-U0 − ALS (pure) | no-history − U0 | no-music − U0 |", "|---|---|---|---|---|"]
+    L = [SCOPE + " Paired R@20 **difference** A − B [95% CI] per history-length bucket; **bold** = the CI "
+         "excludes 0.", "",
+         "| task | bucket | U0 − Pure ALS | U0 no-history − U0 | U0 no-music − U0 |", "|---|---|---|---|---|"]
     for t in TASKS:
         for k in ("1-5", "6-20", ">20"):
             cells = []
@@ -106,7 +118,9 @@ def main():
 
     # Table 4: cold users (no history before T_test), separate frame.
     c = mo[(mo.frame_kind == "cold") & (mo.metric == "recall@20")]
-    L = ["| task | users | Pop | 3T-U0 | 3T-U1 | no-history | no-music |", "|---|---:|---:|---:|---:|---:|---:|"]
+    L = [SCOPE + " Cold users = users with test positives but no event before T_test (a separate frame, excluded "
+         "from the main population). Absolute test R@20 [95% CI].", "",
+         "| task | users | Pop | U0 | U1 | U0 no-history | U0 no-music |", "|---|---:|---:|---:|---:|---:|---:|"]
     for t in TASKS:
         g = c[c.task == t]
         L.append(f"| {TASK_NAME[t]} | {int(g.n_users.iloc[0])} | " + " | ".join(
@@ -118,13 +132,18 @@ def main():
     cb = pd.read_csv(COLD / "cold_bootstrap_models.csv")
     cdf = pd.read_csv(COLD / "cold_bootstrap_diffs.csv")
     meta = json.loads((COLD / "cold_meta.json").read_text())
-    cname = {"cold_threetower": "Cold 3T-U0 (H removed)", "cold_pop": "Cold Pop", "cold_als": "Cold ALS (pure)",
-             "cold_als_like_aux": "Cold ALS (aux)", "random_expected": "Random (analytical)",
-             "seen_threetower": "Seen 3T-U0 (reference)", "seen_pop": "Seen Pop (reference)",
-             "seen_als": "Seen ALS pure (reference)", "seen_als_like_aux": "Seen ALS aux (reference)"}
+    cname = {"cold_threetower": "Cold U0 (H removed)", "cold_pop": "Cold Pop", "cold_als": "Cold Pure ALS",
+             "cold_als_like_aux": "Cold Aux ALS", "random_expected": "Random (analytical)",
+             "seen_threetower": "Seen U0 (reference)", "seen_pop": "Seen Pop (reference)",
+             "seen_als": "Seen Pure ALS (reference)", "seen_als_like_aux": "Seen Aux ALS (reference)"}
     corder = ["cold_threetower", "cold_pop", "cold_als", "cold_als_like_aux", "random_expected",
               "seen_threetower", "seen_pop", "seen_als", "seen_als_like_aux"]
-    L = []
+    L = ["Formal **test** split, controlled cold-video experiment. **H** = the 750 held-out videos, removed from "
+         "all training data, histories and baseline fits. **GT_H** = each user's test positives on H that the user "
+         "had not seen before T_test. *Full* = GT_H ranked against the full catalog (7,583 videos); *H-only* = "
+         "ranked among the H videos only. *Cold* models and baselines were trained without H; *seen* references "
+         "were trained normally (they saw H) and are context, not baselines. Absolute values; R@K = Recall@K, "
+         "N@K = NDCG@K; 95% CIs from a paired bootstrap over 1,000 user resamples.", ""]
     for t in ("video_long_view", "video_is_like"):
         fr = meta["frames"][f"{t}/cold_video_full"]
         L += [f"**{TASK_NAME[t]}** — users {fr['n_users']:,}, GT_H pairs {fr['gt_h_pairs']:,} on {fr['gt_h_videos']} H videos", "",
@@ -143,7 +162,12 @@ def main():
             nm = cname[m] + (" [a]" if m == "cold_pop" else "")
             L.append(f"| {grp} | {nm} | " + " | ".join(cell) + " |")
         L.append("")
-    L += ["Paired differences, cold 3T-U0 minus each cold-condition baseline (95% CI; ** = CI excludes 0):", "",
+    # Footnote text follows results/m5/cold_video/.../COLD_VIDEO.md (experiments/cold_video.py), the source of truth.
+    L += ["[a] H has no training interactions, so every cold Pop score on H is 0. On the full catalog H is "
+          "therefore always ranked last. On H-only, the ranking is the deterministic tie-break (catalog row = "
+          "video_id ascending): a fixed arbitrary order, not a random ranking.", ""]
+    L += ["Paired **differences**, cold U0 minus each cold-condition baseline [95% CI]; **bold** = the CI "
+          "excludes 0:", "",
           "| task | candidates | vs | ΔR@20 | ΔR@50 | ΔN@10 |", "|---|---|---|---|---|---|"]
     for t in ("video_long_view", "video_is_like"):
         for f, fn in (("cold_video_full", "full catalog"), ("cold_video_h", "H only")):
@@ -200,7 +224,7 @@ def figures(mo, di, b, cb, meta):
 
     # Figure 1: four-task comparison of the headline models (same test masked frames).
     models = ["pop", "als", "als_like_aux", "u0", "u1"]
-    labels = ["Popularity", "ALS (pure)", "ALS (aux, like tasks only)", "3T-U0 (main)", "3T-U1 (+ snapshot meta)"]
+    labels = ["Popularity", "Pure ALS", "Aux ALS (like tasks only)", "U0 (main)", "U1 (+ user snapshot)"]
     groups = [TASK_NAME[t].replace(" / ", "\n") for t in TASKS]
     vals = [[get(t, m)[0] for m in models] for t in TASKS]
     errs = [[get(t, m)[1] for m in models] for t in TASKS]
@@ -214,7 +238,7 @@ def figures(mo, di, b, cb, meta):
                 ax.text(i - 0.4 + w * (j + 0.5), 0.003, "n/a", ha="center", va="bottom", fontsize=7,
                         color="#333", rotation=90)
     ax.set_ylabel("test Recall@20 (95% CI)", fontsize=8)
-    ax.set_title("Full-catalog, seen-masked test Recall@20 (same users per task)", fontsize=9)
+    ax.set_title("Test Recall@20, full catalog, previously seen items excluded (same users per task)", fontsize=9)
     ax.legend(fontsize=7, ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.2), frameon=False)
     fig.tight_layout()
     fig.savefig(OUT_F / "fig1_baselines.png", dpi=200)
@@ -224,12 +248,12 @@ def figures(mo, di, b, cb, meta):
     # (different scales). Only the cold-trained model and cold-condition baselines are drawn; the
     # seen-video reference is not a cold baseline and is given in the caption / table only.
     cm_models = ["cold_threetower", "cold_pop", "cold_als", "random_expected"]
-    cm_labels = ["Cold 3T-U0 (H removed)", "Cold Pop", "Cold ALS (pure)", "Random (analytical expectation)"]
+    cm_labels = ["Cold U0 (H removed)", "Cold Pop", "Cold Pure ALS", "Random (analytical expectation)"]
     cm_colors = [COLOR["u0"], COLOR["pop"], COLOR["als"], "#d9b3ff"]
     cgroups = ["video\nlong view", "video\nlike"]
     fig, axes = plt.subplots(1, 2, figsize=(7.2, 2.9))
-    for ax, (frame_kind, title) in zip(axes, (("cold_video_full", "(a) full catalog (7,583 videos, seen-masked)"),
-                                              ("cold_video_h", "(b) H only (750 held-out videos, seen-masked)"))):
+    for ax, (frame_kind, title) in zip(axes, (("cold_video_full", "(a) candidates: full catalog (7,583 videos)"),
+                                              ("cold_video_h", "(b) candidates: H only (750 held-out videos)"))):
         fr = cb[(cb.frame == frame_kind) & (cb.metric == "recall@20")]
         v, e = [], []
         for t in ("video_long_view", "video_is_like"):
@@ -249,7 +273,7 @@ def figures(mo, di, b, cb, meta):
                 if v[i][j] == 0:
                     ax.text(i - 0.4 + w * (j + 0.5), 0, "0", ha="center", va="bottom", fontsize=7, color="#333")
         ax.set_title(title, fontsize=8.5)
-    axes[0].set_ylabel("test Recall@20 on GT_H (95% CI)", fontsize=8)
+    axes[0].set_ylabel("test Recall@20 of positives on H (95% CI)", fontsize=8)
     n_lv = meta["frames"]["video_long_view/cold_video_full"]["n_users"]
     n_like = meta["frames"]["video_is_like/cold_video_full"]["n_users"]
     axes[1].text(0.98, 0.97, f"users: LV {n_lv:,}, like {n_like:,}", transform=axes[1].transAxes, ha="right",
@@ -303,7 +327,7 @@ def figures(mo, di, b, cb, meta):
         ax.set_yticks(ys)
         ax.set_yticklabels([TASK_NAME[t] for t in TASKS], fontsize=7.5)
         ax.tick_params(axis="x", labelsize=7)
-        ax.set_xlabel(f"Δ test {met.replace('recall', 'Recall').replace('ndcg', 'NDCG')} vs U0 (95% CI)",
+        ax.set_xlabel(f"test {met.replace('recall', 'Recall').replace('ndcg', 'NDCG')} difference, ablation − U0 (95% CI)",
                       fontsize=7.5)
         ax.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(nbins=8))
         ax.grid(axis="x", lw=0.3, alpha=0.6)
